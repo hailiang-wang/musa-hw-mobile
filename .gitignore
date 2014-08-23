@@ -2,3 +2,5 @@ platforms
 plugins
 *.swp
 node_modules
+mobile.sublime-project
+mobile.sublime-workspace

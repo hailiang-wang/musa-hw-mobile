@@ -18,10 +18,9 @@
  */
 
 function connMap(){
-    // Provide your access token
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
-    // Create a map in the div #map
-    var map = L.mapbox.map('map', 'hain.ja31ci75');
+    var map = L.mapbox.map('map', 'hain.ja31ci75')
+    .setView([0, 50], 3);
 }
 
 var app = {
