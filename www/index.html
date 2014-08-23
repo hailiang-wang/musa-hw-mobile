@@ -4,17 +4,69 @@
 <meta charset=utf-8 />
 <title>Hello World</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no width=device-width, height=device-height, target-densitydpi=device-dpi' />
-<script src='mapbox/mapbox.js'></script>
 <link href='mapbox/mapbox.css' rel='stylesheet' />
+<link rel='stylesheet' href='css/themes/Bootstrap.css'>
+<link rel='stylesheet' href='js/jquery.mobile/jquery.mobile-1.4.2.min.css' />
+<link rel='stylesheet' href='css/themes/jquery.mobile.icons.min.css' />
 <link href='css/index.css' rel='stylesheet' />
+
+<script src='js/jquery-2.1.0.js'></script>
+<script src='js/jquery.mobile/jquery.mobile-1.4.2.min.js'></script>
+<script src='mapbox/mapbox.js'></script>
+
 </head>
 <body>
-<div id='map'></div>
+        <div id='home' data-role='page' data-theme='a'>
+            <div data-role='content' data-theme='a'>
+                home
+            </div>
+             <div data-role='footer' data-position='fixed'>
+                <div data-role='navbar'>
+                    <ul>
+                        <li><a id='homeBtn' href='#home' data-icon='home'></a></li>
+                        <li><a id='notyBtn' href='#noty' data-icon='mail'></a></li>
+                        <li><a id='userBtn' href='#user' data-icon='user'></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id='noty' data-role='page' data-theme='a'>
+            <div data-role='content' data-theme='a'>
+                noty
+            </div>
+             <div data-role='footer' data-position='fixed'>
+                <div data-role='navbar'>
+                    <ul>
+                        <li><a id='homeBtn' href='#home' data-icon='home'></a></li>
+                        <li><a id='notyBtn' href='#noty' data-icon='mail'></a></li>
+                        <li><a id='userBtn' href='#user' data-icon='user'></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id='user' data-role='page' data-theme='a'>
+            <div data-role='content' data-theme='a'>
+                user
+            </div>
+             <div data-role='footer' data-position='fixed'>
+                <div data-role='navbar'>
+                    <ul>
+                        <li><a id='homeBtn' href='#home' data-icon='home'></a></li>
+                        <li><a id='notyBtn' href='#noty' data-icon='mail'></a></li>
+                        <li><a id='userBtn' href='#user' data-icon='user'></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-<script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript">
-    app.initialize();
-</script>
-</body>
+        <script type='text/javascript' src='cordova.js'></script>
+        <script type='text/javascript' src='js/index.js'></script>
+        <script type='text/javascript'>
+        $(function() {
+            $( "[data-role='navbar']" ).navbar();
+            $( "[data-role='header'], [data-role='footer']" ).toolbar();
+        });
+            app.initialize();
+        </script>
+    </body>
 </html>
