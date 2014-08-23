@@ -17,10 +17,41 @@
  * under the License.
  */
 
-function connMap(){
+function createMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
     var map = L.mapbox.map('map', 'hain.ja31ci75')
     .setView([0, 50], 3);
+}
+
+function createHomeSwiperHeader(){
+    var mySwiper = new Swiper('.swiper-container',{
+        pagination: '.pagination',
+        loop:true,
+        grabCursor: true,
+        paginationClickable: true
+    })
+    $('.arrow-left').on('click', function(e){
+        e.preventDefault()
+        mySwiper.swipePrev()
+    })
+    $('.arrow-right').on('click', function(e){
+        e.preventDefault()
+        mySwiper.swipeNext()
+    })
+}
+function fixedFooter(){
+    $(function() {
+            $( "[data-role='navbar']" ).navbar();
+            $( "[data-role='header'], [data-role='footer']" ).toolbar();
+    });
+}
+
+function setUp(){
+    $(document).ready(function(){
+        fixedFooter();
+        createMap();
+        createHomeSwiperHeader();
+    });
 }
 
 var app = {
@@ -45,6 +76,6 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
-        connMap();
+        setUp();
     }
 };
