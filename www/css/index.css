@@ -1,4 +1,8 @@
-#map { position:absolute; top:70px; bottom:0; width:100%; }
+#map { 
+  position:absolute; 
+  top:70px; bottom:0; 
+  width:100%;
+}
 .swiper-container {
   height: 70px;
   width: 640px;

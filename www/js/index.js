@@ -28,7 +28,24 @@ function createHomeSwiperHeader(){
         pagination: '.pagination',
         loop:true,
         grabCursor: true,
-        paginationClickable: true
+        paginationClickable: true,
+        onSlideChangeEnd : function(swiper, direction){
+            switch(swiper.activeIndex % 2){
+                case 0:
+                    console.log('show notifications ...')
+                    $("#map").hide();
+                    $("#notifications").show();
+                    break;
+                case 1:
+                    console.log('show map ...')
+                    $("#notifications").hide();
+                    $("#map").show();
+                    break;
+                default :
+                    console.log('fine me if you can.');
+                    break;
+            }
+        }
     })
     $('.arrow-left').on('click', function(e){
         e.preventDefault()
