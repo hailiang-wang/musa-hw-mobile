@@ -39,38 +39,36 @@ function createHomeSwiperHeader(){
         mySwiper.swipeNext()
     })
 }
-function setUp(){
-    // fixed persistent toolbars
-    $(function(){
-            $( "[data-role='navbar']" ).navbar();
-            $( "[data-role='header'], [data-role='footer']" ).toolbar();
-    });
-    // Update the contents of the toolbars
-    $( document ).on( "pagecontainershow", function() {
-        // Each of the four pages has a data-title attribute
-        // which value is equal to the icon value of the nav button
-        // For example, on first page: <div data-role="page" data-title="home">
-        var current = $( ".ui-page-active" ).jqmData( "title" );
-        // Remove active class from nav buttons
-        $( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
-        // Add active class to current nav button
-        $( "[data-role='navbar'] a" ).each(function() {
-            if ( $( this ).jqmData( "icon" ) === current ) {
-                $( this ).addClass( "ui-btn-active" );
-            }
+
+function ngv(){
+    $("#homeBtn").on('click',function(){
+        $.mobile.changePage( "home.html", {
+            transition: "none",
+            reloadPage: false,
+            reverse: false,
+            changeHash: false
         });
     });
+    $("#userBtn").on('click',function(){
+        $.mobile.changePage( "user.html", {
+            transition: "none",
+            reloadPage: false,
+            reverse: false,
+            changeHash: false
+        });
+    });        
+}
+
+function setUp(){
+    ngv();
     switch($.mobile.activePage.attr("id")){
         case "home-index":
             createMap();
             createHomeSwiperHeader();
-            console.log('home index')
             break;
         case "user-index":
-            console.log('user index')
             break;
         default:
-            console.log('default index')
             break;
     }
 }
@@ -97,7 +95,6 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
-        console.log('......')
         setUp();
     }
 };

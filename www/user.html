@@ -10,6 +10,34 @@
     <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
     <link rel='stylesheet' href='css/index.css'/>
+    <script type='text/javascript' src='mapbox/mapbox.js'></script>
+    <script type='text/javascript' src='js/jquery-2.1.0.js'></script>
+    <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
+    <script type='text/javascript' src="js/idangerous.swiper-2.1.min.js"></script>
+    <script>
+    $(function() {
+        $( "[data-role='navbar']" ).navbar();
+        $( "[data-role='header'], [data-role='footer']" ).toolbar();
+    });
+            // Update the contents of the toolbars
+        $( document ).on( "pageshow", function() {
+            // Each of the four pages in this demo has a data-title attribute
+            // which value is equal to the text of the nav button
+            // For example, on first page: <div data-role="page" data-title="Info">
+            var current = $( ".ui-page-active" ).jqmData( "title" );
+            // Change the heading
+            $( "[data-role='header'] h1" ).text( current );
+            // Remove active class from nav buttons
+            $( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
+            // Add active class to current nav button
+            $( "[data-role='navbar'] a" ).each(function() {
+                if ( $( this ).jqmData('icon') === current ) {
+                    $( this ).addClass( "ui-btn-active" );
+                }
+            });
+        });
+
+    </script>
 </head>
 <body>
     <div id='user-index' data-role='page' data-theme='a' data-title='user'>
@@ -20,16 +48,16 @@
     <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
         <div data-role='navbar'>
             <ul>
-                <li><a id='homeBtn' href='home.html' data-icon='home'></a></li>
-                <li><a id='userBtn' href='user.html' data-icon='user'></a></li>
+                <li>
+                    <a id='homeBtn' href="#" class='ui-state-persist' data-icon='home'></a>
+                </li>
+                <li>
+                    <a id='userBtn' href="#" class='ui-state-persist' data-icon='user'></a>
+                </li>
             </ul>
         </div>
     </div>
     <script type='text/javascript' src='cordova.js'></script>
-    <script type='text/javascript' src='mapbox/mapbox.js'></script>
-    <script type='text/javascript' src='js/jquery-2.1.0.js'></script>
-    <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
-    <script type='text/javascript' src="js/idangerous.swiper-2.1.min.js"></script>
     <script type='text/javascript' src='js/index.js'></script>
     <script type='text/javascript'>
         app.initialize();
