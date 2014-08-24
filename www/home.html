@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>长缨</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
+    <link href='mapbox/mapbox.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="css/idangerous.swiper.css">
+    <link rel="stylesheet" href="css/themes/tassel-theme.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
+    <link rel='stylesheet' href='css/index.css'/>
+</head>
+<body>
+    <div id='home' data-role='page' data-theme='a'>
+        <div class='swiper-header' data-role='header' data-position='fixed'>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                    <p class="header-swiper-title">热图</p>
+                    </div> 
+                    <div class="swiper-slide">
+                        <p class="header-swiper-title">活动</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination"></div>
+        </div>
+        <div data-role='content' id='map'>
+        </div>
+        <div data-role='footer' data-position='fixed' data-theme='a'>
+            <div data-role='navbar'>
+                <ul>
+                    <li><a id='homeBtn' href='home.html' data-icon='home'></a></li>
+                    <li><a id='userBtn' href='user.html' data-icon='user'></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type='text/javascript' src='mapbox/mapbox.js'></script>
+    <script type='text/javascript' src='js/jquery-2.1.0.js'></script>
+    <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
+    <script type='text/javascript' src="js/idangerous.swiper-2.1.min.js"></script>
+    <script type='text/javascript' src='cordova.js'></script>
+    <script type='text/javascript' src='js/index.js'></script>
+    <script type='text/javascript'>
+        app.initialize();
+    </script>
+</body>
+</html>

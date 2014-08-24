@@ -7,6 +7,6 @@
     <author email="hailiang.hl.wang@gmail.com" href="http://helloworld-cafe.com">
       Hai Liang Wang
     </author>
-    <content src="index.html" />
+    <content src="home.html" />
     <access origin="*" />
 </widget>
