@@ -39,37 +39,40 @@ function createHomeSwiperHeader(){
         mySwiper.swipeNext()
     })
 }
-function fixedFooter(){
-    $(function() {
+function setUp(){
+    // fixed persistent toolbars
+    $(function(){
             $( "[data-role='navbar']" ).navbar();
             $( "[data-role='header'], [data-role='footer']" ).toolbar();
     });
-}
-
-function setUp(){
-    $(function() {
-        $( "[data-role='navbar']" ).navbar();
-        $( "[data-role='header'], [data-role='footer']" ).toolbar();
-    });
     // Update the contents of the toolbars
     $( document ).on( "pagecontainershow", function() {
-        // Each of the four pages in this demo has a data-title attribute
-        // which value is equal to the text of the nav button
-        // For example, on first page: <div data-role="page" data-title="Info">
+        // Each of the four pages has a data-title attribute
+        // which value is equal to the icon value of the nav button
+        // For example, on first page: <div data-role="page" data-title="home">
         var current = $( ".ui-page-active" ).jqmData( "title" );
-        // Change the heading
-        $( "[data-role='header'] h1" ).text( current );
         // Remove active class from nav buttons
         $( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
         // Add active class to current nav button
         $( "[data-role='navbar'] a" ).each(function() {
-            if ( $( this ).text() === current ) {
+            if ( $( this ).jqmData( "icon" ) === current ) {
                 $( this ).addClass( "ui-btn-active" );
             }
         });
     });
-    createMap();
-    createHomeSwiperHeader();
+    switch($.mobile.activePage.attr("id")){
+        case "home-index":
+            createMap();
+            createHomeSwiperHeader();
+            console.log('home index')
+            break;
+        case "user-index":
+            console.log('user index')
+            break;
+        default:
+            console.log('default index')
+            break;
+    }
 }
 
 var app = {
@@ -94,6 +97,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        console.log('......')
         setUp();
     }
 };
