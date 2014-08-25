@@ -15,12 +15,12 @@
     <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
     <script type='text/javascript' src="js/idangerous.swiper-2.1.min.js"></script>
     <script>
-    $(function() {
-        $( "[data-role='navbar']" ).navbar();
-        $( "[data-role='header'], [data-role='footer']" ).toolbar();
-    });
+        $(function() {
+            $( "[data-role='navbar']" ).navbar();
+            $( "[data-role='header'], [data-role='footer']" ).toolbar();
+        });
             // Update the contents of the toolbars
-        $( document ).on( "pagecontainershow", function() {
+            $( document ).on( "pagecontainershow", function() {
             // Each of the four pages in this demo has a data-title attribute
             // which value is equal to the text of the nav button
             // For example, on first page: <div data-role="page" data-title="Info">
@@ -36,45 +36,46 @@
                 }
             });
         });
-    </script>
-</head>
-<body>
-    <div id='home-index' data-role='page' data-theme='a' data-title='home'>
-        <div class='swiper-header' data-role='header' data-position='fixed'>
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                    <p class="header-swiper-title">热图</p>
-                    </div> 
-                    <div class="swiper-slide">
-                        <p class="header-swiper-title">通知</p>
+        </script>
+    </head>
+    <body>
+        <div id='home-index' data-role='page' data-theme='a' data-title='home'>
+            <div id='home-swiper-header' data-role='header' data-position='fixed'>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <p class="header-swiper-title">热图</p>
+                        </div> 
+                        <div class="swiper-slide">
+                            <p class="header-swiper-title">通知</p>
+                        </div>
                     </div>
                 </div>
+                <div class="pagination"></div>
             </div>
-            <div class="pagination"></div>
-        </div>
-        <div data-role='content' id='map'>
-        </div>        
-        <div data-role='content' id='notifications' class="hidden">
-            I get notifications ...
+            <div data-role='content' id='map'>
+            </div>        
+            <div data-role='content' id='notifications' class="hidden">
+            </div>
         </div>
     </div>
-    <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
-        <div data-role='navbar'>
-            <ul>
-                <li>
-                    <a id='homeBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='home'></a>
-                </li>
-                <li>
-                    <a id='userBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='user'></a>
-                </li>
-            </ul>
-        </div>
+</div>
+<div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
+    <div data-role='navbar'>
+        <ul>
+            <li>
+                <a id='homeBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='home'></a>
+            </li>
+            <li>
+                <a id='userBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='user'></a>
+            </li>
+        </ul>
     </div>
-    <script type='text/javascript' src='cordova.js'></script>
-    <script type='text/javascript' src='js/index.js'></script>
-    <script type='text/javascript'>
-        app.initialize();
-    </script>
+</div>
+<script type='text/javascript' src='cordova.js'></script>
+<script type='text/javascript' src='js/index.js'></script>
+<script type='text/javascript'>
+    app.initialize();
+</script>
 </body>
 </html>

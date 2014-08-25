@@ -17,33 +17,47 @@
  * under the License.
  */
 
-function createMap(){
+ function createMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
     var map = L.mapbox.map('map', 'hain.ja31ci75')
     .setView([0, 50], 3);
 }
 
+
+function createNotifications(){
+    $('#notifications').empty();
+    $('#notifications').append(function(){
+        return '<div class="swiper-container">'
+        + '<div class="swiper-wrapper">'
+        + '   <div class="swiper-slide red-slide">'
+        + '       <div class="title">Slide 1</div>'
+        + '   </div>'
+        + '</div>'
+        + '</div>';
+    });
+}
 function createHomeSwiperHeader(){
-    var mySwiper = new Swiper('.swiper-container',{
-        pagination: '.pagination',
+    var mySwiper = new Swiper('#home-swiper-header .swiper-container',{
+        pagination: '#home-swiper-header .pagination',
         loop:true,
         grabCursor: true,
         paginationClickable: true,
         onSlideChangeEnd : function(swiper, direction){
             switch(swiper.activeIndex % 2){
                 case 0:
-                    console.log('show notifications ...')
-                    $("#map").hide();
-                    $("#notifications").show();
-                    break;
+                console.log('show notifications ...')
+                $("#map").hide();
+                $("#notifications").show();
+                createNotifications();
+                break;
                 case 1:
-                    console.log('show map ...')
-                    $("#notifications").hide();
-                    $("#map").show();
-                    break;
+                console.log('show map ...')
+                $("#notifications").hide();
+                $("#map").show();
+                break;
                 default :
-                    console.log('fine me if you can.');
-                    break;
+                console.log('fine me if you can.');
+                break;
             }
         }
     })
@@ -80,13 +94,13 @@ function setUp(){
     ngv();
     switch($.mobile.activePage.attr("id")){
         case "home-index":
-            createMap();
-            createHomeSwiperHeader();
-            break;
+        createMap();
+        createHomeSwiperHeader();
+        break;
         case "user-index":
-            break;
+        break;
         default:
-            break;
+        break;
     }
 }
 
