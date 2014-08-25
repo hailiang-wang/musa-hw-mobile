@@ -60,6 +60,8 @@
   opacity: 1;
 }
 #notifications .swiper-container {
+  padding: 0;
+  margin: 0;
   width: 100%;
   height: 100%;
   color: #fff;
@@ -84,10 +86,10 @@
   background: #973e76;
 }
 #notifications .swiper-slide {
-  height: 100px;
+  height: 50px;
   width: 100%;
-  line-height: 100px;
-  opacity: 0.2;
+  line-height: 50px;
+  opacity: 1;
   -webkit-transition: 300ms;
   -moz-transition: 300ms;
   -ms-transition: 300ms;
@@ -99,5 +101,5 @@
 }
 #notifications .swiper-slide .title {
   font-style: italic;
-  font-size: 42px;
+  font-size: 30px;
 }

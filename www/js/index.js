@@ -1,21 +1,32 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+* Licensed Materials - Property of Hai Liang Wang
+* All Rights Reserved.
+*/
+
+/****************************************************************************************/
+/**                         Definitin for common string method                         **/
+/****************************************************************************************/
+
+/* format string value with arguments */
+String.prototype.format = String.prototype.f = function() {
+    var s = this,
+        i = arguments.length;
+
+    while (i--) {
+        s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+    }
+    return s;
+};
+
+/* if a string ends with a given suffix */
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
+/* if a string starts with a given prefix */
+String.prototype.startsWith = function (str){
+    return this.indexOf(str) == 0;
+};
 
  function createMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
@@ -23,17 +34,27 @@
     .setView([0, 50], 3);
 }
 
-
-function createNotifications(){
-    $('#notifications').empty();
+function addNotificationSlides(slide){
     $('#notifications').append(function(){
         return '<div class="swiper-container">'
         + '<div class="swiper-wrapper">'
-        + '   <div class="swiper-slide red-slide">'
-        + '       <div class="title">Slide 1</div>'
+        + '   <div class="swiper-slide {0}">'.f(slide.style)
+        + '       <div class="title"> {0} </div>'.f(slide.name)
         + '   </div>'
         + '</div>'
         + '</div>';
+    });
+}
+
+function createNotifications(){
+    $('#notifications').empty();
+    addNotificationSlides({
+        style: "blue-slide",
+        name: "foo"
+    });
+    addNotificationSlides({
+        style: "orange-slide",
+        name: "bar"
     });
 }
 function createHomeSwiperHeader(){
