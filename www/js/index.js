@@ -102,6 +102,7 @@ function setUp(){
         default:
         break;
     }
+    navigator.splashscreen.hide();
 }
 
 var app = {

@@ -9,4 +9,5 @@
     </author>
     <content src="home.html" />
     <access origin="*" />
+    <preference name="AutoHideSplashScreen" value="false" />
 </widget>
