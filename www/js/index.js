@@ -34,28 +34,41 @@ String.prototype.startsWith = function (str){
     .setView([0, 50], 3);
 }
 
-function addNotificationSlides(slide){
+function addNotificationSlides(slides){
+    var sildesHtml = '';
+    $.each(slides, function(index, slide){
+        sildesHtml +=  '   <div class="swiper-slide {0}-slide">'.f(slide.style)
+                    + '       <div class="title"> {0} </div>'.f(slide.name)
+                    + '   </div>';
+    });
+
     $('#notifications').append(function(){
         return '<div class="swiper-container">'
         + '<div class="swiper-wrapper">'
-        + '   <div class="swiper-slide {0}">'.f(slide.style)
-        + '       <div class="title"> {0} </div>'.f(slide.name)
-        + '   </div>'
+        + sildesHtml
         + '</div>'
         + '</div>';
     });
 }
 
+function sampleNoty(){
+    var colors = ['red','blue','green','orange','pink'];
+    var titles = ['CBD Coffee for Eight',
+            'Business, Career, Professional & Social',
+            'Song Tang Volunteers',
+            'Monthly Python Meetup',
+            'The Ancient Greek',
+            'Meet up and play go'];
+
+    for(var i=0; i<100; i++){
+        var title = titles[Math.floor(Math.random()*titles.length)]
+        var color = colors[i%5];
+        addNotificationSlides([{name: title, style: color}]);
+    }
+}
 function createNotifications(){
     $('#notifications').empty();
-    addNotificationSlides({
-        style: "blue-slide",
-        name: "foo"
-    });
-    addNotificationSlides({
-        style: "orange-slide",
-        name: "bar"
-    });
+    sampleNoty();
 }
 function createHomeSwiperHeader(){
     var mySwiper = new Swiper('#home-swiper-header .swiper-container',{
@@ -66,13 +79,11 @@ function createHomeSwiperHeader(){
         onSlideChangeEnd : function(swiper, direction){
             switch(swiper.activeIndex % 2){
                 case 0:
-                console.log('show notifications ...')
                 $("#map").hide();
                 $("#notifications").show();
                 createNotifications();
                 break;
                 case 1:
-                console.log('show map ...')
                 $("#notifications").hide();
                 $("#map").show();
                 break;
