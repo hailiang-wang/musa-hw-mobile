@@ -34,11 +34,23 @@ String.prototype.startsWith = function (str){
     .setView([0, 50], 3);
 }
 
+function notification2notifications(){
+    $('#notifications').show();
+    $('#notification').hide();
+}
+function openNotification(name, link){
+    $('#notifications').hide();
+    $('#notification').empty();
+    $('#notification').show();
+    $('#notification').append('<a href="#" onclick="notification2notifications();return false;" class="header ui-btn ui-icon-back ui-btn-icon-left"><span style="color:red">{0}</span></a>'.f(name));
+    $('#notification').append('<iframe src="http://baidu.com" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;" id="frame1"></iframe>');
+}
+
 function addNotificationSlides(slides){
     var sildesHtml = '';
     $.each(slides, function(index, slide){
         sildesHtml +=  '   <li class="swiper-slide {0}-slide">'.f(slide.style)
-                    + '        <a class="title" href="#" onclick="window.location=(\'{1}\'); return false;"> {0} </a>'.f(slide.name, slide.link)
+                    + '        <a class="title" href="#" onclick="openNotification(\'{0}\', \'{1}\'); return false;"> {0} </a>'.f(slide.name, slide.link)
                     + '   </li>';
     });
 
