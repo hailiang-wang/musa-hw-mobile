@@ -37,17 +37,22 @@ String.prototype.startsWith = function (str){
 function addNotificationSlides(slides){
     var sildesHtml = '';
     $.each(slides, function(index, slide){
-        sildesHtml +=  '   <div class="swiper-slide {0}-slide">'.f(slide.style)
-                    + '       <div class="title"> {0} </div>'.f(slide.name)
-                    + '   </div>';
+        sildesHtml +=  '   <li class="swiper-slide {0}-slide">'.f(slide.style)
+                    + '        <a class="title" href="#"> {0} </a>'.f(slide.name)
+                    + '   </li>';
     });
 
     $('#notifications').append(function(){
-        return '<div class="swiper-container">'
-        + '<div class="swiper-wrapper">'
+        return '<div id="noties-filter" class="noties-filter"></div>'
+        + '<div class="swiper-container">'
+        + '<ul id="noties" class="swiper-wrapper" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="搜索">'
         + sildesHtml
-        + '</div>'
+        + '</ul>'
         + '</div>';
+    });
+
+    $($("#noties").listview().prev()).each(function(idx){
+        $("#noties-filter").append(this);
     });
 }
 

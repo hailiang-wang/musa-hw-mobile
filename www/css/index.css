@@ -60,6 +60,13 @@
   transition: 300ms;
   background: rgba(0,0,0,0.1);
 }
+
+#notifications .noties-filter {
+  width: 100%;
+  display: table;
+  background-color: #FFFFFF;
+}
+
 #notifications .preloader.visible {
   top: 0;
   opacity: 1;
