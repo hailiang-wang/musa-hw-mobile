@@ -105,9 +105,9 @@
 #notification.ui-content{
   padding: 0px!important;
 }
-#notification .header.ui-btn{
-  height: 20px;
-  width: 100%;
-  background: yellow;
-  margin: 0px!important;
+
+#notifications-index .header a.ui-btn{
+  border: none !important;
+  top:25px;
+  left:30px; 
 }

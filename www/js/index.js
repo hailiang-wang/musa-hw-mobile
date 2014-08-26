@@ -35,6 +35,8 @@ String.prototype.startsWith = function (str){
 }
 
 function notification2notifications(){
+    $('#notifications-index .header .title').show();
+    $('#notifications-index .header a').remove();
     $('#notifications').show();
     $('#notification').hide();
 }
@@ -42,7 +44,10 @@ function openNotification(name, link){
     $('#notifications').hide();
     $('#notification').empty();
     $('#notification').show();
-    $('#notification').append('<a href="#" onclick="notification2notifications();return false;" class="header ui-btn ui-icon-back ui-btn-icon-left"><span style="color:red">{0}</span></a>'.f(name));
+    $('#notifications-index .header .title').hide();
+    $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="notification2notifications();return false;" '
+        + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
+        + '<span style="color:red">{0}</span></a>'.f(name));
     $('#notification').append('<iframe src="http://baidu.com" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;" id="frame1"></iframe>');
 }
 
