@@ -38,7 +38,7 @@ function addNotificationSlides(slides){
     var sildesHtml = '';
     $.each(slides, function(index, slide){
         sildesHtml +=  '   <li class="swiper-slide {0}-slide">'.f(slide.style)
-                    + '        <a class="title" href="#notification"> {0} </a>'.f(slide.name)
+                    + '        <a class="title" href="#" onclick="window.location=(\'{1}\'); return false;"> {0} </a>'.f(slide.name, slide.link)
                     + '   </li>';
     });
 
@@ -68,7 +68,7 @@ function sampleNoty(){
     for(var i=0; i<100; i++){
         var title = titles[Math.floor(Math.random()*titles.length)]
         var color = colors[i%5];
-        slides.push({name: i + title, style: color});
+        slides.push({name: i + title, style: color, link: 'http://www.baidu.com'});
     }
     addNotificationSlides(slides);
 }
@@ -87,11 +87,10 @@ function createHomeSwiperHeader(){
             switch(swiper.activeIndex % 2){
                 case 0:
                 $("#map").hide();
-                $("#notifications").show();
-                createNotifications();
+                $("#people").show();
                 break;
                 case 1:
-                $("#notifications").hide();
+                $("#people").hide();
                 $("#map").show();
                 break;
                 default :
@@ -119,6 +118,14 @@ function ngv(){
             changeHash: false
         });
     });
+    $("#notificationsBtn").on('click',function(){
+        $.mobile.changePage( "notifications.html", {
+            transition: "none",
+            reloadPage: false,
+            reverse: false,
+            changeHash: false
+        });
+    }); 
     $("#userBtn").on('click',function(){
         $.mobile.changePage( "user.html", {
             transition: "none",
@@ -130,17 +137,27 @@ function ngv(){
 }
 
 function setUp(){
-    ngv();
-    switch($.mobile.activePage.attr("id")){
-        case "home-index":
-        createMap();
-        createHomeSwiperHeader();
-        break;
-        case "user-index":
-        break;
-        default:
-        break;
-    }
+    // http://api.jquerymobile.com/pagecontainer/
+    $( document.body ).pagecontainer({
+        beforehide: function( event, ui ) {
+            var page = ui.nextPage;
+            switch(page.attr('id')) {
+                case 'notifications-index':
+                console.log('render notifications page ...');
+                createNotifications();
+                break;
+                case 'user-index':
+                console.log('render user page ...');
+                break;
+                default:
+                console.log('you can never find me.')
+                break;
+            }
+        }
+    });
+    // create home page at initializing 
+    createHomeSwiperHeader();
+    createMap();
     navigator.splashscreen.hide();
 }
 
@@ -166,6 +183,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
+        ngv();
         setUp();
     }
 };

@@ -36,6 +36,19 @@
 }
 /* notifications */
 
+#notifications-index .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#notifications-index .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+}
+
 #notifications.ui-content{
   /* .ui-content makes a padding 1em in the view, fix it by marking !important */
   padding: 0px!important;
@@ -120,8 +133,7 @@
 }
 
 #notification .header{
-  height: 70px;
-  width: 640px;
+
 }
 
 #notification .backBtn{
