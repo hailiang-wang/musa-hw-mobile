@@ -118,3 +118,14 @@
   font-style: italic;
   font-size: 16px;
 }
+
+#notification .header{
+  height: 70px;
+  width: 640px;
+}
+
+#notification .backBtn{
+  top:30px;
+  left: 25px;
+  border: none !important;
+}

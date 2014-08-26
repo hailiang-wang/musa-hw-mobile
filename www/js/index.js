@@ -38,7 +38,7 @@ function addNotificationSlides(slides){
     var sildesHtml = '';
     $.each(slides, function(index, slide){
         sildesHtml +=  '   <li class="swiper-slide {0}-slide">'.f(slide.style)
-                    + '        <a class="title" href="#"> {0} </a>'.f(slide.name)
+                    + '        <a class="title" href="#notification"> {0} </a>'.f(slide.name)
                     + '   </li>';
     });
 
@@ -126,7 +126,7 @@ function ngv(){
             reverse: false,
             changeHash: false
         });
-    });        
+    });  
 }
 
 function setUp(){
