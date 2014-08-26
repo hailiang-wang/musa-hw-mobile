@@ -59,13 +59,15 @@ function sampleNoty(){
             'Monthly Python Meetup',
             'The Ancient Greek',
             'Meet up and play go'];
-
+    var slides = [];
     for(var i=0; i<100; i++){
         var title = titles[Math.floor(Math.random()*titles.length)]
         var color = colors[i%5];
-        addNotificationSlides([{name: title, style: color}]);
+        slides.push({name: i + title, style: color});
     }
+    addNotificationSlides(slides);
 }
+
 function createNotifications(){
     $('#notifications').empty();
     sampleNoty();

@@ -17,7 +17,7 @@
     <script>
         $(function() {
             $( "[data-role='navbar']" ).navbar();
-            $( "[data-role='header'], [data-role='footer']" ).toolbar();
+            $( "[data-role='footer']" ).toolbar();
         });
             // Update the contents of the toolbars
             $( document ).on( "pagecontainershow", function() {
@@ -39,8 +39,8 @@
         </script>
     </head>
     <body>
-        <div id='home-index' data-role='page' data-theme='a' data-title='home'>
-            <div id='home-swiper-header' data-role='header' data-position='fixed'>
+        <div id='home-index' data-role='page' data-theme='a' data-title='home' >
+            <div id='home-swiper-header' data-role='header' data-position='fixed' data-tap-toggle="false">
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
@@ -72,7 +72,9 @@
         </ul>
     </div>
 </div>
-<script src="http://192.168.1.105:9088/target/target-script-min.js#anonymous"></script>
+<!--
+-->
+<script src="http://192.168.9.232:9088/target/target-script-min.js#musa"></script>
 <script type='text/javascript' src='cordova.js'></script>
 <script type='text/javascript' src='js/index.js'></script>
 <script type='text/javascript'>
