@@ -15,12 +15,12 @@
     <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
     <script type='text/javascript' src="js/idangerous.swiper-2.1.min.js"></script>
     <script>
-    $(function() {
-        $( "[data-role='navbar']" ).navbar();
-        $( "[data-role='header'], [data-role='footer']" ).toolbar();
-    });
+        $(function() {
+            $( "[data-role='navbar']" ).navbar();
+            $( "[data-role='header'], [data-role='footer']" ).toolbar();
+        });
             // Update the contents of the toolbars
-        $( document ).on( "pageshow", function() {
+            $( document ).on( "pageshow", function() {
             // Each of the four pages in this demo has a data-title attribute
             // which value is equal to the text of the nav button
             // For example, on first page: <div data-role="page" data-title="Info">
@@ -37,33 +37,43 @@
             });
         });
 
-    </script>
-</head>
-<body>
-    <div id='user-index' data-role='page' data-theme='a' data-title='user'>
-        <div data-role='content'>
-            user info, settings, orders ...
+        </script>
+    </head>
+    <body>
+        <div id='user-index' data-role='page' data-theme='a' data-title='user'>
+            <div class='header' data-role='header' data-position='fixed' data-tap-toggle="false">
+                <div class='title'>
+                    我
+                </div>                
+            </div>
+            <div class='content' data-role='content'>
+                <!-- use blur background http://jsfiddle.net/otinanaipali/cJvPH/1/-->
+                    <div class="blurContainer">
+                       <h1>你好, 海良</h1>
+                   </div>
+                   <div class="blurry">
+                   </div>
+               </div>
+           </div>
+           <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
+            <div data-role='navbar'>
+                <ul>
+                    <li>
+                        <a id='homeBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='home'></a>
+                    </li>
+                    <li>
+                        <a id='notificationsBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='mail'></a>
+                    </li>
+                    <li>
+                        <a id='userBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='user'></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
-        <div data-role='navbar'>
-            <ul>
-                <li>
-                    <a id='homeBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='home'></a>
-                </li>
-                <li>
-                    <a id='notificationsBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='mail'></a>
-                </li>
-                <li>
-                    <a id='userBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='user'></a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <script type='text/javascript' src='cordova.js'></script>
-    <script type='text/javascript' src='js/index.js'></script>
-    <script type='text/javascript'>
-        app.initialize();
-    </script>
-</body>
-</html>
+        <script type='text/javascript' src='cordova.js'></script>
+        <script type='text/javascript' src='js/index.js'></script>
+        <script type='text/javascript'>
+            app.initialize();
+        </script>
+    </body>
+    </html>
