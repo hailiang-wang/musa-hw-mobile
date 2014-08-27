@@ -48,32 +48,38 @@
             </div>
             <div class='content' data-role='content'>
                 <!-- use blur background http://jsfiddle.net/otinanaipali/cJvPH/1/-->
-                    <div class="blurContainer">
-                       <h1>你好, 海良</h1>
-                   </div>
-                   <div class="blurry">
-                   </div>
-               </div>
-           </div>
-           <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
-            <div data-role='navbar'>
-                <ul>
-                    <li>
-                        <a id='homeBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='home'></a>
-                    </li>
-                    <li>
-                        <a id='notificationsBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='mail'></a>
-                    </li>
-                    <li>
-                        <a id='userBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='user'></a>
-                    </li>
-                </ul>
+                <div class="blurContainer">
+                 <h1>你好, 海良</h1>
+             </div>
+             <div class="blurry">
+                 <div class="ui-grid-a">
+                    <div class="ui-block-a"><div class="ui-body" style="height:100px">大学</div></div>
+                    <div class="ui-block-b"><div class="ui-body" style="height:100px">公司</div></div>
+                    <div class="ui-block-a"><div class="ui-body" style="height:100px">专业</div></div>
+                    <div class="ui-block-b"><div class="ui-body" style="height:100px">兴趣</div></div>
+                </div>
             </div>
         </div>
-        <script type='text/javascript' src='cordova.js'></script>
-        <script type='text/javascript' src='js/index.js'></script>
-        <script type='text/javascript'>
-            app.initialize();
-        </script>
-    </body>
-    </html>
+    </div>
+    <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
+        <div data-role='navbar'>
+            <ul>
+                <li>
+                    <a id='homeBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='home'></a>
+                </li>
+                <li>
+                    <a id='notificationsBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='mail'></a>
+                </li>
+                <li>
+                    <a id='userBtn' href="#" class='ui-state-persist' data-transition="fade" data-icon='user'></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type='text/javascript' src='cordova.js'></script>
+    <script type='text/javascript' src='js/index.js'></script>
+    <script type='text/javascript'>
+        app.initialize();
+    </script>
+</body>
+</html>
