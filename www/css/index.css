@@ -180,3 +180,7 @@
   background-position: 65% 50%;
   background-size: 60px 60px;
 }
+
+#user-index .content .ui-body.profile-card{
+  height:100px;
+}
