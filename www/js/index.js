@@ -94,6 +94,7 @@ function createNotifications(){
     $('#notifications').empty();
     sampleNoty();
 }
+
 function createHomeSwiperHeader(){
     var mySwiper = new Swiper('#home-swiper-header .swiper-container',{
         pagination: '#home-swiper-header .pagination',
@@ -154,6 +155,7 @@ function ngv(){
 }
 
 function setUp(){
+    ngv();
     // http://api.jquerymobile.com/pagecontainer/
     $( document.body ).pagecontainer({
         beforehide: function( event, ui ) {
@@ -172,9 +174,13 @@ function setUp(){
             }
         }
     });
-    // create home page at initializing 
-    createHomeSwiperHeader();
-    createMap();
+    if(window.localStorage.getItem('MUSA_USER_SID')){
+        // create home page at initializing 
+        createHomeSwiperHeader();
+        createMap();
+    }else{
+        window.location = 'login.html';
+    }
     navigator.splashscreen.hide();
 }
 
@@ -200,7 +206,6 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
-        ngv();
         setUp();
     }
 };
