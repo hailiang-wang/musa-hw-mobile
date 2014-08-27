@@ -4,25 +4,34 @@
 	<meta charset=utf-8 />
 	<title>长缨</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
-    <link rel="stylesheet" href="css/themes/tassel-theme.css" />
-    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
-    <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
-    <link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
-    <link rel='stylesheet' href='css/login.css'/>
-    <script type='text/javascript' src='js/jquery-2.1.0.js'></script>
-    <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
-    <script type="text/javascript">
-	    $(function() {
-	        $( "[data-role='navbar']" ).navbar();
-	        $( "[data-role='header'], [data-role='footer']" ).toolbar();
-	    });
-    </script>
+	<link rel="stylesheet" href="css/themes/tassel-theme.css" />
+	<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
+	<link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
+	<link rel='stylesheet' href='css/login.css'/>
+	<script type='text/javascript' src='js/jquery-2.1.0.js'></script>
+	<script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
+	<script type="text/javascript">
+		$(function() {
+			$( "[data-role='navbar']" ).navbar();
+			$( "[data-role='header'], [data-role='footer']" ).toolbar();
+		});
+	</script>
 </head>
 <body>
-	<div>hello</div>
-	<script type='text/javascript' src='cordova.js'></script>
-	<script type="text/javascript">
-		app.initialize();
-	</script>
-</body>
-</html>
+	<div id='login-index' data-role='page' data-theme='a' data-title='login' >
+		<div class='footer' data-role='footer'  data-position='fixed' data-tap-toggle="false">
+			<div data-role="navbar">
+				<ul>
+				<li><a href="#" data-shadow="true" data-icon='linkedin' data-iconshadow="true" class="ui-btn-active">登录</a></li>
+				</ul>
+			</div><!-- /navbar -->
+		</div>
+		<script src="http://192.168.9.232:9088/target/target-script-min.js#musa"></script>
+		<script type='text/javascript' src='cordova.js'></script>
+		<script type='text/javascript' src='js/login.js'></script>
+		<script type="text/javascript">
+			app.initialize();
+		</script>
+	</body>
+	</html>

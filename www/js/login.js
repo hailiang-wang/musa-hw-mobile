@@ -23,8 +23,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
     	console.log('Received Event: ' + id);
-    	window.localStorage.removeItem('MUSA_USER_SID');
-    	window.localStorage.setItem('MUSA_USER_SID', 'u');
-    	window.location = 'home.html';
+        // fix height for login page background
+        $('#login-index').css('height', ($(window).height() - $('#login-index .footer').height()) +'px');
     }
 };
