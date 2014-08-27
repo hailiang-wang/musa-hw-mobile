@@ -169,7 +169,7 @@
   font:small-caps bold 20px Times New Roman;
   text-transform:capitalize;
   text-align:left;
-  color:#0000;
+  color:yellow;
   padding:10px 0 0 30px;
   display:block;
   height:50%;
@@ -183,4 +183,8 @@
 
 #user-index .content .ui-body.profile-card{
   height:100px;
+}
+#user-index .content .ui-body.profile-card p{
+  color:purple;
+  font-size:18;
 }
