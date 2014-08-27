@@ -25,5 +25,10 @@ var app = {
     	console.log('Received Event: ' + id);
         // fix height for login page background
         $('#login-index').css('height', ($(window).height() - $('#login-index .footer').height()) +'px');
+        cordova.getAppVersion().then(function (version) {
+            $('.version').text('v'+version);
+            navigator.splashscreen.hide();
+        });
+
     }
 };

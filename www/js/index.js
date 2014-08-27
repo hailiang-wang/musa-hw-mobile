@@ -180,10 +180,10 @@ function setUp(){
         // create home page at initializing 
         createHomeSwiperHeader();
         createMap();
+        navigator.splashscreen.hide();
     }else{
         window.location = 'login.html';
     }
-    navigator.splashscreen.hide();
 }
 
 var app = {

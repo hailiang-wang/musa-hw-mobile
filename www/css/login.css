@@ -5,4 +5,30 @@
   background-repeat: no-repeat;
   width:100%;
 }
+.banner {
+    width: 100%;
+}
 
+#title {
+    font-size: 1.5em;
+    margin-left: 10%;
+    padding-top: 40%;
+    text-shadow: none;
+    color: yellow;
+}
+
+#slogan {
+    text-shadow: none;
+    font-size: 0.8em;
+    margin-left: 20%;
+    color: white;
+}
+
+.version {
+    width: 100%;
+    font-size: 0.5em;
+    margin-left: 70%;
+    padding-top: 100%;
+    text-shadow: none;
+    color: #1E5ABF;
+}
