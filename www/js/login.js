@@ -51,7 +51,11 @@ var app = {
             ref.addEventListener('loadstart', function(event) {
                 if(event.url.indexOf("http://localhost/?") == 0) {
                     // login succ
+                    var succUrl = event.url;
+                    var sid = succUrl.replace('http://localhost/?','')
+                    window.localStorage.setItem('MUSA_USER_SID',sid);
                     ref.close();
+                    window.location = 'home.html';
                 }else if(event.url == 'http://localhost/'){
                     // login fail 
                     alert('登入失败，请稍后重试。');

@@ -175,7 +175,7 @@ function setUp(){
         }
     });
     // TODO delete the below line if login function is done.
-    window.localStorage.removeItem('MUSA_USER_SID')
+    // window.localStorage.removeItem('MUSA_USER_SID')
     if(window.localStorage.getItem('MUSA_USER_SID')){
         // create home page at initializing 
         createHomeSwiperHeader();
