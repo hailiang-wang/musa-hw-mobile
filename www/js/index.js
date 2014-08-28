@@ -177,6 +177,26 @@ function ngv(){
     });  
 }
 
+function renderUserProfilePage(){
+    var user = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+    // displayName
+    $('#user-index .content .blurContainer').empty();
+    $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
+    // user avatar
+    $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
+    // collegue
+
+    // positions
+    if(user._json.positions._total > 0){
+        $.each(user._json.positions.values,function(index, position){
+            if(position.isCurrent){
+                $('#user-index .blurry p.company').text(position.company.name);
+            }
+        })
+    }
+
+}
+
 function setUp(){
     ngv();
     // http://api.jquerymobile.com/pagecontainer/
@@ -190,11 +210,7 @@ function setUp(){
                 break;
                 case 'user-index':
                 console.log('render user page ...');
-                var user = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
-                $('#user-index .content .blurContainer').empty();
-                $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
-                console.log('pic . ' + user._json.pictureUrl);
-                $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
+                renderUserProfilePage();
                 break;
                 default:
                 console.log('you can never find me.')
@@ -211,7 +227,9 @@ function setUp(){
             getUserProfile(function(){
                 createHomeSwiperHeader();
                 createMap();
-                navigator.splashscreen.hide();
+                setTimeout(function(){
+                    navigator.splashscreen.hide();
+                },3000)
             });
         }, function(err){
             // err callback
