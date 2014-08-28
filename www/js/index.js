@@ -28,7 +28,11 @@ String.prototype.startsWith = function (str){
     return this.indexOf(str) == 0;
 };
 
- function createMap(){
+var credential = {
+    host:"192.168.9.232:3013"
+}
+
+function createMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
     var map = L.mapbox.map('map', 'hain.ja31ci75')
     .setView([0, 50], 3);
@@ -132,7 +136,7 @@ function getUserProfile(callback){
     // connection available
     $.ajax({
         type: "GET",
-        url: "http://192.168.9.232:3013/user/me",
+        url: "http://{0}/user/me".f(credential.host),
         dataType: 'json',
         // timeout in 5 seconds
         timeout: 5000,
@@ -231,6 +235,9 @@ function setUp(){
         beforehide: function( event, ui ) {
             var page = ui.nextPage;
             switch(page.attr('id')) {
+                case 'home-index':
+                console.log('render home page ...');
+                break;
                 case 'notifications-index':
                 console.log('render notifications page ...');
                 createNotifications();
@@ -248,7 +255,7 @@ function setUp(){
     // TODO delete the below line if login function is done.
     // window.localStorage.removeItem('MUSA_USER_SID')
     if(window.localStorage.getItem('MUSA_USER_SID')){
-        cordova.plugins.musa.setCookieByDomain('http://192.168.9.232:3013/', window.localStorage.getItem('MUSA_USER_SID'), function(){
+        cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(credential.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
             // succ callback
             // create home page at initializing 
             getUserProfile(function(){
@@ -256,7 +263,7 @@ function setUp(){
                 createMap();
                 setTimeout(function(){
                     navigator.splashscreen.hide();
-                },3000)
+                },2000)
             });
         }, function(err){
             // err callback
