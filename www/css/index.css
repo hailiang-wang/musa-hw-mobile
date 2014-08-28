@@ -166,7 +166,7 @@
 }
 
 #user-index .content .blurContainer h1 {
-  font:small-caps bold 20px Times New Roman;
+  font:small-caps bold 17px Times New Roman;
   text-transform:capitalize;
   text-align:left;
   color:yellow;
@@ -181,9 +181,9 @@
 }
 
 #user-index .content .ui-body.profile-card{
-  height:100px;
+  height:140px;
 }
 #user-index .content .ui-body.profile-card p{
   color:purple;
-  font-size:18;
+  font-size:9px;
 }

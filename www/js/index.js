@@ -185,7 +185,14 @@ function renderUserProfilePage(){
     // user avatar
     $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
     // collegue
-
+    if(user._json.educations._total > 0){
+        // how to render it Master?Bachelor, now just show up a school
+        $.each(user._json.educations.values, function(index, education){
+            $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree));
+        })
+    }else{
+        // no school
+    }
     // positions
     if(user._json.positions._total > 0){
         $.each(user._json.positions.values,function(index, position){
@@ -193,6 +200,8 @@ function renderUserProfilePage(){
                 $('#user-index .blurry p.company').text(position.company.name);
             }
         })
+    }else{
+        // no positions available
     }
 
 }
@@ -219,7 +228,7 @@ function setUp(){
         }
     });
     // TODO delete the below line if login function is done.
-    //window.localStorage.removeItem('MUSA_USER_SID')
+    // window.localStorage.removeItem('MUSA_USER_SID')
     if(window.localStorage.getItem('MUSA_USER_SID')){
         cordova.plugins.musa.setCookieByDomain('http://192.168.9.232:3013/', window.localStorage.getItem('MUSA_USER_SID'), function(){
             // succ callback
