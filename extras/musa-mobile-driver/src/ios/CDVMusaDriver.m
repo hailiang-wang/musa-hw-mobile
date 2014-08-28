@@ -31,24 +31,16 @@
         // get domain
         NSURL *url = [NSURL URLWithString:[appUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         NSString *domain = [url host];
-            NSRange range = [appCookie rangeOfString:@"musa.cafe.sid="];
-            if (range.location != NSNotFound){
-                // this cookie is not expected, valid cookie must start with musa.cafe.sid
-                NSString *cookieValue = [appCookie substringFromIndex:(range.location + range.length)];
-                // set cookie
-                [cookieDict setObject:@"musa.cafe.sid" forKey:NSHTTPCookieName];
-                [cookieDict setObject:cookieValue forKey:NSHTTPCookieValue];
-                [cookieDict setObject:domain forKey:NSHTTPCookieDomain];
-                [cookieDict setObject:@"/" forKey:NSHTTPCookiePath];
-                [cookieDict setObject:@"0" forKey:NSHTTPCookieVersion];
-                NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieDict];
-                [cookieStorage setCookie:cookie];
-                NSLog(@"end cookie setting.");
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"succeed"];
-            }else{
-                NSLog(@"fail setting cookie: invalid appCookie value.");
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-            }
+        // this cookie is not expected, valid cookie must start with musa.cafe.sid
+        [cookieDict setObject:@"musa.cafe.sid" forKey:NSHTTPCookieName];
+        [cookieDict setObject:appCookie forKey:NSHTTPCookieValue];
+        [cookieDict setObject:domain forKey:NSHTTPCookieDomain];
+        [cookieDict setObject:@"/" forKey:NSHTTPCookiePath];
+        [cookieDict setObject:@"0" forKey:NSHTTPCookieVersion];
+        NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieDict];
+        [cookieStorage setCookie:cookie];
+        NSLog(@"end cookie setting.");
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"succeed"];
     }
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
