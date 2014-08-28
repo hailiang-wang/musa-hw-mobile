@@ -25,7 +25,6 @@
         NSLog(@"fail setting cookie, the cookie value is nil.");
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }else{
-        NSLog([NSString stringWithFormat:@"set cookie - %@ for appUrl %@", appCookie, appUrl]);
         // init cookie container
         NSMutableDictionary *cookieDict = [NSMutableDictionary dictionary];
         // get domain
