@@ -38,18 +38,23 @@ function createMap(){
     .setView([0, 50], 3);
 }
 
-function notification2notifications(){
+function notification2notifications(offset){
     $('#notifications-index .header .title').show();
     $('#notifications-index .header a').remove();
+    //$("body").scrollTop(offset);
+    $.mobile.silentScroll(offset);
     $('#notifications').show();
     $('#notification').hide();
+    // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
+    return false;
 }
 function openNotification(name, link){
+    var scrollTopOffset = $("body").scrollTop();
     $('#notifications').hide();
     $('#notification').empty();
     $('#notification').show();
     $('#notifications-index .header .title').hide();
-    $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="notification2notifications();return false;" '
+    $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="notification2notifications({0});return false;" '.f(scrollTopOffset)
         + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
         + '<span style="color:red">{0}</span></a>'.f(name));
     $('#notification').append('<iframe src="http://baidu.com" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;" id="frame1"></iframe>');
@@ -70,8 +75,8 @@ function addNotificationSlides(slides){
         + sildesHtml
         + '</ul>'
         + '</div>';
+    
     });
-
     $($("#noties").listview().prev()).each(function(idx){
         $("#noties-filter").append(this);
     });
