@@ -1,6 +1,12 @@
 /**
 * Handle login event, page, sessionid
 */
+
+var credential = {
+    server : 'http://192.168.9.232:3013',
+    path: '/mobile/auth/linkedin'
+}
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -30,5 +36,23 @@ var app = {
             navigator.splashscreen.hide();
         });
 
+        $('body').append("<div class='ui-loader-background'> </div>");
+    
+        $('#loginBtn').on('click', function(){
+            $('#loginBtn').addClass('ui-state-disabled');
+            $.mobile.loading( "show", {
+                textVisible: false,
+                theme: "a",
+                textonly: false
+            });
+            // window.open () will open a new window, 
+            // whereas window.location.href will open the new URL in your current window.
+            var ref = window.open(encodeURI(credential.server + credential.path), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
+            ref.addEventListener('loadstart', function(event) {
+                if(event.url.indexOf("http://localhost") == 0) {
+                    ref.close();
+                }
+            });
+        });
     }
 };
