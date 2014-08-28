@@ -138,6 +138,7 @@ function getUserProfile(callback){
         timeout: 5000,
         success: function(data){
             console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+            window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
             callback();
         },
         error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -189,6 +190,11 @@ function setUp(){
                 break;
                 case 'user-index':
                 console.log('render user page ...');
+                var user = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+                $('#user-index .content .blurContainer').empty();
+                $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
+                console.log('pic . ' + user._json.pictureUrl);
+                $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
                 break;
                 default:
                 console.log('you can never find me.')
@@ -197,7 +203,7 @@ function setUp(){
         }
     });
     // TODO delete the below line if login function is done.
-    // window.localStorage.removeItem('MUSA_USER_SID')
+    //window.localStorage.removeItem('MUSA_USER_SID')
     if(window.localStorage.getItem('MUSA_USER_SID')){
         cordova.plugins.musa.setCookieByDomain('http://192.168.9.232:3013/', window.localStorage.getItem('MUSA_USER_SID'), function(){
             // succ callback

@@ -175,10 +175,9 @@
   height:50%;
   border-radius:60px 60px 10px 10px;
   text-shadow:0 1px 0px rgba(255, 255, 255, .75);
-  background-image: url('../sample/hailiang.jpg');
   background-repeat: no-repeat;
-  background-position: 65% 50%;
-  background-size: 60px 60px;
+  background-position: 80% 50%;
+  background-size: 50px 50px;
 }
 
 #user-index .content .ui-body.profile-card{
