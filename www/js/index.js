@@ -127,6 +127,28 @@ function createHomeSwiperHeader(){
     })
 }
 
+function getUserProfile(callback){
+    //var reqHeaders = {accept:"application/json"}
+    // connection available
+    $.ajax({
+        type: "GET",
+        url: "http://192.168.9.232:3013/user/me",
+        dataType: 'json',
+        // timeout in 5 seconds
+        timeout: 5000,
+        success: function(data){
+            console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+            callback();
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('[error] failed to request remote server for user profile');
+            console.log(textStatus);
+            console.log(errorThrown);
+            window.location = 'login.html';
+        }
+    });
+}
+
 function ngv(){
     $("#homeBtn").on('click',function(){
         $.mobile.changePage( "home.html", {
@@ -177,10 +199,18 @@ function setUp(){
     // TODO delete the below line if login function is done.
     // window.localStorage.removeItem('MUSA_USER_SID')
     if(window.localStorage.getItem('MUSA_USER_SID')){
-        // create home page at initializing 
-        createHomeSwiperHeader();
-        createMap();
-        navigator.splashscreen.hide();
+        cordova.plugins.musa.setCookieByDomain('http://192.168.9.232:3013/', window.localStorage.getItem('MUSA_USER_SID'), function(){
+            // succ callback
+            // create home page at initializing 
+            getUserProfile(function(){
+                createHomeSwiperHeader();
+                createMap();
+                navigator.splashscreen.hide();
+            });
+        }, function(err){
+            // err callback
+            console.log('err happends for cordova.plugins.musa.setCookieByDomain');
+        });
     }else{
         window.location = 'login.html';
     }

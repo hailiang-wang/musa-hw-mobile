@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="io.musa.mobile.driver" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>musa-mobile-driver</name>
+    <js-module name="musa-mobile-driver" src="www/musa-mobile-driver.js">
+        <clobbers target="cordova.plugins.musa" />
+    </js-module>
+   	<platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="io.musa.mobile.driver">
+                <param name="ios-package" value="CDVMusaDriver" />
+            </feature>
+            <param name="onload" value="true" />
+        </config-file>
+        <source-file src="src/ios/CDVMusaDriver.h" />
+        <source-file src="src/ios/CDVMusaDriver.m" />
+    </platform>
+</plugin>
