@@ -49,8 +49,15 @@ var app = {
             // whereas window.location.href will open the new URL in your current window.
             var ref = window.open(encodeURI(credential.server + credential.path), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
             ref.addEventListener('loadstart', function(event) {
-                if(event.url.indexOf("http://localhost") == 0) {
+                if(event.url.indexOf("http://localhost/?") == 0) {
+                    // login succ
                     ref.close();
+                }else if(event.url == 'http://localhost/'){
+                    // login fail 
+                    alert('登入失败，请稍后重试。');
+                    ref.close();
+                    $.mobile.loading('hide');
+                    $('#loginBtn').removeClass('ui-state-disabled');
                 }
             });
         });
