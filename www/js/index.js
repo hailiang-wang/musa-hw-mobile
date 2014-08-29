@@ -245,7 +245,7 @@ function setUp(){
                 break;
                 case 'notifications-index':
                 console.log('render notifications page ...');
-                createNotifications();
+                //createNotifications();
                 break;
                 case 'user-index':
                 console.log('render user page ...');

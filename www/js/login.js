@@ -50,6 +50,7 @@ var app = {
             var ref = window.open(encodeURI(credential.server + credential.path), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
             ref.addEventListener('loadstart', function(event) {
                 if(event.url.indexOf("http://localhost/?") == 0) {
+                    navigator.splashscreen.show();
                     // login succ
                     var succUrl = event.url;
                     var sid = succUrl.replace('http://localhost/?','')

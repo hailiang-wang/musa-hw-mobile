@@ -141,7 +141,7 @@
   position:fixed;
   width:300px;
   height:80px;
-  top: 40%;
+  top: 45%;
   left: 50%;
   margin:-150px 0 0 -150px;
   border-radius:120px;
@@ -170,7 +170,7 @@
   text-transform:capitalize;
   text-align:left;
   color:yellow;
-  padding:10px 0 0 30px;
+  padding:20px 0 0 30px;
   display:block;
   height:50%;
   border-radius:60px 60px 10px 10px;
@@ -184,6 +184,6 @@
   height:140px;
 }
 #user-index .content .ui-body.profile-card p{
-  color:purple;
+  color:blue;
   font-size:9px;
 }
