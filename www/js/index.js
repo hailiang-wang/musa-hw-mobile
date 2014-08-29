@@ -3,35 +3,6 @@
 * All Rights Reserved.
 */
 
-/****************************************************************************************/
-/**                         Definitin for common string method                         **/
-/****************************************************************************************/
-
-/* format string value with arguments */
-String.prototype.format = String.prototype.f = function() {
-    var s = this,
-        i = arguments.length;
-
-    while (i--) {
-        s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
-    }
-    return s;
-};
-
-/* if a string ends with a given suffix */
-String.prototype.endsWith = function(suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
-
-/* if a string starts with a given prefix */
-String.prototype.startsWith = function (str){
-    return this.indexOf(str) == 0;
-};
-
-var credential = {
-    host:"192.168.9.232:3013"
-}
-
 function createMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
     var map = L.mapbox.map('map', 'hain.ja31ci75')
@@ -177,7 +148,7 @@ function getUserProfile(callback){
     // connection available
     $.ajax({
         type: "GET",
-        url: "http://{0}/user/me".f(credential.host),
+        url: "http://{0}/user/me".f(snowballCfg.host),
         dataType: 'json',
         // timeout in 5 seconds
         timeout: 5000,
@@ -297,7 +268,7 @@ function setUp(){
     // TODO delete the below line if login function is done.
     // window.localStorage.removeItem('MUSA_USER_SID')
     if(window.localStorage.getItem('MUSA_USER_SID')){
-        cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(credential.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
+        cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(snowballCfg.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
             // succ callback
             // create home page at initializing 
             getUserProfile(function(){

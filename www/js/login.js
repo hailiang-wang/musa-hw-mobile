@@ -2,11 +2,6 @@
 * Handle login event, page, sessionid
 */
 
-var credential = {
-    server : 'http://192.168.9.232:3013',
-    path: '/mobile/auth/linkedin'
-}
-
 var app = {
     // Application Constructor
     initialize: function() {
@@ -47,7 +42,7 @@ var app = {
             });
             // window.open () will open a new window, 
             // whereas window.location.href will open the new URL in your current window.
-            var ref = window.open(encodeURI(credential.server + credential.path), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
+            var ref = window.open(encodeURI("http://{0}{1}".f(snowballCfg.host, snowballCfg.path)), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
             ref.addEventListener('loadstart', function(event) {
                 if(event.url.indexOf("http://localhost/?") == 0) {
                     navigator.splashscreen.show();

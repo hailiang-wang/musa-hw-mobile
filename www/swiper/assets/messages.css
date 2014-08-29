@@ -34,7 +34,7 @@ body {
   top: 0;
   opacity: 1;
 }
-.swiper-container {
+#messages.swiper-container {
   width: 100%;
   height: 100%;
   color: #fff;
@@ -43,22 +43,22 @@ body {
   z-index: 10;
   
 }
-.red-slide {
+#messages .red-slide {
   background: #ca4040;
 }
-.blue-slide {
+#messages .blue-slide {
   background: #4390ee;
 }
-.orange-slide {
+#messages .orange-slide {
   background: #ff8604;
 }
-.green-slide {
+#messages .green-slide {
   background: #49a430;
 }
-.pink-slide {
+#messages .pink-slide {
   background: #973e76;
 }
-.swiper-slide {
+#messages .swiper-slide {
   height: 100px;
   width: 100%;
   line-height: 100px;
@@ -69,10 +69,14 @@ body {
   -o-transition: 300ms;
   transition: 300ms;
 }
-.swiper-slide-visible {
+#messages .swiper-slide-visible {
   opacity: 1;
 }
-.swiper-slide .title {
+#messages .swiper-slide .title {
   font-style: italic;
   font-size: 42px;
+}
+
+#message {
+  display: none;
 }
