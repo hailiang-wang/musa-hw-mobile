@@ -120,18 +120,23 @@ function slideNotifications(){
         },
         onResistanceBefore: function(s, pos){
             holdPosition = pos;
-            if(pos > 30){
+            if(pos > 120){
+                $("#refreshTitle").hide();
+                $("#releaseTitle").show();
+            } else if(pos > 60){
+                $("#releaseTitle").hide();
                 $("#refreshTitle").show();
-            }
-            else{
-                $("#refreshTitle").hide();   
+            } else{
+                $("#refreshTitle").hide();
+                $("#releaseTitle").hide();     
             }
         },
         onTouchEnd: function(){
-            if ( holdPosition > 100 ) {
+            if ( holdPosition > 150 ) {
                 console.log('refresh apps ...')
             }
             $("#refreshTitle").hide();
+            $("#releaseTitle").hide(); 
         }
     });
 }
