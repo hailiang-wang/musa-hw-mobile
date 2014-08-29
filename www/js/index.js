@@ -104,6 +104,38 @@ function createNotifications(){
     sampleNoty();
 }
 
+function slideNotifications(){
+    var holdPosition = 0;
+    new Swiper('#notifications .swiper-container' ,{
+        loop: false,          // don't loop through the slides to be consistent with iOS design (and I think it's a better behavior than looping)
+        grabCursor: true,
+        watchActiveIndex: true,
+        mode : "vertical",
+        resizeReInit: true,
+        freeMode: true,
+        slideElement: 'li',
+        slidesPerView: 'auto',
+        onTouchStart: function() {
+            holdPosition = 0;
+        },
+        onResistanceBefore: function(s, pos){
+            holdPosition = pos;
+            if(pos > 30){
+                $("#refreshTitle").show();
+            }
+            else{
+                $("#refreshTitle").hide();   
+            }
+        },
+        onTouchEnd: function(){
+            if ( holdPosition > 100 ) {
+                console.log('refresh apps ...')
+            }
+            $("#refreshTitle").hide();
+        }
+    });
+}
+
 function createHomeSwiperHeader(){
     var mySwiper = new Swiper('#home-swiper-header .swiper-container',{
         pagination: '#home-swiper-header .pagination',
@@ -245,6 +277,7 @@ function setUp(){
                 break;
                 case 'notifications-index':
                 console.log('render notifications page ...');
+                slideNotifications();
                 //createNotifications();
                 break;
                 case 'user-index':
