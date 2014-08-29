@@ -54,57 +54,18 @@
   padding: 0px!important;
   top:70px;
 } 
-#notifications .swiper-container {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  position: relative;
-}
 
-#notifications .swiper-container .swiper-wrapper {
-  width: 320px!important;
-  height: 300!important;
-}
-#notifications .refresh.visible {
-  top: 0;
-  opacity: 1;
-  display: none;
-} 
-
-#notifications .red-slide {
-  background: #ca4040;
-}
-#notifications .blue-slide {
-  background: #4390ee;
-}
-#notifications .orange-slide {
-  background: #ff8604;
-}
-#notifications .green-slide {
-  background: #49a430;
-}
-#notifications .pink-slide {
-  background: #973e76;
-}
-
-#notifications .swiper-slide {
-  height: 50px;
-  width: 100%;
-  line-height: 50px;
-  opacity: 1;
-  -webkit-transition: 300ms;
-  -moz-transition: 300ms;
-  -ms-transition: 300ms;
-  -o-transition: 300ms;
-  transition: 300ms;
-}
-#notifications .swiper-slide-visible {
-  opacity: 1;
+#notifications .swiper{
+  width:100%; 
+  height:500px;
+  padding:0px; 
+  margin:0px;
 }
 
 #notification.ui-content{
   padding: 0px!important;
 }
+
 
 #notifications-index .header a.ui-btn{
   border: none !important;

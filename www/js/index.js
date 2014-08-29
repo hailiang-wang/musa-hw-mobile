@@ -107,9 +107,8 @@ function createNotifications(){
 function slideNotifications(){
     var holdPosition = 0;
     new Swiper('#notifications .swiper-container' ,{
-        loop: false,          // don't loop through the slides to be consistent with iOS design (and I think it's a better behavior than looping)
+        loop: false,   
         grabCursor: true,
-        watchActiveIndex: true,
         mode : "vertical",
         resizeReInit: true,
         freeMode: true,
@@ -282,7 +281,7 @@ function setUp(){
                 break;
                 case 'notifications-index':
                 console.log('render notifications page ...');
-                slideNotifications();
+                //slideNotifications();
                 //createNotifications();
                 break;
                 case 'user-index':
