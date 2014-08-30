@@ -12,23 +12,20 @@ function createMap(){
 function notification2notifications(offset){
     $('#notifications-index .header .title').show();
     $('#notifications-index .header a').remove();
-    //$("body").scrollTop(offset);
-    $.mobile.silentScroll(offset);
-    $('#notifications').show();
-    $('#notification').hide();
-    // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
-    return false;
+    $("#notificationsiframe")[0].contentWindow.openMsgs();
+    // //$("body").scrollTop(offset);
+    // $.mobile.silentScroll(offset);
+    // $('#notifications').show();
+    // $('#notification').hide();
+    // // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
+    // return false;
 }
-function openNotification(name, link){
+function setNotificationsTitle(name){
     var scrollTopOffset = $("body").scrollTop();
-    $('#notifications').hide();
-    $('#notification').empty();
-    $('#notification').show();
     $('#notifications-index .header .title').hide();
     $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="notification2notifications({0});return false;" '.f(scrollTopOffset)
         + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
         + '<span style="color:red">{0}</span></a>'.f(name));
-    $('#notification').append('<iframe src="http://baidu.com" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;" id="frame1"></iframe>');
 }
 
 function addNotificationSlides(slides){

@@ -41,7 +41,6 @@ body {
   text-align: center;
   position: relative;
   z-index: 10;
-  
 }
 #messages .red-slide {
   background: #ca4040;
@@ -76,7 +75,15 @@ body {
   font-style: italic;
   font-size: 42px;
 }
+#messages .swiper-wrapper a {
+  text-decoration: none;
+}
 
 #message {
-  display: none;
+  z-index: 20;
+  background: #FFFFFF;
+  height: 100%;
+  width: 100%;
+  padding: 0px!important;
+  margin: 0px!important;
 }

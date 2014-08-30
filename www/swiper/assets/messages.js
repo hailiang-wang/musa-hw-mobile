@@ -2,9 +2,25 @@
 * handle messages.html events
 */
 
+function openMsg(title, link){
+  parent.setNotificationsTitle(title);
+  $('#messages').hide();
+  $('#message').append(function(){
+    var msgWindow = '<iframe id="article" src="{0}" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;"></iframe>'.f(link);
+    return msgWindow;
+  });
+  $('#message').show();
+}
+
+function openMsgs(){
+  $('#message').hide();
+  $('#messages').show();
+}
 function getSlide(el){
   return slide = '<div class="swiper-slide {0}-slide">'.f(el.style)
-      +  '<div class="title">{0}</div>'.f(el.title)
+      + '<div class="title"><a href="#" onclick="openMsg(\'{0}\',\'{1}\');return false;">'.f(el.title, el.link)
+      + '{0}</a>'.f(el.title)
+      + '</div>'
       + '</div>';
 
 }
@@ -68,8 +84,16 @@ function createMessageSwiper(){
 // create slides at init phase
 // #TODO read data from storage
 function createMessageSlides(){
-  $('.swiper-wrapper').append(getSlide({title: 'slide 1', style: 'red'}));
-  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 1', style: 'red', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
+  $('.swiper-wrapper').append(getSlide({title: 'slide 2', style: 'blue', link: 'http://baidu.com'}));
 }
 
 // set up messages slides swiper 
