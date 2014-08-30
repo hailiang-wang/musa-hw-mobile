@@ -9,7 +9,7 @@ function createMap(){
     .setView([0, 50], 3);
 }
 
-function notification2notifications(offset){
+function backToNotificationsList(offset){
     $('#notifications-index .header .title').show();
     $('#notifications-index .header a').remove();
     $("#notificationsiframe")[0].contentWindow.openMsgs();
@@ -20,92 +20,13 @@ function notification2notifications(offset){
     // // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
     // return false;
 }
+
 function setNotificationsTitle(name){
     var scrollTopOffset = $("body").scrollTop();
     $('#notifications-index .header .title').hide();
-    $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="notification2notifications({0});return false;" '.f(scrollTopOffset)
+    $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="backToNotificationsList({0});return false;" '.f(scrollTopOffset)
         + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
         + '<span style="color:red">{0}</span></a>'.f(name));
-}
-
-function addNotificationSlides(slides){
-    var sildesHtml = '';
-    $.each(slides, function(index, slide){
-        sildesHtml +=  '   <li class="swiper-slide {0}-slide">'.f(slide.style)
-                    + '        <a class="title" href="#" onclick="openNotification(\'{0}\', \'{1}\'); return false;"> {0} </a>'.f(slide.name, slide.link)
-                    + '   </li>';
-    });
-
-    $('#notifications').append(function(){
-        return '<div id="noties-filter" class="noties-filter"></div>'
-        + '<div class="swiper-container">'
-        + '<ul id="noties" class="swiper-wrapper" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="搜索">'
-        + sildesHtml
-        + '</ul>'
-        + '</div>';
-    
-    });
-    $($("#noties").listview().prev()).each(function(idx){
-        $("#noties-filter").append(this);
-    });
-}
-
-function sampleNoty(){
-    var colors = ['red','blue','green','orange','pink'];
-    var titles = ['CBD Coffee for Eight',
-            'Business, Career, Professional & Social',
-            'Song Tang Volunteers',
-            'Monthly Python Meetup',
-            'The Ancient Greek',
-            'Meet up and play go'];
-    var slides = [];
-    for(var i=0; i<100; i++){
-        var title = titles[Math.floor(Math.random()*titles.length)]
-        var color = colors[i%5];
-        slides.push({name: i + title, style: color, link: 'http://www.baidu.com'});
-    }
-    addNotificationSlides(slides);
-}
-
-function createNotifications(){
-    $('#notifications').empty();
-    sampleNoty();
-}
-
-function slideNotifications(){
-    var holdPosition = 0;
-    new Swiper('#notifications .swiper-container' ,{
-        loop: false,   
-        grabCursor: true,
-        mode : "vertical",
-        resizeReInit: true,
-        freeMode: true,
-        slideElement: 'li',
-        slidesPerView: 'auto',
-        onTouchStart: function() {
-            holdPosition = 0;
-        },
-        onResistanceBefore: function(s, pos){
-            holdPosition = pos;
-            if(pos > 120){
-                $("#refreshTitle").hide();
-                $("#releaseTitle").show();
-            } else if(pos > 60){
-                $("#releaseTitle").hide();
-                $("#refreshTitle").show();
-            } else{
-                $("#refreshTitle").hide();
-                $("#releaseTitle").hide();     
-            }
-        },
-        onTouchEnd: function(){
-            if ( holdPosition > 150 ) {
-                console.log('refresh apps ...')
-            }
-            $("#refreshTitle").hide();
-            $("#releaseTitle").hide(); 
-        }
-    });
 }
 
 function createHomeSwiperHeader(){
