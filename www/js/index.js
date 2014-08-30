@@ -3,6 +3,44 @@
 * All Rights Reserved.
 */
 
+var pushServiceClient;
+var isRegistered = false;
+
+function setupPushNotificationService(username, callback){
+    IBMBluemix.hybrid.initialize({applicationId: snowballCfg.pushAppId,
+                applicationRoute: snowballCfg.pushAppRoute,
+                applicationSecret: snowballCfg.pushAppSecret}).then(function(){
+        IBMPush.hybrid.initializeService().then(
+            function(pushService){
+                console.log("Initialized push successfully");
+                pushServiceClient = pushService;
+                callback(username);
+            }, 
+            function(err){
+                console.error("Error initializing the Push SDK");
+        });
+    }); 
+}
+
+function handleBlueMixNotification(msg){
+    console.log('get notifications ...');
+    console.log(typeof msg);
+    console.log(msg);
+    alert(msg);
+}
+
+function registerDevice(username){
+    pushServiceClient.registerDevice(device.uuid, username, 'handleBlueMixNotification').then(
+        function(response) {
+            isRegistered = true;
+            console.log('bluemix push registered device ' + response);
+        }, 
+        function(error) {    
+            console.log('bluemix push error registering device ' + error);
+        }
+    );
+}
+
 function createMap(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
     var map = L.mapbox.map('map', 'hain.ja31ci75')
@@ -73,7 +111,7 @@ function getUserProfile(callback){
         success: function(data){
             console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
             window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
-            callback();
+            callback(data);
         },
         error:function(XMLHttpRequest, textStatus, errorThrown){
             console.log('[error] failed to request remote server for user profile');
@@ -189,7 +227,8 @@ function setUp(){
         cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(snowballCfg.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
             // succ callback
             // create home page at initializing 
-            getUserProfile(function(){
+            getUserProfile(function(data){
+                setupPushNotificationService(data.emails[0].value, registerDevice);
                 createHomeSwiperHeader();
                 createMap();
                 setTimeout(function(){
