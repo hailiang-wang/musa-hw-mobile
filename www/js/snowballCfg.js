@@ -21,6 +21,6 @@ String.prototype.startsWith = function (str){
 };
 
 var snowballCfg = {
-	host:"192.168.9.232:3013",
+	host: "hwcafe.mybluemix.net",
     path: '/mobile/auth/linkedin'
 }
