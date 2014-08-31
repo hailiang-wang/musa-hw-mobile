@@ -49,10 +49,15 @@
   font-size: 25px;
 }
 
+#notifications {
+  padding: 0px!important;
+}
+
 #notifications.ui-content{
   /* .ui-content makes a padding 1em in the view, fix it by marking !important */
   padding: 0px!important;
   top:70px;
+  height: 454px!important;
 } 
 
 #notifications .swiper{
@@ -61,11 +66,6 @@
   padding:0px; 
   margin:0px;
 }
-
-#notification.ui-content{
-  padding: 0px!important;
-}
-
 
 #notifications-index .header a.ui-btn{
   border: none !important;

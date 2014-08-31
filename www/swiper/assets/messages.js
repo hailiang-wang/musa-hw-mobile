@@ -3,8 +3,8 @@
 */
 
 function openMsg(title, link){
-  parent.setNotificationsTitle(title);
   $('#messages').hide();
+  parent.setNotificationsTitle(title);
   $('#message').append(function(){
     var msgWindow = '<iframe id="article" src="{0}" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;"></iframe>'.f(link);
     return msgWindow;
@@ -13,13 +13,19 @@ function openMsg(title, link){
 }
 
 function openMsgs(){
+  $('#message').empty();
   $('#message').hide();
   $('#messages').show();
 }
+
 function getSlide(title, link){
-  return slide =  '<div class="title"><a href="#" onclick="openMsg(\'{0}\',\'{1}\');return false;">'.f(title, link)
-  + '{0}</a>'.f(title)
-  + '</div>';
+  if(link && (link ==! "#")){
+    return '<div class="title"><a href="#" onclick="openMsg(\'{0}\',\'{1}\');return false;">'.f(title, link)
+    + '{0}</a>'.f(title)
+    + '</div>';
+  }else{
+    return '<div class="title">{0}</div>'.f(title);
+  }
 }
 
 var holdPosition = 0;
@@ -50,7 +56,7 @@ var mySwiper = new Swiper('.swiper-container',{
         $('.preloader').addClass('visible');
 
         //Load slides
-        loadNewSlides();
+        loadNewSlides('new slide ' + slideNumber, 'http://baidu.com');
       }
     }
   });
@@ -65,7 +71,7 @@ function loadNewSlides(title, link) {
       //Prepend new slide
       var colors = ['red','blue','green','orange','pink'];
       var color = colors[Math.floor(Math.random()*colors.length)];
-      mySwiper.prependSlide('<div class="title">{0}</div>'.f(title||'new slide', link||'#'), 
+      mySwiper.prependSlide(getSlide(title, link), 
         'swiper-slide {0}-slide'.f(color));
 
       //Release interactions and set wrapper
@@ -85,7 +91,8 @@ function loadNewSlides(title, link) {
 // set up messages slides swiper 
 var messages = {
   initialize : function(){
+    $('#message').hide();
     //createMessageSlides();
-    loadNewSlides('new slide', 'http://baidu.com');
+    //loadNewSlides('new slide', 'http://baidu.com');
   }
 }

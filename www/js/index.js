@@ -6,6 +6,12 @@
 var pushServiceClient;
 var isRegistered = false;
 
+function fixStyles(){
+    var contentHeight = $("[data-role='footer']").position().top - $("[data-role='header']").outerHeight();
+    console.log('contentHeight=' + contentHeight);
+    $('#notifications.ui-content').css('height','400px!important;');
+}
+
 function setupPushNotificationService(username, callback){
     IBMBluemix.hybrid.initialize({applicationId: snowballCfg.pushAppId,
                 applicationRoute: snowballCfg.pushAppRoute,
@@ -106,8 +112,8 @@ function getUserProfile(callback){
         type: "GET",
         url: "http://{0}/user/me".f(snowballCfg.host),
         dataType: 'json',
-        // timeout in 5 seconds
-        timeout: 5000,
+        // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+        timeout: 20000,
         success: function(data){
             console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
             window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
@@ -208,8 +214,6 @@ function setUp(){
                 break;
                 case 'notifications-index':
                 console.log('render notifications page ...');
-                //slideNotifications();
-                //createNotifications();
                 break;
                 case 'user-index':
                 console.log('render user page ...');
@@ -228,6 +232,8 @@ function setUp(){
             // succ callback
             // create home page at initializing 
             getUserProfile(function(data){
+                // #TODO not set correctly now, need to figure out why and how.
+                //fixStyles();
                 setupPushNotificationService(data.emails[0].value, registerDevice);
                 createHomeSwiperHeader();
                 createMap();
