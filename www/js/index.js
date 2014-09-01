@@ -213,26 +213,24 @@ function createHomeSwiperHeader(){
 function getUserProfile(callback){
     //var reqHeaders = {accept:"application/json"}
     // connection available
-    // #TODO FOR DEBUG
-    // $.ajax({
-    //     type: "GET",
-    //     url: "http://{0}/user/me".f(snowballCfg.host),
-    //     dataType: 'json',
-    //     // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-    //     timeout: 20000,
-    //     success: function(data){
-    //         //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-    //         window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
-    //         callback(data);
-    //     },
-    //     error:function(XMLHttpRequest, textStatus, errorThrown){
-    //         console.log('[error] failed to request remote server for user profile');
-    //         console.log(textStatus);
-    //         console.log(errorThrown);
-    //         window.location = 'login.html';
-    //     }
-    // });
-    callback(JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE')));
+    $.ajax({
+        type: "GET",
+        url: "http://{0}/user/me".f(snowballCfg.host),
+        dataType: 'json',
+        // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+        timeout: 20000,
+        success: function(data){
+            //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+            window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
+            callback(data);
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('[error] failed to request remote server for user profile');
+            console.log(textStatus);
+            console.log(errorThrown);
+            window.location = 'login.html';
+        }
+    });
 }
 
 function ngv(){
