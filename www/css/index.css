@@ -53,28 +53,83 @@
     font-size: 25px;
   }
 
-  #notifications {
-    padding: 0px!important;
-  }
-
-  #notifications.ui-content{
-    /* .ui-content makes a padding 1em in the view, fix it by marking !important */
-    padding: 0px!important;
-    top:70px;
-    height: 454px!important;
-  } 
-
-  #notifications .swiper{
-    width:100%; 
-    height:100%;
-    padding:0px; 
-    margin:0px;
-  }
-
   #notifications-index .header a.ui-btn{
     border: none !important;
     top:25px;
     left:30px; 
+  }
+
+  #notifications-index .notifications.ui-content{
+    /* .ui-content makes a padding 1em in the view, fix it by marking !important */
+    padding: 0px!important;
+    top: 70px;
+    height: 454px!important;
+  } 
+
+  #notifications-index .messages .refresh {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    z-index: 0;
+    color: #000000;
+    text-align: center;
+    line-height: 60px;
+    width: 100%;
+    opacity: 1;
+    font-size: 15px;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -ms-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms;
+    display: none;
+  }
+
+  #notifications-index .messages.swiper-container {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    text-align: center;
+    position: relative;
+  }
+
+  #notifications-index .messages .list {
+    padding:0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  #notifications-index .messages .swiper-slide {
+    height: 100px;
+    width: 100%;
+    line-height: 100px;
+    opacity: 0.2;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -ms-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms;
+  }
+
+  #notifications-index .messages .swiper-slide-visible {
+    opacity: 1;
+  }
+
+  #notifications-index .messages .swiper-slide .title {
+    font-style: italic;
+    font-size: 42px;
+  }
+
+  #notifications-index .messages .swiper-wrapper a {
+    text-decoration: none;
+  }
+
+  #notifications-index .message {
+    background: #FFFFFF;
+    height: 100%;
+    width: 100%;
+    padding: 0px!important;
+    margin: 0px!important;
   }
 
   /*  user profile, status, settings */

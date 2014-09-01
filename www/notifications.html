@@ -43,11 +43,22 @@
             <div class='header' data-role='header' data-position='fixed' data-tap-toggle="false">
                 <div class='title'>
                     消息
-                </div>                
+                </div>     
             </div>
-            <div data-role='content' id='notifications'>
-              <iframe id='notificationsiframe' class="swiper" src="swiper/messages.html" sandbox="allow-same-origin allow-scripts allow-top-navigation allow-forms">
-              </iframe>
+            <div data-role='content' class='notifications'>
+
+                <div class="messages swiper-container">
+                    <div class='refresh pull-to-refresh'>下拉刷新 ...
+                    </div>
+                    <div class='refresh release-to-refresh'>释放刷新 ...
+                    </div>
+                    <div class='refresh refreshing'>刷新 ...
+                    </div>
+                    <ul class="list swiper-wrapper" data-divider-theme='a' data-role='listview' data-inset='true'>
+                    </ul>
+                </div>
+                <div class='message'>
+                </div>
             </div>
         </div>
         <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
