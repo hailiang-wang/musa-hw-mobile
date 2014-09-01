@@ -19,11 +19,12 @@ function openMsgs(){
 }
 
 function getSlide(title, link){
-  if(link && (link ==! "#")){
+  console.log(title + link);
+  if( link && (link !== "#")){
     return '<div class="title"><a href="#" onclick="openMsg(\'{0}\',\'{1}\');return false;">'.f(title, link)
     + '{0}</a>'.f(title)
     + '</div>';
-  }else{
+  } else{
     return '<div class="title">{0}</div>'.f(title);
   }
 }
@@ -92,7 +93,5 @@ function loadNewSlides(title, link) {
 var messages = {
   initialize : function(){
     $('#message').hide();
-    //createMessageSlides();
-    //loadNewSlides('new slide', 'http://baidu.com');
   }
 }
