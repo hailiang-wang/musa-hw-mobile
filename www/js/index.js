@@ -7,9 +7,6 @@ var pushServiceClient;
 var isRegistered = false;
 
 function fixStyles(){
-    var contentHeight = $("[data-role='footer']").position().top - $("[data-role='header']").outerHeight();
-    console.log('contentHeight=' + contentHeight);
-    $('#notifications.ui-content').css('height','400px!important;');
 }
 
 function setupPushNotificationService(username, callback){
@@ -115,7 +112,7 @@ function getUserProfile(callback){
         // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
         timeout: 20000,
         success: function(data){
-            console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+            //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
             window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
             callback(data);
         },
@@ -222,6 +219,21 @@ function setUp(){
                 default:
                 console.log('you can never find me.')
                 break;
+            }
+        },
+        show: function( event, ui ){
+            try{
+                var page = ui.toPage;
+                console.log('show:' + page.attr('id'));
+                switch(page.attr('id')){
+                    case 'notifications-index':
+                        fixStyles();
+                        break;
+                    default:
+                        break;
+                }
+            }catch(err){
+                console.log(err);
             }
         }
     });
