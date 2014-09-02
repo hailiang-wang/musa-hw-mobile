@@ -2,10 +2,10 @@
 * Licensed Materials - Property of Hai Liang Wang
 * All Rights Reserved.
 */
-define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
-        var snowballCfg = require('app/config');
+define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas'], function() {
+        var config = require('app/config');
+        var mbaas = require('app/service/mbaas');
 
-        var self = this;
         $(function() {
             $( "[data-role='navbar']" ).navbar();
             $( "[data-role='footer']" ).toolbar();
@@ -27,9 +27,6 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
                 }
             });
         });
-
-        var pushServiceClient;
-        var isRegistered = false;
 
         function openMsg(title, link){
           $('#notifications-index .messages').hide();
@@ -142,40 +139,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
                     'swiper-slide ui-li-static ui-body-inherit');
         }
 
-        function setupPushNotificationService(username, callback){
-            IBMBluemix.hybrid.initialize({applicationId: snowballCfg.pushAppId,
-                        applicationRoute: snowballCfg.pushAppRoute,
-                        applicationSecret: snowballCfg.pushAppSecret}).then(function(){
-                IBMPush.hybrid.initializeService().then(
-                    function(pushService){
-                        console.log("Initialized push successfully");
-                        pushServiceClient = pushService;
-                        callback(username);
-                    }, 
-                    function(err){
-                        console.error("Error initializing the Push SDK");
-                });
-            }); 
-        }
 
-        function handleBlueMixNotification(msg){
-            console.log('get notifications ...');
-            console.log(typeof msg);
-            console.log(msg);
-            alert(msg);
-        }
-
-        function registerDevice(username){
-            pushServiceClient.registerDevice(device.uuid, username, 'handleBlueMixNotification').then(
-                function(response) {
-                    isRegistered = true;
-                    console.log('bluemix push registered device ' + response);
-                }, 
-                function(error) {    
-                    console.log('bluemix push error registering device ' + error);
-                }
-            );
-        }
 
         function createMap(){
             L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
@@ -238,13 +202,13 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
         function getUserProfile(callback){
             //var reqHeaders = {accept:"application/json"}
             // connection available
-            if( snowballCfg.debug ){
+            if( config.debug ){
                 console.log('getUserProfile [DEBUG]');
                 callback(JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE')));
             } else {
                 $.ajax({
                     type: "GET",
-                    url: "http://{0}/user/me".f(snowballCfg.host),
+                    url: "http://{0}/user/me".f(config.host),
                     dataType: 'json',
                     // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
                     timeout: 20000,
@@ -382,13 +346,11 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
             // TODO delete the below line if login function is done.
             // window.localStorage.removeItem('MUSA_USER_SID')
             if(window.localStorage.getItem('MUSA_USER_SID')){
-                cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(snowballCfg.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
+                cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
                     // succ callback
                     // create home page at initializing 
                     getUserProfile(function(data){
-                        // #TODO not set correctly now, need to figure out why and how.
-                        //fixStyles();
-                        setupPushNotificationService(data.emails[0].value, registerDevice);
+                        mbaas.push.init(data.emails[0].value);
                         createHomeSwiperHeader();
                         createMap();
                         setTimeout(function(){
@@ -423,7 +385,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
                 });
                 // window.open () will open a new window, 
                 // whereas window.location.href will open the new URL in your current window.
-                var ref = window.open(encodeURI("http://{0}{1}".f(snowballCfg.host, snowballCfg.path)), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
+                var ref = window.open(encodeURI("http://{0}{1}".f(config.host, config.path)), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
                 ref.addEventListener('loadstart', function(event) {
                     if(event.url.indexOf("http://localhost/?") == 0) {
                         navigator.splashscreen.show();
