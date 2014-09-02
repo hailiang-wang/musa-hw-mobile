@@ -205,7 +205,7 @@
   }
   #user-index .content .ui-body.profile-card p{
     color:black;
-    font-size:9px;
+    font-size:15px;
   }
 }
 
@@ -354,13 +354,12 @@
     background-size: 50px 50px;
   }
 
-  #user-index .content .ui-body.profile-card{
+  #user-index .content .ui-body.profile-card {
     height:140px;
   }
-  #user-index .content .ui-body.profile-card p{
-    color:black;
-    font-size:9px;
+  #user-index .content .ui-body.profile-card p {
+    color: black;
+    size: 15px;
   }
-
 
 }

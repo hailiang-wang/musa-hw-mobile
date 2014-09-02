@@ -298,7 +298,9 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
             if(user._json.educations._total > 0){
                 // how to render it Master?Bachelor, now just show up a school
                 $.each(user._json.educations.values, function(index, education){
-                    $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree));
+                    if( index < 1){
+                        $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree));
+                    }
                 })
             }else{
                 // no school
@@ -319,7 +321,9 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
             if(user._json.skills._total > 0){
                 // how to render it Master?Bachelor, now just show up a school
                 $.each(user._json.skills.values, function(index, skill){
-                    $('#user-index .blurry p.skill').append('{0} <br> '.f(skill.skill.name));
+                    if(index < 3){
+                        $('#user-index .blurry p.skill').append('{0} <br> '.f(skill.skill.name));
+                    }
                 })
             }else{
                 // no skills
