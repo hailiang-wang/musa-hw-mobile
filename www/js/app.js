@@ -25,6 +25,18 @@ requirejs.config({
     }
 });
 
+/**
+* this code is ugly, but still not found better ways to make handleBlueMixNotification globally.
+* because it has to be global to support callback from IBMPush iOS Native Code.
+*/
+function handleApplePushNotificationArrival(msg){
+    alert(msg);
+    // requirejs(['jquery', 'jqm', 'app/viewMgr'], function(){
+    //     var viewMgr = require('app/viewMgr');
+    //     viewMgr.respPushNotificationArrival(msg);
+    // });
+}
+
 requirejs(['jquery','cordova.js', 'app/config', 'app/util'],
     function   ($) {
 // start of require

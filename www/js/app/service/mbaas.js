@@ -16,15 +16,10 @@ define(function(require, exports, module) {
         }); 
     }
 
-    function _handleBlueMixNotification(msg){
-        console.log('get notifications ...');
-        console.log(typeof msg);
-        console.log(msg);
-        alert(msg);
-    }
 
     function _registerDevice(push, username){
-        push.registerDevice(device.uuid, username, '_handleBlueMixNotification').then(
+    	// handleApplePushNotificationArrival is defined as globally in app.js
+        push.registerDevice(device.uuid, username, 'handleApplePushNotificationArrival').then(
             function(response) {
                 console.log('bluemix push registered device ' + response);
             }, 
@@ -41,6 +36,7 @@ define(function(require, exports, module) {
 	PushWrapper.prototype.init = function(username){
 		_setupPushNotificationService(username);
 	}
+
 
 	exports.push = new PushWrapper();
 });
