@@ -4,39 +4,6 @@
     <meta charset=utf-8 />
     <title>雪球</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
-    <link href='mapbox/mapbox.css' rel='stylesheet'/>
-    <link rel="stylesheet" href="css/idangerous.swiper.css">
-    <link rel="stylesheet" href="css/themes/tassel-theme.css" />
-    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
-    <link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
-    <link rel='stylesheet' href='css/index.css'/>
-    <script type='text/javascript' src='mapbox/mapbox.js'></script>
-    <script type='text/javascript' src='js/jquery-2.1.0.js'></script>
-    <script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
-    <script type='text/javascript' src="js/idangerous.swiper-2.1.min.js"></script>
-    <script>
-        $(function() {
-            $( "[data-role='navbar']" ).navbar();
-            $( "[data-role='footer']" ).toolbar();
-        });
-            // Update the contents of the toolbars
-            $( document ).on( "pagecontainershow", function() {
-            // Each of the four pages in this demo has a data-title attribute
-            // which value is equal to the text of the nav button
-            // For example, on first page: <div data-role="page" data-title="Info">
-            var current = $( ".ui-page-active" ).jqmData( "title" );
-            // Change the heading
-            $( "[data-role='header'] h1" ).text( current );
-            // Remove active class from nav buttons
-            $( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
-            // Add active class to current nav button
-            $( "[data-role='navbar'] a" ).each(function() {
-                if ( $( this ).jqmData('icon') === current ) {
-                    $( this ).addClass( "ui-btn-active" );
-                }
-            });
-        });
-        </script>
     </head>
     <body>
         <div id='notifications-index' data-role='page' data-theme='a' data-title='mail' >
@@ -77,12 +44,5 @@
             </div>
         </div>
     </div>
-<!--
--->
-<script type='text/javascript' src='cordova.js'></script>
-<script type='text/javascript' src='js/index.js'></script>
-<script type='text/javascript'>
-    app.initialize();
-</script>
 </body>
 </html>

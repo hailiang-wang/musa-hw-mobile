@@ -7,17 +7,31 @@ requirejs.config({
     //never includes a ".js" extension since
     //the paths config could be for a directory.
     paths: {
-        app: '../app'
+        app: '../app',
+        swiper: 'idangerous.swiper.min',
+        mapbox: 'mapbox/mapbox',
+        jqm: 'jqm/jquery.mobile-1.4.3.min'
+    },
+    shim: {
+        'jquery': {
+            exports: '$'
+        },
+        'swiper':{
+            deps: ['jquery']
+        },
+        'jqm':{
+            deps: ['jquery']
+        }
     }
 });
 
-requirejs(['cordova.js', ''],
-function   (a, b) {
+requirejs(['jquery','cordova.js', 'app/util'],
+    function   ($) {
 // start of require
 
 // cordova is now available globally
 var exec = cordova.require('cordova/exec');
-          
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -39,18 +53,19 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
         console.log('Received Event: ' + id);
-        alert(JSON.stringify(b));
+        var pathname = window.location.pathname;
+        requirejs(['app/bootstrap'], function(bootstrap){
+            if(pathname.endsWith('home.html')){
+                bootstrap.home();
+            }else if(pathname.endsWith('login.html')){
+                bootstrap.login();
+            }
+        });
     }
 };
-          
+
 app.initialize();
-          
+
 // end of require
 });

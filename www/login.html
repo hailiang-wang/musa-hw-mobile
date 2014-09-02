@@ -1,45 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset=utf-8 />
-	<title>长缨</title>
-	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
-	<link rel="stylesheet" href="css/themes/tassel-theme.css" />
-	<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="js/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
-	<link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
-	<link rel='stylesheet' href='css/login.css'/>
-	<script type='text/javascript' src='js/jquery-2.1.0.js'></script>
-	<script type='text/javascript' src='js/jqm/jquery.mobile-1.4.3.min.js'></script>
-	<script type="text/javascript" src='js/snowballCfg.js'></script>
-	<script type="text/javascript">
-		$(function() {
-			$( "[data-role='navbar']" ).navbar();
-			$( "[data-role='header'], [data-role='footer']" ).toolbar();
-		});
-	</script>
-</head>
-<body>
-	<div id='login-index' data-role='page' data-theme='a' data-title='login' >
-		<div data-role="content" id="loginContent">
-			<div class="banner">
-				<div id="title">雪球</div>
-				<span id="slogan">一切过去了的都会变成亲切的怀念。</span>
+	<head>
+		<meta charset=utf-8 />
+		<title>雪球</title>
+		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
+		<link rel="stylesheet" href="css/themes/tassel-theme.css" />
+		<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" href="js/lib/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
+		<link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
+		<link rel='stylesheet' href='css/login.css'/>
+	</head>
+	<body>
+		<div id='login-index' data-role='page' data-theme='a' data-title='login' >
+			<div data-role="content" id="loginContent">
+				<div class="banner">
+					<div id="title">雪球</div>
+					<span id="slogan">一切过去了的都会变成亲切的怀念。</span>
+				</div>
+				<div class='version'>
+				</div>
 			</div>
-			<div class='version'>
+			<div class='footer' data-role='footer'  data-position='fixed' data-tap-toggle="false">
+				<div data-role="navbar">
+					<ul>
+						<li><a id='loginBtn' href="#" data-shadow="true" data-icon='linkedin' data-iconshadow="true" class="ui-btn-active">认证登录</a></li>
+					</ul>
+				</div><!-- /navbar -->
 			</div>
 		</div>
-		<div class='footer' data-role='footer'  data-position='fixed' data-tap-toggle="false">
-			<div data-role="navbar">
-				<ul>
-					<li><a id='loginBtn' href="#" data-shadow="true" data-icon='linkedin' data-iconshadow="true" class="ui-btn-active">认证登录</a></li>
-				</ul>
-			</div><!-- /navbar -->
-		</div>
-		<script type='text/javascript' src='cordova.js'></script>
-		<script type='text/javascript' src='js/login.js'></script>
-		<script type="text/javascript">
-			app.initialize();
-		</script>
+		<script data-main="js/app" src="js/require.js"></script>
 	</body>
 	</html>
