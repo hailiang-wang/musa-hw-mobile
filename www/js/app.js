@@ -25,12 +25,13 @@ requirejs.config({
     }
 });
 
-requirejs(['jquery','cordova.js', 'app/util'],
+requirejs(['jquery','cordova.js', 'app/config', 'app/util'],
     function   ($) {
 // start of require
 
 // cordova is now available globally
 var exec = cordova.require('cordova/exec');
+var config = require('app/config');
 
 var app = {
     // Application Constructor
@@ -65,7 +66,13 @@ var app = {
     }
 };
 
-app.initialize();
+if(config.debug){
+    require([config.weinre], function(){
+        app.initialize();
+    });
+} else {
+    app.initialize();
+}
 
 // end of require
 });

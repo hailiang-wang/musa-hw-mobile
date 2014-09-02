@@ -238,26 +238,29 @@ define(['jqm', 'swiper', 'mapbox', 'app/config'], function() {
         function getUserProfile(callback){
             //var reqHeaders = {accept:"application/json"}
             // connection available
-            $.ajax({
-                type: "GET",
-                url: "http://{0}/user/me".f(snowballCfg.host),
-                dataType: 'json',
-                // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-                timeout: 20000,
-                success: function(data){
-                    //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                    window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
-                    callback(data);
-                },
-                error:function(XMLHttpRequest, textStatus, errorThrown){
-                    console.log('[error] failed to request remote server for user profile');
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                    window.location = 'login.html';
-                }
-            });
-            // FOR DEBUG
-            //callback(JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE')));
+            if( snowballCfg.debug ){
+                console.log('getUserProfile [DEBUG]');
+                callback(JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE')));
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "http://{0}/user/me".f(snowballCfg.host),
+                    dataType: 'json',
+                    // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+                    timeout: 20000,
+                    success: function(data){
+                        //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                        window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
+                        callback(data);
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log('[error] failed to request remote server for user profile');
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        window.location = 'login.html';
+                    }
+                });
+            }
         }
 
         function ngv(){
