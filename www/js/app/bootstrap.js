@@ -29,10 +29,6 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
             });
         });
 
-
-
-
-
         function createMap(){
             L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
             var map = L.mapbox.map('map', 'hain.ja31ci75')

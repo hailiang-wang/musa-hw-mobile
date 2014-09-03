@@ -4,7 +4,8 @@
 define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
-	var mySwiper;
+	var notiSwiper;
+  var inViewSlideKeys;
 
     function setNotificationsTitle(name){
         var scrollTopOffset = $("body").scrollTop();
@@ -56,8 +57,9 @@ define(function(require, exports, module) {
     function _initSlides(){
         var holdPosition = 0;
         var slideNumber = 0;
+        inViewSlideKeys = [];
 
-        mySwiper = new Swiper('#notifications-index .swiper-container',{
+        notiSwiper = new Swiper('#notifications-index .swiper-container',{
           mode:'vertical',
           watchActiveIndex: true,
           slidesPerView: 'auto',
@@ -83,10 +85,10 @@ define(function(require, exports, module) {
           onTouchEnd: function(){
             if (holdPosition > 100) {
                 // Hold Swiper in required position
-                mySwiper.setWrapperTranslate(0,100,0)
+                notiSwiper.setWrapperTranslate(0,100,0)
 
                 //Dissalow futher interactions
-                mySwiper.params.onlyExternal=true
+                notiSwiper.params.onlyExternal=true
 
                 //Show loader
                 $('#notifications-index .messages .release-to-refresh').hide();
@@ -94,7 +96,7 @@ define(function(require, exports, module) {
                 $('#notifications-index .messages .refreshing').show();
 
                 //Load slides
-                loadNewSlides('new slide ' + slideNumber, 'http://baidu.com');
+                loadNewSlides();
               }else{
                 $('#notifications-index .messages .release-to-refresh').hide();
                 $('#notifications-index .messages .pull-to-refresh').hide();
@@ -102,7 +104,7 @@ define(function(require, exports, module) {
             }
           });
 
-        function loadNewSlides(title, link) {
+        function loadNewSlides() {
             /* 
             Probably you should do some Ajax Request here
             But we will just use setTimeout
@@ -110,15 +112,24 @@ define(function(require, exports, module) {
             // #TODO read data from server
             setTimeout(function(){
               //Prepend new slide
-              mySwiper.prependSlide(getSlide(title, link), 
-                'swiper-slide ui-li-static ui-body-inherit');
+              var slides = store.get('notifications');
+              var slideKeys = _.keys(slides);  
+              slideKeys.forEach(function(key){
+                var sld = slides[key];
+                if( _.indexOf(inViewSlideKeys, key) == -1){
+                  notiSwiper.prependSlide(getSlide(sld.alert, key), 
+                        'swiper-slide ui-li-static ui-body-inherit');
+                  inViewSlideKeys.push(key);
+                  console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+                }
+              });
 
               //Release interactions and set wrapper
-              mySwiper.setWrapperTranslate(0,0,0)
-              mySwiper.params.onlyExternal=false;
+              notiSwiper.setWrapperTranslate(0,0,0)
+              notiSwiper.params.onlyExternal=false;
 
               //Update active slide
-              mySwiper.updateActiveSlide(0)
+              notiSwiper.updateActiveSlide(0)
 
               //Hide loader
               $('#notifications-index .messages .refreshing').hide();
@@ -127,12 +138,16 @@ define(function(require, exports, module) {
             slideNumber++;
         }
 
-        var preslides = store.get('notifications');
-        _.keys(preslides).forEach(function(key){
-        	var sld = preslides[key];
-        	mySwiper.prependSlide(getSlide(sld.alert, key), 
+        var slides = store.get('notifications');
+        var slideKeys = _.keys(slides);  
+        slideKeys.forEach(function(key){
+        	var sld = slides[key];
+        	notiSwiper.prependSlide(getSlide(sld.alert, key), 
                 'swiper-slide ui-li-static ui-body-inherit');
+          inViewSlideKeys.push(key);
         });
+        console.log(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+
         // mySwiper.prependSlide(getSlide('foo', 'http://baidu.com'), 
         //         'swiper-slide ui-li-static ui-body-inherit');
         //     mySwiper.prependSlide(getSlide('foo', 'http://baidu.com'), 
