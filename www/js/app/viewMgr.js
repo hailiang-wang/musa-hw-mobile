@@ -3,6 +3,7 @@
 */
 define(function(require, exports, module) {
 	var config = require('app/config');
+	var store = require('app/service/store');
 
 	function _parseNotification(msg){
 		var msgJson = {}; 
@@ -20,7 +21,7 @@ define(function(require, exports, module) {
 	}
 
 	function _respPushNotificationArrival(data){
-		alert(JSON.stringify(_parseNotification(data)));
+		store.save('notifications', _parseNotification(data));
 	}
 
 	exports.respPushNotificationArrival = _respPushNotificationArrival;
