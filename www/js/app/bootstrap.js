@@ -222,6 +222,8 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                         mbaas.push.init(data.emails[0].value);
                         createHomeSwiperHeader();
                         createMap();
+                        // Fix Home Btn unactive issue
+                        $("#homeBtn").addClass('ui-btn-active');
                         setTimeout(function(){
                             navigator.splashscreen.hide();
                         },2000)
