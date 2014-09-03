@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var util = require('app/util');
 
 	function _save(key, data){
+		
 		if(config.dropstore){
 			window.localStorage.removeItem(key);
 		}

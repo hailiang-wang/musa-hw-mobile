@@ -10,7 +10,8 @@ requirejs.config({
         app: '../app',
         swiper: 'idangerous.swiper.min',
         mapbox: 'mapbox/mapbox',
-        jqm: 'jqm/jquery.mobile-1.4.3.min'
+        jqm: 'jqm/jquery.mobile-1.4.3.min',
+        underscore: 'underscore-min'
     },
     shim: {
         'jquery': {
@@ -21,6 +22,9 @@ requirejs.config({
         },
         'jqm':{
             deps: ['jquery']
+        },
+        'underscore': {
+            exports: '_'
         }
     }
 });
