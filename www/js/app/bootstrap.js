@@ -39,25 +39,6 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
             .setView([0, 50], 3);
         }
 
-        function backToNotificationsList(offset){
-            $('#notifications-index .header .title').show();
-            $('#notifications-index .header a').remove();
-            openMsgs();
-            // //$("body").scrollTop(offset);
-            // $.mobile.silentScroll(offset);
-            // $('#notifications').show();
-            // $('#notification').hide();
-            // // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
-            // return false;
-        }
-
-        function setNotificationsTitle(name){
-            var scrollTopOffset = $("body").scrollTop();
-            $('#notifications-index .header .title').hide();
-            $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="backToNotificationsList({0});return false;" '.f(scrollTopOffset)
-                + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
-                + '<span style="color:red">{0}</span></a>'.f(name));
-        }
 
         function createHomeSwiperHeader(){
             var mySwiper = new Swiper('#home-swiper-header .swiper-container',{

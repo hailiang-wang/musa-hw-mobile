@@ -125,6 +125,7 @@
   }
 
   #notifications-index .message {
+    z-index: 2;
     background: #FFFFFF;
     height: 100%;
     width: 100%;

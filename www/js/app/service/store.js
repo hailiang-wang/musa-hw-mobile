@@ -17,6 +17,9 @@ define(function(require, exports, module) {
 		if(blob){
 			json = JSON.parse(blob);
 		}
+		// #TODO for data has Chinese, the text has encoded as Unicode,
+		// but here does not handle it, so now we get messy code.
+		// need to fix it for Beta
 		json[data.url] = {
 				type : data.type,
 				alert : data.alert,
