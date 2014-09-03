@@ -7,25 +7,25 @@ define(function(require, exports, module) {
 	var notiSwiper;
   var inViewSlideKeys;
 
-    function setNotificationsTitle(name){
-        var scrollTopOffset = $("body").scrollTop();
-        $('#notifications-index .header .title').hide();
-        $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="SnowBackToNotificationsList({0});return false;" '.f(scrollTopOffset)
-            + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
-            + '<span style="color:red">{0}</span></a>'.f(name));
-    }
+  function setNotificationsTitle(name){
+      var scrollTopOffset = $("body").scrollTop();
+      $('#notifications-index .header .title').hide();
+      $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="SnowBackToNotificationsList({0});return false;" '.f(scrollTopOffset)
+          + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
+          + '<span style="color:red">{0}</span></a>'.f(name));
+  }
 
-    function _backToNotificationsList(offset){
-        $('#notifications-index .header .title').show();
-        $('#notifications-index .header a').remove();
-        openMsgs();
-        // //$("body").scrollTop(offset);
-        // $.mobile.silentScroll(offset);
-        // $('#notifications').show();
-        // $('#notification').hide();
-        // // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
-        // return false;
-    }
+  function _backToNotificationsList(offset){
+      $('#notifications-index .header .title').show();
+      $('#notifications-index .header a').remove();
+      openMsgs();
+      // //$("body").scrollTop(offset);
+      // $.mobile.silentScroll(offset);
+      // $('#notifications').show();
+      // $('#notification').hide();
+      // // the below line is required . https://forum.jquery.com/topic/scrolltop-problem-screen-flashing-before-scroll
+      // return false;
+  }
 
 	function _openMsg(title, link){
       $('#notifications-index .messages').hide();
@@ -173,6 +173,12 @@ define(function(require, exports, module) {
 		return msgJson;
 	}
 
+  function _openLKDProfile(){
+    cordova.exec(null, null, "InAppBrowser", "open",
+     [JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'))._json.publicProfileUrl, 
+     "_system"]);
+  }
+
 	function _respPushNotificationArrival(data){
 		store.save('notifications', _parseNotification(data));
 	}
@@ -187,5 +193,6 @@ define(function(require, exports, module) {
 	*/
 	window.SnowOpenMsg = _openMsg;
 	window.SnowBackToNotificationsList = _backToNotificationsList;
+  window.SnowOpenLKDProfile = _openLKDProfile;
 
 })

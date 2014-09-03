@@ -202,11 +202,11 @@
   }
 
   #user-index .content .ui-body.profile-card{
-    height:140px;
+    height:120px;
   }
   #user-index .content .ui-body.profile-card p{
     color:black;
-    font-size:15px;
+    font-size:13px;
   }
 }
 
