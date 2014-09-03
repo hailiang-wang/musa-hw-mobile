@@ -28,13 +28,15 @@ requirejs.config({
 /**
 * this code is ugly, but still not found better ways to make handleBlueMixNotification globally.
 * because it has to be global to support callback from IBMPush iOS Native Code.
-*/
+* use a timeout function can make backgroud-foreground works.
+* but close-foreground still does not work.
+* the message arrives, but when the app wake up, the cordova method does not called.
+*/ 
 function handleApplePushNotificationArrival(msg){
-    alert(msg);
-    // requirejs(['jquery', 'jqm', 'app/viewMgr'], function(){
-    //     var viewMgr = require('app/viewMgr');
-    //     viewMgr.respPushNotificationArrival(msg);
-    // });
+    requirejs(['jquery', 'jqm', 'app/viewMgr'], function(){
+            var viewMgr = require('app/viewMgr');
+            viewMgr.respPushNotificationArrival(msg);
+    });
 }
 
 requirejs(['jquery','cordova.js', 'app/config', 'app/util'],
