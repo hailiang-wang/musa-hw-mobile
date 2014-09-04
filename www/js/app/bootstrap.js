@@ -2,10 +2,11 @@
 * Licensed Materials - Property of Hai Liang Wang
 * All Rights Reserved.
 */
-define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewMgr'], function() {
+define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewMgr', 'app/service/sseclient'], function() {
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');
         var viewMgr = require('app/viewMgr');
+        var sseclient = require('app/service/sseclient');
 
         $(function() {
             $( "[data-role='navbar']" ).navbar();
@@ -33,7 +34,11 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
             L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
             var map = L.mapbox.map('map', 'hain.ja31ci75')
             .setView([0, 50], 3);
-        }
+            // add a marker in the given location, attach some popup content to it and open the popup
+            L.marker([-31, -12]).addTo(map)
+                .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
+                .openPopup();
+            }
 
 
         function createHomeSwiperHeader(){
@@ -222,6 +227,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                         mbaas.push.init(data.emails[0].value);
                         createHomeSwiperHeader();
                         createMap();
+                        sseclient.start();
                         // Fix Home Btn unactive issue
                         $("#homeBtn").addClass('ui-btn-active');
                         setTimeout(function(){
