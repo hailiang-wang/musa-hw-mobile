@@ -30,49 +30,6 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
             });
         });
 
-        function createMap(){
-            L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
-            var map = L.mapbox.map('map', 'hain.ja31ci75')
-            .setView([0, 50], 3);
-            // add a marker in the given location, attach some popup content to it and open the popup
-            L.marker([-31, -12]).addTo(map)
-                .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
-                .openPopup();
-            }
-
-
-        function createHomeSwiperHeader(){
-            var mySwiper = new Swiper('#home-swiper-header .swiper-container',{
-                pagination: '#home-swiper-header .pagination',
-                loop:true,
-                grabCursor: true,
-                paginationClickable: true,
-                onSlideChangeEnd : function(swiper, direction){
-                    switch(swiper.activeIndex % 2){
-                        case 0:
-                        $("#map").hide();
-                        $("#people").show();
-                        break;
-                        case 1:
-                        $("#people").hide();
-                        $("#map").show();
-                        break;
-                        default :
-                        console.log('fine me if you can.');
-                        break;
-                    }
-                }
-            })
-            $('.arrow-left').on('click', function(e){
-                e.preventDefault()
-                mySwiper.swipePrev()
-            })
-            $('.arrow-right').on('click', function(e){
-                e.preventDefault()
-                mySwiper.swipeNext()
-            })
-        }
-
         function getUserProfile(callback){
             //var reqHeaders = {accept:"application/json"}
             // connection available
@@ -225,8 +182,8 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                     // create home page at initializing 
                     getUserProfile(function(data){
                         mbaas.push.init(data.emails[0].value);
-                        createHomeSwiperHeader();
-                        createMap();
+                        viewMgr.createHomeSwiperHeader();
+                        viewMgr.createMap();
                         sseclient.start();
                         // Fix Home Btn unactive issue
                         $("#homeBtn").addClass('ui-btn-active');

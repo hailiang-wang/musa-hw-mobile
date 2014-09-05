@@ -4,8 +4,14 @@
 define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
+  console.log('get map ...')
+  var mapController = require('app/service/map');
+  console.log('have map ...')
+  var homeSwiper;
 	var notiSwiper;
   var inViewSlideKeys;
+
+
 
   function setNotificationsTitle(name){
       var scrollTopOffset = $("body").scrollTop();
@@ -183,9 +189,54 @@ define(function(require, exports, module) {
 		store.save('notifications', _parseNotification(data));
 	}
 
+  function _createHomeSwiperHeader(){
+      homeSwiper = new Swiper('#home-swiper-header .swiper-container',{
+          pagination: '#home-swiper-header .pagination',
+          loop:true,
+          grabCursor: true,
+          paginationClickable: true,
+          onSlideChangeEnd : function(swiper, direction){
+              switch(swiper.activeIndex % 2){
+                  case 0:
+                  $("#map").hide();
+                  $("#people").show();
+                  break;
+                  case 1:
+                  $("#people").hide();
+                  $("#map").show();
+                  break;
+                  default :
+                  console.log('fine me if you can.');
+                  break;
+              }
+          }
+      })
+      $('.arrow-left').on('click', function(e){
+          e.preventDefault()
+          mySwiper.swipePrev()
+      })
+      $('.arrow-right').on('click', function(e){
+          e.preventDefault()
+          mySwiper.swipeNext()
+      })
+  }
+  var flg = false;
+  setInterval(function(){
+    if(flg){
+      mapController.addMarkerInMap('hailiang.hl.wang@gmail.com',-31,-12,'hello, hain');
+      flg = false;
+    }else{
+      mapController.deleteMarkerByName('hailiang.hl.wang@gmail.com');
+      flg = true;
+    }
 
-	exports.initSlides = _initSlides;
-	exports.respPushNotificationArrival = _respPushNotificationArrival;
+  }, 3000);
+  
+  exports.initSlides = _initSlides;
+  exports.respPushNotificationArrival = _respPushNotificationArrival;
+  exports.createMap = mapController.createMap;
+  exports.createHomeSwiperHeader = _createHomeSwiperHeader;
+
 	/**
 	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.
 	* So, use window to reduce coding
