@@ -4,14 +4,10 @@
 define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
-  console.log('get map ...')
   var mapController = require('app/service/map');
-  console.log('have map ...')
   var homeSwiper;
 	var notiSwiper;
   var inViewSlideKeys;
-
-
 
   function setNotificationsTitle(name){
       var scrollTopOffset = $("body").scrollTop();

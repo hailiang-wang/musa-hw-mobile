@@ -215,6 +215,22 @@
     background: -webkit-linear-gradient(#85E0FF, #85E0FF) repeat scroll 0 0 #FFFFFF !important;
   }
 
+  #qrcodeBtn {
+    border: none !important; 
+    padding-top:40px; 
+    width:50px; 
+    height:25px; 
+    left:270px
+  }
+
+  #closeShowUpStatusBtn {
+    border: none !important; 
+    padding-top:40px; 
+    width:50px; 
+    height:25px; 
+    left:220px;
+  }
+
 }
 
 /*iPhone 2G-4S in portrait */
