@@ -228,29 +228,32 @@ define(function(require, exports, module) {
     // Scan QR 
     console.log('foo ...');
     $('#qrcodeBtn').on('click', function(){
-      console.log('scan qr ...');
-      cordova.plugins.barcodeScanner.scan(
-        function (result) {
-            var code = result.text;
-            if(code){
-              var data = JSON.parse(code);
-              var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
-              var email = profile.emails[0].value;
-              var index = _.indexOf(mapController.getMarkerNames(), email);
-              if(index == -1){
-                // create new marker
-                mapController.addMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
-              }else{
-                // update marker
+      try{
+        cordova.plugins.barcodeScanner.scan(
+          function (result) {
+              var code = result.text;
+              if(code){
+                var data = JSON.parse(code);
+                var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+                var email = profile.emails[0].value;
+                var index = _.indexOf(mapController.getMarkerNames(), email);
+                if(index == -1){
+                  // create new marker
+                  mapController.addMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
+                }else{
+                  // update marker
+                  mapController.updateMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
+                }
               }
-            }
-        },
-        function (error) {
-          console.log(error);
-        }
-      );
+          },
+          function (error) {
+            console.log(error);
+          }
+        );
+      }catch(e){
+        console.log(e);
+      }
     });
-
   })();
 
   exports.initSlides = _initSlides;
