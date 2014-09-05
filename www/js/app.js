@@ -1,3 +1,6 @@
+
+
+
 requirejs.config({
     //By default load any module IDs from js/lib
     baseUrl: 'js/lib',
@@ -51,6 +54,14 @@ requirejs(['jquery','cordova.js', 'app/config', 'app/util'],
 // cordova is now available globally
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
+
+$('#qrcodeBtn' ).on('touchend click', function() {
+    var self = this;
+    setTimeout(function() {
+            $(self).removeClass("ui-btn-active");
+        },
+    0);
+});
 
 var app = {
     // Application Constructor

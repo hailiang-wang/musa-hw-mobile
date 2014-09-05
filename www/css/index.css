@@ -209,6 +209,12 @@
     color:black;
     font-size:13px;
   }
+
+  /* http://stackoverflow.com/questions/12200444/remove-hover-click-states-of-buttons */
+  .musa-nostate-btn {
+    background: -webkit-linear-gradient(#85E0FF, #85E0FF) repeat scroll 0 0 #FFFFFF !important;
+  }
+
 }
 
 /*iPhone 2G-4S in portrait */
@@ -365,3 +371,4 @@
   }
 
 }
+

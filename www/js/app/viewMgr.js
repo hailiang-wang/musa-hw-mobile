@@ -17,7 +17,7 @@ define(function(require, exports, module) {
       var scrollTopOffset = $("body").scrollTop();
       $('#notifications-index .header .title').hide();
       $('#notifications-index .header').append('<a href="#" data-shadow="false" onclick="SnowBackToNotificationsList({0});return false;" '.f(scrollTopOffset)
-          + 'class="ui-btn ui-icon-back ui-btn-icon-left">'
+          + 'class="musa-nostate-btn ui-btn ui-icon-back ui-btn-icon-left">'
           + '<span style="color:red">{0}</span></a>'.f(name));
   }
 
