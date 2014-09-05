@@ -193,7 +193,7 @@ define(function(require, exports, module) {
       homeSwiper = new Swiper('#home-swiper-header .swiper-container',{
           pagination: '#home-swiper-header .pagination',
           loop:true,
-          grabCursor: true,
+          grabCursor: false,
           paginationClickable: true,
           onSlideChangeEnd : function(swiper, direction){
               switch(swiper.activeIndex % 2){
@@ -220,18 +220,39 @@ define(function(require, exports, module) {
           mySwiper.swipeNext()
       })
   }
-  var flg = false;
-  setInterval(function(){
-    if(flg){
-      mapController.addMarkerInMap('hailiang.hl.wang@gmail.com',-31,-12,'hello, hain');
-      flg = false;
-    }else{
-      mapController.deleteMarkerByName('hailiang.hl.wang@gmail.com');
-      flg = true;
-    }
 
-  }, 3000);
-  
+  /**
+  * Bind some events from UI
+  */ 
+  (function(){
+    // Scan QR 
+    console.log('foo ...');
+    $('#qrcodeBtn').on('click', function(){
+      console.log('scan qr ...');
+      cordova.plugins.barcodeScanner.scan(
+        function (result) {
+            var code = result.text;
+            if(code){
+              var data = JSON.parse(code);
+              var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+              var email = profile.emails[0].value;
+              var index = _.indexOf(mapController.getMarkerNames(), email);
+              if(index == -1){
+                // create new marker
+                mapController.addMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
+              }else{
+                // update marker
+              }
+            }
+        },
+        function (error) {
+          console.log(error);
+        }
+      );
+    });
+
+  })();
+
   exports.initSlides = _initSlides;
   exports.respPushNotificationArrival = _respPushNotificationArrival;
   exports.createMap = mapController.createMap;
