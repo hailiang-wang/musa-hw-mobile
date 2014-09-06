@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 	    var index = _.indexOf(_getMarkerNames(), data.username);
 	    if(index == -1){
 	      // create new marker
-	      _addMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture));
+	      _addMarkerInMap(data.username, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile));
 	    }else{
 	      // update marker
 	      _updateMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture));

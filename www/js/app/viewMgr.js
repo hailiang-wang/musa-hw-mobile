@@ -175,10 +175,15 @@ define(function(require, exports, module) {
 		return msgJson;
 	}
 
-  function _openLKDProfile(){
+  function _openMyLKDProfile(){
     cordova.exec(null, null, "InAppBrowser", "open",
      [JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'))._json.publicProfileUrl, 
      "_system"]);
+  }
+
+  function _openLKDProfileByLink(link){
+    cordova.exec(null, null, "InAppBrowser", "open",
+     [link, "_system"]);
   }
 
 	function _respPushNotificationArrival(data){
@@ -283,6 +288,7 @@ define(function(require, exports, module) {
 	*/
 	window.SnowOpenMsg = _openMsg;
 	window.SnowBackToNotificationsList = _backToNotificationsList;
-  window.SnowOpenLKDProfile = _openLKDProfile;
+  window.SnowOpenMyLKDProfile = _openMyLKDProfile;
+  window.SnowOpenLKDProfileByLink = _openLKDProfileByLink;
 
 })
