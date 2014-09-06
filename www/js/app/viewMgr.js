@@ -233,13 +233,31 @@ define(function(require, exports, module) {
                 var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
                 var email = profile.emails[0].value;
                 var index = _.indexOf(mapController.getMarkerNames(), email);
-                if(index == -1){
-                  // create new marker
-                  mapController.addMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
-                }else{
-                  // update marker
-                  mapController.updateMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
-                }
+                // if(index == -1){
+                //   // create new marker
+                //   mapController.addMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
+                // }else{
+                //   // update marker
+                //   mapController.updateMarkerInMap(email, data.lat, data.lng, "<img src='{0}'></img>".f(profile._json.pictureUrl));
+                // }
+                $.ajax({
+                    type: "POST",
+                    url: "http://{0}/sse/in/loc".f(config.host),
+                    dataType: 'json',
+                    data: JSON.stringify({ lat: data.lat, lng: data.lng}),
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    success: function(data){
+                        console.log(JSON.stringify(data));
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                        console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+                        console.log("[error] Status: " + textStatus); 
+                        console.log("[error] Error: " + errorThrown); 
+                    }
+                });
               }
           },
           function (error) {

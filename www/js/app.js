@@ -39,13 +39,13 @@ requirejs.config({
 * but close-foreground still does not work.
 * the message arrives, but when the app wake up, the cordova method does not called.
 */ 
-// function handleApplePushNotificationArrival(msg){
-//     console.log('[DEBUG] get notification : \n ' + msg);
-//     requirejs(['jquery', 'jqm', 'app/viewMgr'], function(){
-//             var viewMgr = require('app/viewMgr');
-//             viewMgr.respPushNotificationArrival(msg);
-//     });
-// }
+function handleApplePushNotificationArrival(msg){
+    console.log('[DEBUG] get notification : \n ' + msg);
+    requirejs(['jquery', 'jqm', 'app/viewMgr'], function(){
+            var viewMgr = require('app/viewMgr');
+            viewMgr.respPushNotificationArrival(msg);
+    });
+}
 
 requirejs(['jquery','cordova.js', 'app/config', 'app/util'],
     function   ($) {
