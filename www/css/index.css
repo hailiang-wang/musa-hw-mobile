@@ -21,8 +21,8 @@
 
   #home-swiper-header .pagination {
     position: absolute;
-    left: 100px;
-    text-align: left;
+    left: 0;
+    text-align: center;
     bottom:5px;
     width: 100%;
   }

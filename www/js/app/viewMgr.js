@@ -227,7 +227,6 @@ define(function(require, exports, module) {
   */ 
   (function(){
     // Scan QR 
-    console.log('foo ...');
     $('#qrcodeBtn').on('click', function(){
       try{
         cordova.plugins.barcodeScanner.scan(
@@ -256,7 +255,6 @@ define(function(require, exports, module) {
                     },
                     success: function(data){
                         console.log(JSON.stringify(data));
-                        mapController.surveyor.trigger('paint', data);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) { 
                         console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
@@ -274,6 +272,14 @@ define(function(require, exports, module) {
         console.log(e);
       }
     });
+    
+    /**
+     * stop sharing location
+     */
+    $("#closeShowUpStatusBtn").on('click', function(){
+      $("#closeShowUpStatusBtn").hide();
+    });
+
   })();
 
   exports.initSlides = _initSlides;

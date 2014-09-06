@@ -187,6 +187,9 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                         sseclient.start();
                         // Fix Home Btn unactive issue
                         $("#homeBtn").addClass('ui-btn-active');
+                        // set default style for some btn
+                        $("#closeShowUpStatusBtn").hide();
+
                         setTimeout(function(){
                             navigator.splashscreen.hide();
                         },2000)

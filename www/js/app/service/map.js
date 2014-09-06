@@ -12,6 +12,10 @@ define(function(require, exports, module) {
 	surveyor.on('paint', function(data){
 		console.log('surveyor paint ' + JSON.stringify(data));
 		var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+	    // show the visible btn if painting himself
+	    if(data.username === profile.emails[0].value){
+	    	$("#closeShowUpStatusBtn").show();
+	    }
 	    var index = _.indexOf(_getMarkerNames(), data.username);
 	    if(index == -1){
 	      // create new marker
