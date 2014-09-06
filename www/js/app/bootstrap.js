@@ -2,7 +2,7 @@
 * Licensed Materials - Property of Hai Liang Wang
 * All Rights Reserved.
 */
-define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewMgr', 'app/service/sseclient'], function() {
+define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewMgr', 'app/service/map','app/service/sseclient'], function() {
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');
         var viewMgr = require('app/viewMgr');

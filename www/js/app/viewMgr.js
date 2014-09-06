@@ -251,6 +251,7 @@ define(function(require, exports, module) {
                     },
                     success: function(data){
                         console.log(JSON.stringify(data));
+                        mapController.surveyor.trigger('paint', data);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) { 
                         console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));

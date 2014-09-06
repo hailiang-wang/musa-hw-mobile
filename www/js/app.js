@@ -14,7 +14,8 @@ requirejs.config({
         swiper: 'idangerous.swiper.min',
         mapbox: 'mapbox/mapbox',
         jqm: 'jqm/jquery.mobile-1.4.3.min',
-        underscore: 'underscore-min'
+        underscore: 'underscore-min',
+        backbone : 'backbone-min'
     },
     shim: {
         'jquery': {
@@ -28,6 +29,14 @@ requirejs.config({
         },
         'underscore': {
             exports: '_'
+        },
+        'backbone':{
+            //These script dependencies should be loaded before loading
+            //backbone.js
+            deps: ['underscore', 'jquery'],
+            //Once loaded, use the global 'Backbone' as the
+            //module value.
+            exports: 'Backbone'
         }
     }
 });
@@ -47,7 +56,7 @@ function handleApplePushNotificationArrival(msg){
     });
 }
 
-requirejs(['jquery','cordova.js', 'app/config', 'app/util'],
+requirejs(['jquery','cordova.js', 'app/config', 'app/util', 'underscore', 'backbone'],
     function   ($) {
 // start of require
 

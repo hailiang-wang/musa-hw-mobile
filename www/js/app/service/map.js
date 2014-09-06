@@ -6,6 +6,14 @@ define(function(require, exports, module) {
  	var markers = {};
 	var map;
 
+	var surveyor = {};
+	_.extend(surveyor, Backbone.Events);
+
+	surveyor.on('paint', function(data){
+		console.log('surveyor paint ' + JSON.stringify(data));
+
+	});
+
  	function _createMap(){
 		map = L.mapbox.map('map', 'hain.ja31ci75').setView([0, 50], 3);
   	}
@@ -52,4 +60,5 @@ define(function(require, exports, module) {
 	exports.getMarkerNames  = _getMarkerNames;
 	exports.deleteMarkerByName = _deleteMarkerByName;
 	exports.updateMarkerInMap = _updateMarkerInMap;
+	exports.surveyor = surveyor;
 })
