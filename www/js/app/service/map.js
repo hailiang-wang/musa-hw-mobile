@@ -11,6 +11,15 @@ define(function(require, exports, module) {
 
 	surveyor.on('paint', function(data){
 		console.log('surveyor paint ' + JSON.stringify(data));
+		var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+	    var index = _.indexOf(_getMarkerNames(), data.username);
+	    if(index == -1){
+	      // create new marker
+	      _addMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture));
+	    }else{
+	      // update marker
+	      _updateMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture));
+	    }
 
 	});
 
