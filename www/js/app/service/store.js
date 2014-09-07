@@ -38,6 +38,11 @@ define(function(require, exports, module) {
 		return json;
 	}
 
+	// data is in json format
+	function _setUserProfile(data){
+		window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
+	}
+
 	function _getUserProfile(){
 		return JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
 	}
@@ -46,9 +51,20 @@ define(function(require, exports, module) {
 		return _getUserProfile().emails[0].value;
 	}
 
+	function _getUserSID(){
+		return window.localStorage.getItem('MUSA_USER_SID');
+	}
+
+	function _setUserSID(sid){
+		window.localStorage.setItem('MUSA_USER_SID',sid);
+	}	
+
 	exports.save = _save;
 	exports.get = _get;
 	exports.getUserEmail = _getUserEmail;
+	exports.setUserProfile = _setUserProfile;
 	exports.getUserProfile = _getUserProfile;
+	exports.setUserSID = _setUserSID;
+	exports.getUserSID = _getUserSID;
 
 });

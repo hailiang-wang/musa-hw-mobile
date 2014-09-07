@@ -2,11 +2,14 @@
 * Licensed Materials - Property of Hai Liang Wang
 * All Rights Reserved.
 */
-define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewMgr', 'app/service/map','app/service/sseclient'], function() {
+define(['jqm', 'swiper', 'mapbox', 
+    'app/config', 'app/service/mbaas', 'app/viewMgr',
+    'app/service/map','app/service/sseclient','app/service/store'], function() {
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');
         var viewMgr = require('app/viewMgr');
         var sseclient = require('app/service/sseclient');
+        var store = require('app/service/store');
 
         $(function() {
             $( "[data-role='navbar']" ).navbar();
@@ -35,7 +38,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
             // connection available
             if( config.debug ){
                 console.log('getUserProfile [DEBUG]');
-                callback(JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE')));
+                callback(store.getUserProfile());
             } else {
                 $.ajax({
                     type: "GET",
@@ -45,7 +48,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                     timeout: 20000,
                     success: function(data){
                         //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                        window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
+                        store.setUserProfile(data);
                         callback(data);
                     },
                     error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -86,7 +89,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
         }
 
         function renderUserProfilePage(){
-            var user = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+            var user = store.getUserProfile();
             // displayName
             $('#user-index .content .blurContainer').empty();
             $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
@@ -174,10 +177,10 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                     }
                 }
             });
-            // TODO delete the below line if login function is done.
-            // window.localStorage.removeItem('MUSA_USER_SID')
-            if(window.localStorage.getItem('MUSA_USER_SID')){
-                cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), window.localStorage.getItem('MUSA_USER_SID'), function(){
+
+            var userSid = store.getUserSID();
+            if(userSid){
+                cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), userSid, function(){
                     // succ callback
                     // create home page at initializing 
                     getUserProfile(function(data){
@@ -229,7 +232,7 @@ define(['jqm', 'swiper', 'mapbox', 'app/config', 'app/service/mbaas', 'app/viewM
                         // login succ
                         var succUrl = event.url;
                         var sid = succUrl.replace('http://localhost/?','')
-                        window.localStorage.setItem('MUSA_USER_SID',sid);
+                        store.setUserSID(sid);
                         window.location = 'home.html';
                     }else if(event.url == 'http://localhost/'){
                         // login fail 

@@ -177,7 +177,7 @@ define(function(require, exports, module) {
 
   function _openMyLKDProfile(){
     cordova.exec(null, null, "InAppBrowser", "open",
-     [JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'))._json.publicProfileUrl, 
+     [store.getUserProfile()._json.publicProfileUrl, 
      "_system"]);
   }
 
@@ -268,7 +268,7 @@ define(function(require, exports, module) {
      * stop sharing location
      */
     $("#closeShowUpStatusBtn").on('click', function(){
-      var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+      var profile = store.getUserProfile();
       var email = profile.emails[0].value;
       $.ajax({
           type: "POST",
