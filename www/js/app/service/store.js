@@ -38,6 +38,17 @@ define(function(require, exports, module) {
 		return json;
 	}
 
+	function _getUserProfile(){
+		return JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+	}
+
+	function _getUserEmail(){
+		return _getUserProfile().emails[0].value;
+	}
+
 	exports.save = _save;
 	exports.get = _get;
+	exports.getUserEmail = _getUserEmail;
+	exports.getUserProfile = _getUserProfile;
+
 });

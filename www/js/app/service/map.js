@@ -2,6 +2,8 @@
 * Handle map in views
 */
 define(function(require, exports, module) {
+	var config = require('app/config');
+	var store = require('app/service/store');
 	L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
  	var markers = {};
 	var map;
@@ -11,11 +13,11 @@ define(function(require, exports, module) {
 
 	surveyor.on('paint', function(data){
 		console.log('surveyor paint ' + JSON.stringify(data));
-		var profile = JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
+		var userEmail = store.getUserEmail();
 		switch(data.type){
 			case 'visible':
 			    // show the visible btn if painting himself
-			    if(data.username === profile.emails[0].value){
+			    if(data.username === userEmail){
 			    	$("#closeShowUpStatusBtn").show();
 			    }
 			    var index = _.indexOf(_getMarkerNames(), data.username);
@@ -41,6 +43,29 @@ define(function(require, exports, module) {
 
  	function _createMap(){
 		map = L.mapbox.map('map', 'hain.ja31ci75').setView([0, 50], 3);
+		$.ajax({
+			type: 'GET',
+			url: "http://{0}/rtls/hw".f(config.host),
+			headers: {
+			  "Accept": "application/json",
+			  "Content-Type": "application/json"
+			},
+			success: function(data){
+				if(data){
+					console.log('get map data ' + JSON.stringify(data));
+						_.each(data, function(value, key, list){
+							surveyor.trigger('paint', JSON.parse(value));
+						});
+				}else{
+					console.log('Hello World Cafe has no location-sharing user');
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+			  console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+			  console.log("[error] Status: " + textStatus); 
+			  console.log("[error] Error: " + errorThrown); 
+			}
+		});
   	}
 
 	function _addMarkerInMap(username, lat, lng, popUpHtml){
