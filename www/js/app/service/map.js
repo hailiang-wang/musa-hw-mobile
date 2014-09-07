@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 			    }
 				break;
 			case 'invisible':
-				if(data.username === profile.emails[0].value){
+				if(data.username === userEmail){
 			    	$("#closeShowUpStatusBtn").hide();
 			    }
 		    	_deleteMarkerByName(data.username);
