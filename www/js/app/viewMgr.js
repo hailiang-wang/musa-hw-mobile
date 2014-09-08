@@ -288,8 +288,16 @@ define(function(require, exports, module) {
               console.log("[error] Error: " + errorThrown); 
           }
       });
-    });
+    }); 
 
+    /**
+     * handle logout event
+     */
+    $("#signOutBtn").on('click', function(){
+      console.log('log out happens')
+      store.deleteUserSID();
+      window.location = 'login.html';
+    });
   })();
 
   exports.initSlides = _initSlides;

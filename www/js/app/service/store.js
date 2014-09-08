@@ -59,6 +59,10 @@ define(function(require, exports, module) {
 		window.localStorage.setItem('MUSA_USER_SID',sid);
 	}	
 
+	function _deleteUserSID(){
+		window.localStorage.removeItem('MUSA_USER_SID');
+	}
+
 	exports.save = _save;
 	exports.get = _get;
 	exports.getUserEmail = _getUserEmail;
@@ -66,5 +70,5 @@ define(function(require, exports, module) {
 	exports.getUserProfile = _getUserProfile;
 	exports.setUserSID = _setUserSID;
 	exports.getUserSID = _getUserSID;
-
+	exports.deleteUserSID = _deleteUserSID;
 });

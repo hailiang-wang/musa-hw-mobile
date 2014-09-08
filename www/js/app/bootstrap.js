@@ -89,6 +89,16 @@ define(['jqm', 'swiper', 'mapbox',
         }
 
         function renderUserProfilePage(){
+            // bind events
+            /**
+             * handle logout event
+             */
+            $("#signOutBtn").on('click', function(){
+              console.log('log out happens')
+              store.deleteUserSID();
+              window.location = 'login.html';
+            });
+
             var user = store.getUserProfile();
             // displayName
             $('#user-index .content .blurContainer').empty();
