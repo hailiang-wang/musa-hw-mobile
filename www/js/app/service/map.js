@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 
 	surveyor.on('paint', function(data){
 		console.log('surveyor paint ' + JSON.stringify(data));
-		var userEmail = store.getUserEmail();
+		var userEmail = store.getUserId();
 		switch(data.type){
 			case 'visible':
 			    // show the visible btn if painting himself

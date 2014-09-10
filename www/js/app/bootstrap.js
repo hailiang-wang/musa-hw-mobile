@@ -48,6 +48,8 @@ define(['jqm', 'swiper', 'mapbox',
                     timeout: 20000,
                     success: function(data){
                         //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                        // TODO support api /user/me for local passport 
+                        store.setUserId(data.emails[0].value);
                         store.setUserProfile(data);
                         callback(data);
                     },
@@ -187,9 +189,9 @@ define(['jqm', 'swiper', 'mapbox',
                     }
                 }
             });
-
+            var userId = store.getUserId();
             var userSid = store.getUserSID();
-            if(userSid){
+            if(userId && userSid){
                 cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), userSid, function(){
                     // succ callback
                     // create home page at initializing 

@@ -5,7 +5,7 @@ define({
     pushAppRoute: 'hwcafe.mybluemix.net',
     pushAppSecret : '049180170bdc55b6428f65f96f80518b37296000',
     debug: true,
-    weinre: 'http://172.16.103.254:9088/target/target-script-min.js#musa',
+    weinre: 'http://192.168.9.233:9088/target/target-script-min.js#musa',
     // drop window.localstroage notifications, app/store.js use this flag
     dropstore: false
 });

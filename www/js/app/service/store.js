@@ -6,10 +6,27 @@ define(function(require, exports, module) {
 	var config = require('app/config');
 	var util = require('app/util');
 
-	function _save(key, data){
+	function _getAppVersion(){
+		return window.localStorage.getItem('MUSA_SNOWBALL_VERSION');
+	}
+
+	function _setAppVersion(appVersion){
+		window.localStorage.setItem('MUSA_SNOWBALL_VERSION', appVersion);
+	}
+
+	// email address
+	function _setUserId(id){
+		window.localStorage.setItem('MUSA_USER_ID', id);
+	}
+
+	function _getUserId(){
+		return window.localStorage.getItem('MUSA_USER_ID');
+	}
+
+	function _saveNotifications(data){
 		
 		if(config.dropstore){
-			window.localStorage.removeItem(key);
+			window.localStorage.removeItem('{0}-NOTIFICATIONS'.f(_getUserId()));
 		}
 
 		var blob = window.localStorage.getItem(key);
@@ -26,12 +43,12 @@ define(function(require, exports, module) {
 				date : util.getDate()
 		};
 		console.log('[DEBUG] save notifications ... ' + JSON.stringify(json));
-		window.localStorage.setItem(key, JSON.stringify(json));
+		window.localStorage.setItem('{0}-NOTIFICATIONS'.f(_getUserId()), JSON.stringify(json));
 	}
 
-	function _get(key){
+	function _getNotifications(){
 		var json = {};
-		var blob = window.localStorage.getItem(key);
+		var blob = window.localStorage.getItem('{0}-NOTIFICATIONS'.f(_getUserId()));
 		if(blob){
 			json = JSON.parse(blob);
 		}
@@ -40,35 +57,34 @@ define(function(require, exports, module) {
 
 	// data is in json format
 	function _setUserProfile(data){
-		window.localStorage.setItem('MUSA_USER_PROFILE', JSON.stringify(data));
+		window.localStorage.setItem('{0}-MUSA_USER_PROFILE'.f(_getUserId()), JSON.stringify(data));
 	}
 
 	function _getUserProfile(){
-		return JSON.parse(window.localStorage.getItem('MUSA_USER_PROFILE'));
-	}
-
-	function _getUserEmail(){
-		return _getUserProfile().emails[0].value;
+		return JSON.parse(window.localStorage.getItem('{0}-MUSA_USER_PROFILE'.f(_getUserId())));
 	}
 
 	function _getUserSID(){
-		return window.localStorage.getItem('MUSA_USER_SID');
+		return window.localStorage.getItem('{0}-MUSA_USER_SID'.f(_getUserId()));
 	}
 
 	function _setUserSID(sid){
-		window.localStorage.setItem('MUSA_USER_SID',sid);
+		window.localStorage.setItem('{0}-MUSA_USER_SID'.f(_getUserId()),sid);
 	}	
 
 	function _deleteUserSID(){
-		window.localStorage.removeItem('MUSA_USER_SID');
+		window.localStorage.removeItem('{0}-MUSA_USER_SID'.f(_getUserId()));
 	}
 
-	exports.save = _save;
-	exports.get = _get;
-	exports.getUserEmail = _getUserEmail;
+	exports.saveNotifications = _saveNotifications;
+	exports.getNotifications = _getNotifications;
 	exports.setUserProfile = _setUserProfile;
 	exports.getUserProfile = _getUserProfile;
 	exports.setUserSID = _setUserSID;
 	exports.getUserSID = _getUserSID;
 	exports.deleteUserSID = _deleteUserSID;
+	exports.setAppVersion = _setAppVersion;
+	exports.getAppVersion = _getAppVersion;
+	exports.setUserId = _setUserId;
+	exports.getUserId = _getUserId;
 });

@@ -114,7 +114,7 @@ define(function(require, exports, module) {
             // #TODO read data from server
             setTimeout(function(){
               //Prepend new slide
-              var slides = store.get('notifications');
+              var slides = store.getNotifications();
               var slideKeys = _.keys(slides);  
               slideKeys.forEach(function(key){
                 var sld = slides[key];
@@ -140,7 +140,7 @@ define(function(require, exports, module) {
             slideNumber++;
         }
 
-        var slides = store.get('notifications');
+        var slides = store.getNotifications();
         var slideKeys = _.keys(slides);  
         slideKeys.forEach(function(key){
         	var sld = slides[key];
@@ -187,7 +187,7 @@ define(function(require, exports, module) {
   }
 
 	function _respPushNotificationArrival(data){
-		store.save('notifications', _parseNotification(data));
+		store.saveNotifications(_parseNotification(data));
 	}
 
   function _createHomeSwiperHeader(){
