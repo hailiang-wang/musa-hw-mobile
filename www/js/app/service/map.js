@@ -42,6 +42,10 @@ define(function(require, exports, module) {
 	});
 
  	function _createMap(){
+ 		if(map){
+ 			map.remove();
+ 			map = null;
+ 		}
 		map = L.mapbox.map('map', 'hain.ja31ci75').setView([0, 50], 3);
 		$.ajax({
 			type: 'GET',

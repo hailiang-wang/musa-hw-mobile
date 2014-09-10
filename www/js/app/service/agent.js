@@ -4,20 +4,28 @@
 define(function(require, exports, module) {
 	var util = require('app/util');
 	var config = require('app/config');
-	var mapNoty;
+	var map = require('app/service/map');
 	var netwatch = {};
 	_.extend(netwatch, Backbone.Events);
 
+	var netNoty;
+
 	netwatch.on('online2offline', function(){
-		mapNoty = noty({text: '无网络服务.',
+		// turn on network unavailable warnning
+		netNoty = noty({text: '无网络服务.',
 							layout: 'center',
 							timeout: 2000,
 							type: 'information'});
 	});
 
 	netwatch.on('offline2online', function(){
-		mapNoty.close();
-		mapNoty = null;
+		// turn off network unavailable warnning
+		if(netNoty){
+			netNoty.close();
+			netNoty = null;
+		}
+		// recreate map
+		map.createMap();
 	});
 
 	// start agent
