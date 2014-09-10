@@ -13,6 +13,7 @@ plugins = ['com.ibm.mobile.cordova.ibmbluemix',
         'org.apache.cordova.device',
         'uk.co.whiteoctober.cordova.appversion',
         'com.phonegap.plugins.barcodescanner',
+        'org.apache.cordova.network-information',
         'extras/musa-mobile-driver'
         ]
 

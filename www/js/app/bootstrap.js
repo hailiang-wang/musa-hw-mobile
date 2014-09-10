@@ -4,12 +4,13 @@
 */
 define(['jqm', 'swiper', 'mapbox', 
     'app/config', 'app/service/mbaas', 'app/viewMgr',
-    'app/service/map','app/service/sseclient','app/service/store'], function() {
+    'app/service/map','app/service/sseclient','app/service/store','noty'], function() {
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');
         var viewMgr = require('app/viewMgr');
         var sseclient = require('app/service/sseclient');
         var store = require('app/service/store');
+        var util = require('app/util');
 
         $(function() {
             $( "[data-role='navbar']" ).navbar();
@@ -36,23 +37,28 @@ define(['jqm', 'swiper', 'mapbox',
         function getUserProfile(callback){
             //var reqHeaders = {accept:"application/json"}
             // connection available
-            $.ajax({
-                type: "GET",
-                url: "http://{0}/user/me".f(config.host),
-                dataType: 'json',
-                // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-                timeout: 20000,
-                success: function(data){
-                    //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                    
-                    callback(data);
-                },
-                error:function(XMLHttpRequest, textStatus, errorThrown){
-                    console.log('[error] failed to request remote server for user profile');
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                    window.location = 'login.html';
-                }
+            util.getNetwork().then(function(networkType){
+                $.ajax({
+                    type: "GET",
+                    url: "http://{0}/user/me".f(config.host),
+                    dataType: 'json',
+                    // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+                    timeout: 20000,
+                    success: function(data){
+                        //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                        
+                        callback(data);
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log('[error] failed to request remote server for user profile');
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        window.location = 'login.html';
+                    }
+                });
+            },function(err){
+                // no network
+                callback(store.getUserProfile());
             });
         }
 

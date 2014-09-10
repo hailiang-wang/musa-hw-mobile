@@ -13,6 +13,7 @@ requirejs.config({
         app: '../app',
         swiper: 'idangerous.swiper.min',
         mapbox: 'mapbox/mapbox',
+        noty : 'jquery.noty.packaged.min',
         jqm: 'jqm/jquery.mobile-1.4.3.min',
         underscore: 'underscore-min',
         backbone : 'backbone-min'
@@ -25,6 +26,9 @@ requirejs.config({
             deps: ['jquery']
         },
         'jqm':{
+            deps: ['jquery']
+        },
+        'noty':{
             deps: ['jquery']
         },
         'underscore': {
@@ -63,6 +67,7 @@ requirejs(['jquery','cordova.js', 'app/config', 'app/util', 'underscore', 'backb
 // cordova is now available globally
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
+
 
 $('#qrcodeBtn' ).on('touchend click', function() {
     var self = this;
