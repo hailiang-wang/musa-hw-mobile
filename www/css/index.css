@@ -65,6 +65,7 @@
     padding: 0px!important;
     top: 70px;
     height: 454px!important;
+    margin: 0px!important;
   } 
 
   #notifications-index .messages .refresh {
@@ -126,7 +127,6 @@
   }
 
   #notifications-index .message {
-    z-index: 2;
     background: #FFFFFF;
     height: 100%;
     width: 100%;

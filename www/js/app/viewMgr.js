@@ -33,7 +33,7 @@ define(function(require, exports, module) {
       $('#notifications-index .messages').hide();
       setNotificationsTitle(title);
       $('#notifications-index .message').append(function(){
-        var msgWindow = '<iframe id="article" src="{0}" name="frame1" class="width:100%; height:100%;padding:0px; margin:0px;" scrolling="yes"></iframe>'.f(link);
+        var msgWindow = '<iframe id="article" src="{0}" name="frame1" class="width:100%; height:100%;padding:0px!important; margin:0px!important;" scrolling="yes"></iframe>'.f(link);
         return msgWindow;
       });
       $('#notifications-index .message').show();

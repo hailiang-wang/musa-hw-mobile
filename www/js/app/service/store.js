@@ -24,11 +24,7 @@ define(function(require, exports, module) {
 	}
 
 	function _saveNotifications(data){
-		
-		if(config.dropstore){
-			window.localStorage.removeItem('{0}-NOTIFICATIONS'.f(_getUserId()));
-		}
-
+		var key = '{0}-NOTIFICATIONS'.f(_getUserId());
 		var blob = window.localStorage.getItem(key);
 		var json = {};
 		if(blob){
@@ -43,7 +39,7 @@ define(function(require, exports, module) {
 				date : util.getDate()
 		};
 		console.log('[DEBUG] save notifications ... ' + JSON.stringify(json));
-		window.localStorage.setItem('{0}-NOTIFICATIONS'.f(_getUserId()), JSON.stringify(json));
+		window.localStorage.setItem(key, JSON.stringify(json));
 	}
 
 	function _getNotifications(){
