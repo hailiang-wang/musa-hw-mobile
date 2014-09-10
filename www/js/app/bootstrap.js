@@ -4,14 +4,17 @@
 */
 define(['jqm', 'swiper', 'mapbox', 
     'app/config', 'app/service/mbaas', 'app/viewMgr',
-    'app/service/map','app/service/sseclient','app/service/store','noty'], function() {
+    'app/service/map','app/service/sseclient','app/service/store','noty', 'app/service/agent'], function() {
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');
         var viewMgr = require('app/viewMgr');
         var sseclient = require('app/service/sseclient');
         var store = require('app/service/store');
         var util = require('app/util');
+        var agent = require('app/service/agent');
 
+        agent.start();
+        
         $(function() {
             $( "[data-role='navbar']" ).navbar();
             $( "[data-role='footer']" ).toolbar();
