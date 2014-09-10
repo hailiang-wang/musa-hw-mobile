@@ -36,31 +36,24 @@ define(['jqm', 'swiper', 'mapbox',
         function getUserProfile(callback){
             //var reqHeaders = {accept:"application/json"}
             // connection available
-            if( config.debug ){
-                console.log('getUserProfile [DEBUG]');
-                callback(store.getUserProfile());
-            } else {
-                $.ajax({
-                    type: "GET",
-                    url: "http://{0}/user/me".f(config.host),
-                    dataType: 'json',
-                    // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-                    timeout: 20000,
-                    success: function(data){
-                        //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                        // TODO support api /user/me for local passport 
-                        store.setUserId(data.emails[0].value);
-                        store.setUserProfile(data);
-                        callback(data);
-                    },
-                    error:function(XMLHttpRequest, textStatus, errorThrown){
-                        console.log('[error] failed to request remote server for user profile');
-                        console.log(textStatus);
-                        console.log(errorThrown);
-                        window.location = 'login.html';
-                    }
-                });
-            }
+            $.ajax({
+                type: "GET",
+                url: "http://{0}/user/me".f(config.host),
+                dataType: 'json',
+                // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+                timeout: 20000,
+                success: function(data){
+                    //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                    
+                    callback(data);
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log('[error] failed to request remote server for user profile');
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    window.location = 'login.html';
+                }
+            });
         }
 
         function ngv(){
@@ -96,9 +89,23 @@ define(['jqm', 'swiper', 'mapbox',
              * handle logout event
              */
             $("#signOutBtn").on('click', function(){
-              console.log('log out happens')
-              store.deleteUserSID();
-              window.location = 'login.html';
+              navigator.splashscreen.show();
+              $.ajax({
+                  type: "GET",
+                  url: "http://{0}/logout".f(config.host),
+                  success: function(data){
+                      console.log("LOGOUT user's session is cleaned in server.")
+                      store.deleteUserSID();
+                      window.location = 'login.html';
+                  },
+                  error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                      console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
+                      console.log("[error] Status: " + textStatus); 
+                      console.log("[error] Error: " + errorThrown); 
+                      store.deleteUserSID();
+                      window.location = 'login.html';
+                  }
+              });
             });
 
             var user = store.getUserProfile();
@@ -189,13 +196,15 @@ define(['jqm', 'swiper', 'mapbox',
                     }
                 }
             });
-            var userId = store.getUserId();
             var userSid = store.getUserSID();
-            if(userId && userSid){
+            if(userSid){
                 cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), userSid, function(){
                     // succ callback
                     // create home page at initializing 
                     getUserProfile(function(data){
+                        // TODO support api /user/me for local passport 
+                        store.setUserId(data.emails[0].value);
+                        store.setUserProfile(data);
                         mbaas.push.init(data.emails[0].value);
                         viewMgr.createHomeSwiperHeader();
                         viewMgr.createMap();
@@ -204,7 +213,6 @@ define(['jqm', 'swiper', 'mapbox',
                         $("#homeBtn").addClass('ui-btn-active');
                         // set default style for some btn
                         $("#closeShowUpStatusBtn").hide();
-
                         setTimeout(function(){
                             navigator.splashscreen.hide();
                         },2000)

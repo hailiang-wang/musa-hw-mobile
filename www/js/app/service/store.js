@@ -65,15 +65,15 @@ define(function(require, exports, module) {
 	}
 
 	function _getUserSID(){
-		return window.localStorage.getItem('{0}-MUSA_USER_SID'.f(_getUserId()));
+		return window.localStorage.getItem('MUSA_USER_SID'.f(_getUserId()));
 	}
 
 	function _setUserSID(sid){
-		window.localStorage.setItem('{0}-MUSA_USER_SID'.f(_getUserId()),sid);
+		window.localStorage.setItem('MUSA_USER_SID'.f(_getUserId()),sid);
 	}	
 
 	function _deleteUserSID(){
-		window.localStorage.removeItem('{0}-MUSA_USER_SID'.f(_getUserId()));
+		window.localStorage.removeItem('MUSA_USER_SID'.f(_getUserId()));
 	}
 
 	exports.saveNotifications = _saveNotifications;

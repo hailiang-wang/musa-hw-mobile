@@ -294,10 +294,25 @@ define(function(require, exports, module) {
      * handle logout event
      */
     $("#signOutBtn").on('click', function(){
-      console.log('log out happens')
-      store.deleteUserSID();
-      window.location = 'login.html';
+      navigator.splashscreen.show();
+      $.ajax({
+          type: "GET",
+          url: "http://{0}/logout".f(config.host),
+          success: function(data){
+              console.log("LOGOUT user's session is cleaned in server.")
+              store.deleteUserSID();
+              window.location = 'login.html';
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) { 
+              console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
+              console.log("[error] Status: " + textStatus); 
+              console.log("[error] Error: " + errorThrown); 
+              store.deleteUserSID();
+              window.location = 'login.html';
+          }
+      });
     });
+
   })();
 
   exports.initSlides = _initSlides;
