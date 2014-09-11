@@ -61,14 +61,17 @@ define(function(require, exports, module) {
       });
     }
 
-  function getSlide(title, link){
+  function getSlide(title, link, date){
       console.log(title + link);
       if( link && (link !== "#")){
-        return '<div class="title"><a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\')">'.f(title, link)
-        + '{0}</a>'.f(title)
-        + '</div>';
+        return '<div class="card">'
+                + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\')">'.f(title, link)
+                  + '<img src="sample/msg-demo.png" style="vertical-align:middle;">'
+                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/>{1}</span>'.f(title, date)
+                + '</a>'
+              + '</div>';
       } else{
-        return '<div class="title">{0}</div>'.f(title);
+        return '<div class="card">{0}</div>'.f(title);
       }
     }
 
@@ -124,7 +127,7 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key)), 
+        notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
               'swiper-slide ui-li-static ui-body-inherit');
         inViewSlideKeys.push(key);
       });
@@ -142,7 +145,7 @@ define(function(require, exports, module) {
             slideKeys.forEach(function(key){
               var sld = slides[key];
               if( _.indexOf(inViewSlideKeys, key) == -1){
-                notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key)), 
+                notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
                       'swiper-slide ui-li-static ui-body-inherit');
                 inViewSlideKeys.push(key);
                 console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
