@@ -175,14 +175,15 @@ define(['jqm', 'swiper', 'mapbox',
                     var page = ui.nextPage;
                     switch(page.attr('id')) {
                         case 'home-index':
-                        console.log('render home page ...');
                         break;
-                        case 'notifications-index':
-                        console.log('render notifications page ...');
+                        case 'notifications':
+                        console.log('beforehide this page to notifications page ...');
                         break;
                         case 'user-index':
-                        console.log('render user page ...');
                         renderUserProfilePage();
+                        break;
+                        case 'notification':
+                        console.log('beforehide this page to notification page ...')
                         break;
                         default:
                         console.log('you can never find me.')
@@ -192,10 +193,12 @@ define(['jqm', 'swiper', 'mapbox',
                 show: function( event, ui ){
                     try{
                         var page = ui.toPage;
-                        console.log('show:' + page.attr('id'));
                         switch(page.attr('id')){
-                            case 'notifications-index':
+                            case 'notifications':
                                 viewMgr.initSlides();
+                                break;
+                            case 'notification':
+                                viewMgr.initNotificationPage();
                                 break;
                             default:
                                 break;
