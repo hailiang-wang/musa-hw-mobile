@@ -53,10 +53,9 @@ requirejs.config({
 * the message arrives, but when the app wake up, the cordova method does not called.
 */ 
 function handleApplePushNotificationArrival(msg){
-    console.log('[DEBUG] get notification : \n ' + msg);
     requirejs(['jquery', 'jqm', 'app/viewMgr'], function(){
             var viewMgr = require('app/viewMgr');
-            viewMgr.respPushNotificationArrival(msg);
+            viewMgr.respPushNotificationArrival();
     });
 }
 

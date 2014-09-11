@@ -5,10 +5,10 @@ define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
   var mapController = require('app/service/map');
+  var util = require('app/util');
   var homeSwiper;
 	var notiSwiper;
   var inViewSlideKeys;
-
 
   function showModal(){
     $("#notification .content").append('<div class="modalWindow"/>');
@@ -48,8 +48,6 @@ define(function(require, exports, module) {
   }
 
   function _openMsg(title, link){
-
-
       window.SnowNotificationObject = {
         title : title,
         link : link
@@ -126,7 +124,7 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getSlide(sld.alert, key), 
+        notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key)), 
               'swiper-slide ui-li-static ui-body-inherit');
         inViewSlideKeys.push(key);
       });
@@ -144,7 +142,7 @@ define(function(require, exports, module) {
             slideKeys.forEach(function(key){
               var sld = slides[key];
               if( _.indexOf(inViewSlideKeys, key) == -1){
-                notiSwiper.prependSlide(getSlide(sld.alert, key), 
+                notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key)), 
                       'swiper-slide ui-li-static ui-body-inherit');
                 inViewSlideKeys.push(key);
                 console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
@@ -192,8 +190,20 @@ define(function(require, exports, module) {
      [link, "_system"]);
   }
 
-	function _respPushNotificationArrival(data){
-		store.saveNotifications(_parseNotification(data));
+	function _respPushNotificationArrival(){
+    console.log('get noti ...');
+		util.getNotification().then(function(data){
+      console.log(JSON.stringify(data));
+      if(_.isObject(data.notifications)){
+        var keys = _.keys(data.notifications);
+        keys.forEach(function(key){
+          var notification = JSON.parse(data.notifications[key]);
+          store.saveNotifications(notification);
+        });
+      }
+    },function(err){
+      console.log(err);
+    });
 	}
 
   function _createHomeSwiperHeader(){

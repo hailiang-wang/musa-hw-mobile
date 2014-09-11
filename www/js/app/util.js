@@ -20,6 +20,8 @@ define(function(require, exports, module) {
         return this.indexOf(str) == 0;
     };
 
+    var config = require('app/config');
+
     /**
     * @function check Network Connections, only support ETHERNET,WIFI, CELL 3|4 G
     */
@@ -61,9 +63,7 @@ define(function(require, exports, module) {
         return connDeferred.promise();
     }
 
-
-    return { 
-        getDate : function(){
+    function _getDate(){
             var curr = new Date();
             var dd = curr.getDate();
             var mm = curr.getMonth()+1; //January is 0!
@@ -84,7 +84,27 @@ define(function(require, exports, module) {
                 sec='0'+sec
             } 
             return yyyy+'/'+ mm + '/' + dd + ' ' + min + ':' + sec;
-        },
-        getNetwork : _getNetwork
+        }
+
+    function _getNotification(){
+        var deferred = $.Deferred();
+        $.ajax({
+            type: 'get',
+            url: 'http://{0}/mobile/notification'.f(config.host),
+            headers: {accept: 'application/json'},
+            success: function(data){
+                deferred.resolve(data);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                deferred.reject({status:3, error: errorThrown});
+            }
+        });
+        return deferred.promise();
+    }
+
+    return { 
+        getDate : _getDate,
+        getNetwork : _getNetwork,
+        getNotification : _getNotification
     };
 })

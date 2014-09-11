@@ -33,10 +33,11 @@ define(function(require, exports, module) {
 		// #TODO for data has Chinese, the text has encoded as Unicode,
 		// but here does not handle it, so now we get messy code.
 		// need to fix it for Beta
-		json[data.url] = {
-				type : data.type,
-				alert : data.alert,
-				date : util.getDate()
+		json[data.id] = {
+				server : data.server,
+				title : data.title,
+				date : data.date,
+				tags : data.tags
 		};
 		console.log('[DEBUG] save notifications ... ' + JSON.stringify(json));
 		window.localStorage.setItem(key, JSON.stringify(json));

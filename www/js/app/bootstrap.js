@@ -218,6 +218,7 @@ define(['jqm', 'swiper', 'mapbox',
                         store.setUserId(data.emails[0].value);
                         store.setUserProfile(data);
                         mbaas.push.init(data.emails[0].value);
+                        viewMgr.respPushNotificationArrival();
                         viewMgr.createHomeSwiperHeader();
                         viewMgr.createMap();
                         sseclient.start();
