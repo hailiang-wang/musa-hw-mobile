@@ -285,10 +285,21 @@ define(function(require, exports, module) {
 	}
 
   function renderPeoplePage(){
+    $('#people .ui-grid-b').empty();
     var people = mapController.people;
+    var pos = {
+      0: 'c',
+      1: 'a',
+      2: 'b'
+    };
+    var cursor = 0;
     _.keys(people).forEach(function(userId){
-      console.log(people[userId].picture);
-      console.log(people[userId].status);
+      $('#people .ui-grid-b').append(function(){
+        cursor += 1;
+        return '<div class="ui-block-{0}">'.f(pos[cursor % 3])
+              +    '<img alt="" src="{0}" style="width: 80px; height: 80px" />'.f(people[userId].picture)
+              +'</div>'
+      });
     });
   }
 
