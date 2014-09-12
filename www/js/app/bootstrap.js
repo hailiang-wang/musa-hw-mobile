@@ -92,80 +92,6 @@ define(['jqm', 'swiper', 'mapbox',
             });  
         }
 
-        function renderUserProfilePage(){
-            // bind events
-            /**
-             * handle logout event
-             */
-            $("#signOutBtn").on('click', function(){
-              navigator.splashscreen.show();
-              $.ajax({
-                  type: "GET",
-                  url: "http://{0}/logout".f(config.host),
-                  success: function(data){
-                      console.log("LOGOUT user's session is cleaned in server.")
-                      store.deleteUserSID();
-                      window.location = 'login.html';
-                  },
-                  error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                      console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
-                      console.log("[error] Status: " + textStatus); 
-                      console.log("[error] Error: " + errorThrown); 
-                      store.deleteUserSID();
-                      window.location = 'login.html';
-                  }
-              });
-            });
-
-            var user = store.getUserProfile();
-            // displayName
-            $('#user-index .content .blurContainer').empty();
-            $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
-            // user avatar
-            $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
-            // collegue
-            if(user._json.educations._total > 0){
-                // how to render it Master?Bachelor, now just show up a school
-                $.each(user._json.educations.values, function(index, education){
-                    if( index < 1){
-                        $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree));
-                    }
-                })
-            }else{
-                // no school
-                $('#user-index .blurry p.edu').append('{0} <br> '.f("您什么也没有写。"));
-            }
-            // positions
-            if(user._json.positions._total > 0){
-                $.each(user._json.positions.values,function(index, position){
-                    if(position.isCurrent){
-                        $('#user-index .blurry p.company').text(position.company.name);
-                    }
-                })
-            }else{
-                $('#user-index .blurry p.company').append('{0} <br> '.f("您什么也没有写。"));
-                // no positions available
-            }
-            // skills
-            if(user._json.skills._total > 0){
-                // how to render it Master?Bachelor, now just show up a school
-                $.each(user._json.skills.values, function(index, skill){
-                    if(index < 3){
-                        $('#user-index .blurry p.skill').append('{0} <br> '.f(skill.skill.name));
-                    }
-                })
-            }else{
-                // no skills
-                $('#user-index .blurry p.skill').append('{0} <br> '.f("您什么也没有写。"));
-            }
-            // interest
-            if(user._json.interests){
-                $('#user-index .blurry p.interest').append('{0} <br> '.f(user._json.interests));
-            }else{
-                // no interest
-                $('#user-index .blurry p.interest').append('{0} <br> '.f("您什么也没有写。"));
-            }
-        }
 
         function homeHandler(){
             ngv();
@@ -175,19 +101,19 @@ define(['jqm', 'swiper', 'mapbox',
                     var page = ui.nextPage;
                     switch(page.attr('id')) {
                         case 'home-index':
-                        break;
+                            break;
                         case 'notifications':
-                        console.log('beforehide this page to notifications page ...');
-                        break;
+                            console.log('beforehide this page to notifications page ...');
+                            break;
                         case 'user-index':
-                        renderUserProfilePage();
-                        break;
+                            viewMgr.renderUserProfilePage();
+                            break;
                         case 'notification':
-                        console.log('beforehide this page to notification page ...')
-                        break;
+                            console.log('beforehide this page to notification page ...')
+                            break;
                         default:
-                        console.log('you can never find me.')
-                        break;
+                            console.log('you can never find me.')
+                            break;
                     }
                 },
                 show: function( event, ui ){

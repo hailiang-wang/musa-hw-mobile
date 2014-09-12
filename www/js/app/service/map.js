@@ -23,10 +23,12 @@ define(function(require, exports, module) {
 			    var index = _.indexOf(_getMarkerNames(), data.username);
 			    if(index == -1){
 			      // create new marker
-			      _addMarkerInMap(data.username, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile));
+			      _addMarkerInMap(data.username, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile),
+			      	data.picture);
 			    }else{
 			      // update marker
-			      _updateMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture));
+			      _updateMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture),
+			      	data.picture);
 			    }
 				break;
 			case 'invisible':
@@ -72,7 +74,7 @@ define(function(require, exports, module) {
 		});
   	}
 
-	function _addMarkerInMap(username, lat, lng, popUpHtml){
+	function _addMarkerInMap(username, lat, lng, popUpHtml, picture, status){
 		if(markers[username]){
 			console.log('try to create a marker that does already exist for {0}'.f(username));
 		} else {
@@ -80,7 +82,9 @@ define(function(require, exports, module) {
 			var marker = L.marker([lat, lng]).addTo(map)
 			    .bindPopup(popUpHtml)
 			    .openPopup();
-			markers[username] = marker;
+			markers[username] = {picture: picture||'sample/user-default.png',
+								status: status||'How do you do.',
+								marker: marker};
 		}
 	}
 
@@ -88,13 +92,15 @@ define(function(require, exports, module) {
 		return _.keys(markers);
 	}
 
-	function _updateMarkerInMap(username, lat, lng, popUpHtml){
+	function _updateMarkerInMap(username, lat, lng, popUpHtml, picture, status){
 		if(markers[username]){
 			// add a marker in the given location, attach some popup content to it and open the popup
-			markers[username].setLatLng([lat, lng]);
-			markers[username].update();
-			markers[username].bindPopup(popUpHtml)
+			markers[username].marker.setLatLng([lat, lng]);
+			markers[username].marker.update();
+			markers[username].marker.bindPopup(popUpHtml)
 			    .openPopup();
+			markers[username].picture = picture;
+			markers[username].status = status;
 		} else {
 			console.log('try to update a marker that does not exist for {0}'.f(username));
 		}
@@ -102,7 +108,7 @@ define(function(require, exports, module) {
 
 	function _deleteMarkerByName(username){
 		if(markers[username]){
-			map.removeLayer(markers[username]);
+			map.removeLayer(markers[username].marker);
 			delete markers[username];
 		}else{
 			console.log('try to delete an not exist marker {0}'.f(username));
@@ -115,4 +121,5 @@ define(function(require, exports, module) {
 	exports.deleteMarkerByName = _deleteMarkerByName;
 	exports.updateMarkerInMap = _updateMarkerInMap;
 	exports.surveyor = surveyor;
+	exports.people = markers;
 })
