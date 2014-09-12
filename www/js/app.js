@@ -16,7 +16,8 @@ requirejs.config({
         noty : 'jquery.noty.packaged.min',
         jqm: 'jqm/jquery.mobile-1.4.3.min',
         underscore: 'underscore-min',
-        backbone : 'backbone-min'
+        backbone : 'backbone-min',
+        geolib : 'geolib.min'
     },
     shim: {
         'jquery': {
@@ -59,7 +60,8 @@ function handleApplePushNotificationArrival(msg){
     });
 }
 
-requirejs(['jquery','cordova.js', 'app/config', 'app/util', 'underscore', 'backbone'],
+requirejs(['jquery','cordova.js', 'app/config', 
+    'app/util', 'underscore', 'backbone'],
     function   ($) {
 // start of require
 

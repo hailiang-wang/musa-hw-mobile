@@ -4,7 +4,10 @@
 */
 define(['jqm', 'swiper', 'mapbox', 
     'app/config', 'app/service/mbaas', 'app/viewMgr',
-    'app/service/map','app/service/sseclient','app/service/store','noty', 'app/service/agent'], function() {
+    'app/service/map','app/service/sseclient',
+    'app/service/store','noty', 'app/service/agent',
+    'app/service/gps'], function() {
+        
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');
         var viewMgr = require('app/viewMgr');
@@ -12,6 +15,8 @@ define(['jqm', 'swiper', 'mapbox',
         var store = require('app/service/store');
         var util = require('app/util');
         var agent = require('app/service/agent');
+        var gps = require('app/service/gps');
+
 
         agent.start();
         

@@ -4,7 +4,7 @@
 define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
-	L.mapbox.accessToken = 'pk.eyJ1IjoiaGFpbiIsImEiOiJFQUVqelIwIn0.397XBIShpknPNDl6e95mow';
+	L.mapbox.accessToken = config.premises['HelloWorldCafe'].mapbox.accessToken;
  	var markers = {};
 	var map;
 
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
  			map.remove();
  			map = null;
  		}
-		map = L.mapbox.map('map', 'hain.ja31ci75').setView([0, 50], 3);
+		map = L.mapbox.map('map', config.premises['HelloWorldCafe'].mapbox.id).setView([0, 50], 3);
 		$.ajax({
 			type: 'GET',
 			url: "http://{0}/rtls/hw".f(config.host),
