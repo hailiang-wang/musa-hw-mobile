@@ -64,7 +64,7 @@ define(function(require, exports, module) {
     }
 
     function _getDate(dateString){
-        if(dateString){
+        if(!dateString){
             var curr = new Date();
             var yyyy = curr.getFullYear();
             var mm = curr.getMonth()+1; //January is 0!
@@ -73,7 +73,6 @@ define(function(require, exports, module) {
             var min = curr.getMinutes();
             var sec = curr.getSeconds();
 
-
             if(mm<10){
                 mm='0'+mm
             } 
@@ -81,7 +80,7 @@ define(function(require, exports, module) {
                 dd='0'+dd
             } 
             if(hh<10){
-                hh ='0'+min
+                hh ='0'+hh
             } 
             if(min<10){
                 min='0'+min
@@ -105,12 +104,12 @@ define(function(require, exports, module) {
                 dd='0'+dd
             } 
             if(hh<10){
-                hh ='0'+min
+                hh ='0'+hh
             } 
             if(min<10){
                 min='0'+min
             } 
-            return '%s/%s/%s %s:%s'.f(yyyy, mm, dd, hh, min);
+            return '{0}/{1}/{2} {3}:{4}'.f(yyyy, mm, dd, hh, min);
         }
     }
 
@@ -130,9 +129,21 @@ define(function(require, exports, module) {
         return deferred.promise();
     }
 
+    function _trimByPixel(str, width) {
+        var spn = $('<span style="visibility:hidden"></span>').text(str).appendTo('body');
+        var txt = str;
+        if(spn.width() > width){
+            while (spn.width() > width) { txt = txt.slice(0, -1); spn.text(txt + "..."); }
+            txt = txt + '...'
+        }
+        spn.remove();
+        return txt;
+    }
+
     return { 
         getDate : _getDate,
         getNetwork : _getNetwork,
-        getNotification : _getNotification
+        getNotification : _getNotification,
+        trimByPixel: _trimByPixel
     };
 })
