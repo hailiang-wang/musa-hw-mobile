@@ -67,7 +67,7 @@ define(function(require, exports, module) {
         return '<div class="card">'
                 + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\')">'.f(title, link)
                   + '<img src="sample/msg-demo.png" style="vertical-align:middle;">'
-                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><p style="vertical-align:bottom;text-align:right">{1}</p></span>'.f(title, date)
+                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="text-align:right;padding-left:50px">{1}</div></span>'.f(title, util.getDate(date))
                 + '</a>'
               + '</div>';
       } else{

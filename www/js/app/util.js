@@ -63,19 +63,25 @@ define(function(require, exports, module) {
         return connDeferred.promise();
     }
 
-    function _getDate(){
+    function _getDate(dateString){
+        if(dateString){
             var curr = new Date();
-            var dd = curr.getDate();
+            var yyyy = curr.getFullYear();
             var mm = curr.getMonth()+1; //January is 0!
+            var dd = curr.getDate();
+            var hh = curr.getHours();
             var min = curr.getMinutes();
             var sec = curr.getSeconds();
 
-            var yyyy = curr.getFullYear();
+
+            if(mm<10){
+                mm='0'+mm
+            } 
             if(dd<10){
                 dd='0'+dd
             } 
-            if(mm<10){
-                mm='0'+mm
+            if(hh<10){
+                hh ='0'+min
             } 
             if(min<10){
                 min='0'+min
@@ -84,7 +90,29 @@ define(function(require, exports, module) {
                 sec='0'+sec
             } 
             return yyyy+'/'+ mm + '/' + dd + ' ' + min + ':' + sec;
+        }else{
+            var date = new Date(dateString);
+            var yyyy = date.getFullYear();
+            var mm = date.getMonth()+1; //January is 0!
+            var dd = date.getDate();
+            var hh = date.getHours();
+            var min = date.getMinutes();
+
+            if(mm<10){
+                mm='0'+mm
+            } 
+            if(dd<10){
+                dd='0'+dd
+            } 
+            if(hh<10){
+                hh ='0'+min
+            } 
+            if(min<10){
+                min='0'+min
+            } 
+            return '%s/%s/%s %s:%s'.f(yyyy, mm, dd, hh, min);
         }
+    }
 
     function _getNotification(){
         var deferred = $.Deferred();
