@@ -152,6 +152,8 @@ define(['jqm', 'swiper', 'mapbox',
                         $("#homeBtn").addClass('ui-btn-active');
                         // set default style for some btn
                         $("#closeShowUpStatusBtn").hide();
+                        // hide people page
+                        $("#people").hide();
                         setTimeout(function(){
                             navigator.splashscreen.hide();
                         },2000)
