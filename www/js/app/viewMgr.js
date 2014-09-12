@@ -5,6 +5,7 @@ define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
   var mapController = require('app/service/map');
+  var gps = require('app/service/gps');
   var util = require('app/util');
   var homeSwiper;
 	var notiSwiper;
@@ -348,25 +349,42 @@ define(function(require, exports, module) {
               var code = result.text;
               if(code){
                 var data = JSON.parse(code);
-                // TODO validate code and handle exceptions
-                $.ajax({
-                    type: "POST",
-                    url: "http://{0}/rtls/locin".f(config.host),
-                    dataType: 'json',
-                    data: JSON.stringify({ lat: data.lat, lng: data.lng}),
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    success: function(data){
-                        console.log(JSON.stringify(data));
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                        console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-                        console.log("[error] Status: " + textStatus); 
-                        console.log("[error] Error: " + errorThrown); 
-                    }
-                });
+                if(data.lng && data.lat){
+                  gps.getCurrentPosition().then(function(pos){
+                      if(gps.isPointInside('HelloWorldCafe', pos.coords)){
+                        $.ajax({
+                          type: "POST",
+                          url: "http://{0}/rtls/locin".f(config.host),
+                          dataType: 'json',
+                          data: JSON.stringify({ lat: data.lat, lng: data.lng}),
+                          headers: {
+                              "Accept": "application/json",
+                              "Content-Type": "application/json"
+                          },
+                          success: function(data){
+                              console.log(JSON.stringify(data));
+                          },
+                          error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                              console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+                              console.log("[error] Status: " + textStatus); 
+                              console.log("[error] Error: " + errorThrown); 
+                          }
+                        });
+                      }else{
+                        noty({text: '您当前不在Hello World Cafe.',
+                          layout: 'center',
+                          type: 'error',
+                          timeout: 2000});
+                      }
+                  }, function(err){
+                    noty({text: '无法获得GPS位置服务信息.',
+                          layout: 'center',
+                          type: 'warning',
+                          timeout: 2000})
+                  });
+                }else{
+                  console.log('do not have position data !');
+                }
               }
           },
           function (error) {
