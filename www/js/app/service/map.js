@@ -4,7 +4,7 @@
 define(function(require, exports, module) {
 	var config = require('app/config');
 	var store = require('app/service/store');
-	L.mapbox.accessToken = config.premises['HelloWorldCafe'].mapbox.accessToken;
+	L.mapbox.accessToken = config.premises[config.myPremise].mapbox.accessToken;
  	var markers = {};
 	var map;
 
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
  			map.remove();
  			map = null;
  		}
-		map = L.mapbox.map('map', config.premises['HelloWorldCafe'].mapbox.id).setView([0, 50], 3);
+		map = L.mapbox.map('map', config.premises[config.myPremise].mapbox.id).setView([0, 50], 3);
 		$.ajax({
 			type: 'GET',
 			url: "http://{0}/rtls/hw".f(config.host),

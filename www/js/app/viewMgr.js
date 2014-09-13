@@ -351,7 +351,8 @@ define(function(require, exports, module) {
                 var data = JSON.parse(code);
                 if(data.lng && data.lat){
                   gps.getCurrentPosition().then(function(pos){
-                      if(gps.isPointInside('HelloWorldCafe', pos.coords)){
+                      console.log('get position ...' + JSON.stringify(pos));
+                      if(gps.isPointInside(config.myPremise, pos.coords)){
                         $.ajax({
                           type: "POST",
                           url: "http://{0}/rtls/locin".f(config.host),
@@ -371,9 +372,9 @@ define(function(require, exports, module) {
                           }
                         });
                       }else{
-                        noty({text: '您当前不在Hello World Cafe.',
+                        noty({text: '您当前不在{0}.'.f(config.myPremise),
                           layout: 'center',
-                          type: 'error',
+                          type: 'warning',
                           timeout: 2000});
                       }
                   }, function(err){
