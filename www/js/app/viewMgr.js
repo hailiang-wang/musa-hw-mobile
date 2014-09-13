@@ -76,7 +76,7 @@ define(function(require, exports, module) {
       }
     }
 
-  function _initSlides(){
+  function _initNotificationSlides(){
       var holdPosition = 0;
       var slideNumber = 0;
       inViewSlideKeys = [];
@@ -126,7 +126,7 @@ define(function(require, exports, module) {
         });
       var slides = store.getNotifications();
       var slideKeys = _.keys(slides);  
-      slideKeys.forEach(function(key){
+      slideKeys.sort().forEach(function(key){
         var sld = slides[key];
         notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
               'swiper-slide ui-li-static ui-body-inherit');
@@ -448,10 +448,10 @@ define(function(require, exports, module) {
 
   })();
 
-  exports.initSlides = _initSlides;
   exports.respPushNotificationArrival = _respPushNotificationArrival;
   exports.createMap = mapController.createMap;
   exports.createHomeSwiperHeader = _createHomeSwiperHeader;
+  exports.initNotificationSlides = _initNotificationSlides;
   exports.initNotificationPage = _initNotificationPage;
   exports.renderUserProfilePage = _renderUserProfilePage;
 

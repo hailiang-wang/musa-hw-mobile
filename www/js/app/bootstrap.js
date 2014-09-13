@@ -124,7 +124,7 @@ define(['jqm', 'swiper', 'mapbox',
                         var page = ui.toPage;
                         switch(page.attr('id')){
                             case 'notifications':
-                                viewMgr.initSlides();
+                                viewMgr.initNotificationSlides();
                                 break;
                             case 'notification':
                                 viewMgr.initNotificationPage();
