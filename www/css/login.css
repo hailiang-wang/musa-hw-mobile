@@ -5,24 +5,6 @@
   background-repeat: no-repeat;
   width:100%;
 }
-.banner {
-    width: 100%;
-}
-
-#title {
-    font-size: 1.5em;
-    margin-left: 10%;
-    padding-top: 40%;
-    text-shadow: none;
-    color: yellow;
-}
-
-#slogan {
-    text-shadow: none;
-    font-size: 0.8em;
-    margin-left: 20%;
-    color: white;
-}
 
 .version {
     width: 100%;
@@ -32,6 +14,7 @@
     text-shadow: none;
     color: #1E5ABF;
 }
+
 .ui-loader-background {
     width:100%;
     height:100%;
@@ -47,20 +30,18 @@
     display:block;
 }
 
-.content.ui-content{
-    padding: 0px!important;
+#login-index .content.ui-content{
+    padding-top: 80px!important;
     margin: 0px!important;
 }
 
 .local-login-form {
-    top:60px;
     position:relative;
-    width:290px
+    width:285px
 }
 
-
 .local-login-form input{
-    width:290px;
+    width:285px;
 }
 
 #email-img {
