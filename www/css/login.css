@@ -28,7 +28,7 @@
     width: 100%;
     font-size: 0.5em;
     margin-left: 70%;
-    padding-top: 100%;
+    padding-top: 20%;
     text-shadow: none;
     color: #1E5ABF;
 }
@@ -45,4 +45,32 @@
 
 .ui-loading .ui-loader-background {
     display:block;
+}
+
+.content.ui-content{
+    padding: 0px!important;
+    margin: 0px!important;
+}
+
+.local-login-form {
+    top:60px;
+    position:relative;
+    width:290px
+}
+
+
+.local-login-form input{
+    width:290px;
+}
+
+#email-img {
+    position:absolute;
+    right:5px;
+    top: 5px;
+}
+
+#password-img {
+    position:absolute;
+    right:5px;
+    top:50px;
 }
