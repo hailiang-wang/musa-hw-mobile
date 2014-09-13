@@ -62,8 +62,7 @@ define(function(require, exports, module) {
       });
     }
 
-  function getSlide(title, link, date){
-      console.log(title + link);
+  function getNotificationSilde(title, link, date){
       if( link && (link !== "#")){
         return '<div class="card">'
                 + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\')">'.f(title, link)
@@ -128,7 +127,7 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
+        notiSwiper.prependSlide(getNotificationSilde(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
               'swiper-slide ui-li-static ui-body-inherit');
         inViewSlideKeys.push(key);
       });
@@ -143,10 +142,10 @@ define(function(require, exports, module) {
             //Prepend new slide
             var slides = store.getNotifications();
             var slideKeys = _.keys(slides);  
-            slideKeys.forEach(function(key){
+            slideKeys.sort().forEach(function(key){
               var sld = slides[key];
               if( _.indexOf(inViewSlideKeys, key) == -1){
-                notiSwiper.prependSlide(getSlide(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
+                notiSwiper.prependSlide(getNotificationSilde(sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
                       'swiper-slide ui-li-static ui-body-inherit');
                 inViewSlideKeys.push(key);
                 console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
