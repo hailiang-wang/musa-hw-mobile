@@ -13,19 +13,33 @@
 	<body>
 		<div id='login-index' data-role='page' data-theme='a' data-title='login' >
 			<div data-role="content" id="loginContent">
-				<div class="banner">
-					<div id="title">雪球</div>
-					<span id="slogan">一切过去了的都会变成亲切的怀念。</span>
+				<div class="local-login-form" style="top:50px">
+					<input id="email" value="" placeholder="邮箱" data-corners="false">
+			        <img id="email-img" src="js/lib/jqm/images/icons-svg/mail-black.svg" width="30" height="25" />
+			        <input id="password" type="password" value="" placeholder="密码" data-corners="false">
+			        <img id="password-img" src="js/lib/jqm/images/icons-svg/lock-black.svg" width="30" height="25" />
+				</div>
+				<div data-role="navbar" style="padding-top:60px">
+				    <ul>
+				        <li>
+					        <a id='lkdLoginBtn' href="#" class="ui-btn-active" href="#" data-shadow="true" data-icon='linkedin' data-iconshadow="true" style="display:block;"> 
+					        	认证
+					        </a>
+				        </li>
+				        <li>
+					        <a id='locRegisBtn' href="#" class="ui-btn-active" href="#" data-shadow="true" data-icon='rocket' data-iconshadow="true" style="display:block;"> 
+					        	注册
+					        </a>
+				        </li>
+				        <li>
+					        <a id='locLoginBtn' href="#" class="ui-btn-active" href="#" data-shadow="true" data-icon='sign-in' data-iconshadow="true" style="display:block;"> 
+					        	登录
+					        </a>
+				        </li>
+				    </ul>
 				</div>
 				<div class='version'>
 				</div>
-			</div>
-			<div class='footer' data-role='footer'  data-position='fixed' data-tap-toggle="false">
-				<div data-role="navbar">
-					<ul>
-						<li><a id='loginBtn' href="#" data-shadow="true" data-icon='linkedin' data-iconshadow="true" class="ui-btn-active">认证登录</a></li>
-					</ul>
-				</div><!-- /navbar -->
 			</div>
 		</div>
 		<script data-main="js/app" src="js/require.js"></script>

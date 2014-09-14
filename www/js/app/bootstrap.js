@@ -19,8 +19,8 @@ define(['jqm', 'swiper', 'mapbox',
         agent.start();
         
         $(function() {
+            $( "[data-role='header'], [data-role='footer']" ).toolbar();
             $( "[data-role='navbar']" ).navbar();
-            $( "[data-role='footer']" ).toolbar();
         });
             // Update the contents of the toolbars
         $( document ).on( "pagecontainershow", function() {
@@ -172,7 +172,7 @@ define(['jqm', 'swiper', 'mapbox',
 
         function loginHandler(){
             // fix height for login page background
-            $('#login-index').css('height', ($(window).height() - $('#login-index .footer').height()) +'px');
+            $('#login-index').css('height', $(window).height()+'px');
             cordova.getAppVersion().then(function (version) {
                 $('.version').text('v'+version);
                 navigator.splashscreen.hide();
@@ -180,8 +180,8 @@ define(['jqm', 'swiper', 'mapbox',
 
             $('body').append("<div class='ui-loader-background'> </div>");
         
-            $('#loginBtn').on('click', function(){
-                $('#loginBtn').addClass('ui-state-disabled');
+            $('#lkdLoginBtn').on('click', function(){
+                $('#lkdLoginBtn').addClass('ui-state-disabled');
                 $.mobile.loading( "show", {
                     textVisible: false,
                     theme: "a",
@@ -200,10 +200,15 @@ define(['jqm', 'swiper', 'mapbox',
                         window.location = 'home.html';
                     }else if(event.url == 'http://localhost/'){
                         // login fail 
-                        alert('登入失败，请稍后重试。');
+                        noty({
+                            text:'登入失败，请稍后重试。',
+                            timeout: 2000,
+                            type : 'warning',
+                            layout: 'center'
+                        });
                         ref.close();
                         $.mobile.loading('hide');
-                        $('#loginBtn').removeClass('ui-state-disabled');
+                        $('#lkdLoginBtn').removeClass('ui-state-disabled');
                     }
                 });
             });

@@ -5,33 +5,16 @@
   background-repeat: no-repeat;
   width:100%;
 }
-.banner {
-    width: 100%;
-}
-
-#title {
-    font-size: 1.5em;
-    margin-left: 10%;
-    padding-top: 40%;
-    text-shadow: none;
-    color: yellow;
-}
-
-#slogan {
-    text-shadow: none;
-    font-size: 0.8em;
-    margin-left: 20%;
-    color: white;
-}
 
 .version {
     width: 100%;
     font-size: 0.5em;
     margin-left: 70%;
-    padding-top: 100%;
+    padding-top: 20%;
     text-shadow: none;
     color: #1E5ABF;
 }
+
 .ui-loader-background {
     width:100%;
     height:100%;
@@ -45,4 +28,30 @@
 
 .ui-loading .ui-loader-background {
     display:block;
+}
+
+#login-index .content.ui-content{
+    padding-top: 80px!important;
+    margin: 0px!important;
+}
+
+.local-login-form {
+    position:relative;
+    width:285px
+}
+
+.local-login-form input{
+    width:285px;
+}
+
+#email-img {
+    position:absolute;
+    right:5px;
+    top: 5px;
+}
+
+#password-img {
+    position:absolute;
+    right:5px;
+    top:50px;
 }
