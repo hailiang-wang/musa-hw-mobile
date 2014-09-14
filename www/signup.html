@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>雪球</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
+    <meta name = "format-detection" content = "telephone=no">
+    <link rel="stylesheet" href="js/lib/jqm/jquery.mobile.structure-1.4.3.min.css" /> 
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/idangerous.swiper.css">
+    <link rel="stylesheet" href="css/themes/tassel-theme.css" />
+    <link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel='stylesheet' href='css/signup.css'/>
+    </head>
+    <body>
+        <div data-role="page" id="signup">
+            <div id="topbar">
+                <h3>用户注册</h3>
+            </div>
+            <form class="form-signup" action="">
+                <p class="errorTip"></p>
+                <div class="ui-input-text ui-body-inherit ui-shadow-inset ui-input-group">
+                    <label for=""><i class="fa fa-envelope"></i></label>
+                    <input type="text" id="email" name="email" placeholder="Email" data-corners="false" data-enhanced="true" data-clear-btn="true" autocapitalize="off" maxlength="100" />
+                </div>
+                <div class="ui-input-text ui-body-inherit ui-shadow-inset ui-input-group">
+                    <label for=""><i class="fa fa-user"></i></label>
+                    <input type="text" id="username" name="username" placeholder="用户名" data-corners="false" data-enhanced="true" autocapitalize="off" maxlength="30" />
+                </div>
+                <div class="ui-input-text ui-body-inherit ui-shadow-inset ui-input-group">
+                    <label for=""><i class="fa fa-lock"></i></label>
+                    <input type="password" id="password" name="password" placeholder="密码" data-corners="false" data-enhanced="true" maxlength="30" />
+                </div>
+                <input type="button" id="signupBtn" value="注册" data-corners="false" />
+            </form>
+        </div>
+        <div data-role="page" id="vericode">
+            <div id="topbar">
+                <h3>激活帐号</h3>
+            </div>
+            <div class="ui-content">
+                <form class="form-signup" action="">
+                    <p class="errorTip"></p>
+                    <div class="ui-input-text ui-body-inherit ui-shadow-inset ui-input-group">
+                        <label for=""><i class="fa fa-key"></i></label>
+                        <input type="text" id="code" name="code" placeholder="激活码" data-corners="false" data-enhanced="true" data-clear-btn="true" autocapitalize="off" maxlength="6" />
+                    </div>
+                    <input type="button" id="activeBtn" value="激活并登录" data-corners="false"/>
+                </form>
+            </div>
+        </div>
+    <script data-main="js/app" src="js/require.js"></script>
+</body>
+</html>
