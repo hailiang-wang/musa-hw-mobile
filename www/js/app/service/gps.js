@@ -32,12 +32,19 @@ define(function(require, exports, module) {
 		return deferred.promise();
 	}
 
-	function _isPointInside(premise, point){
-		console.log('isPointInside ' + JSON.stringify(point));
-		console.log(typeof geolib);
+	function _isPointInsidePolygon(premise, point){
 		return geolib.isPointInside(point, config.premises[premise].polygon);
 	}
 
+	function _isPointInsideCircle(premise, point){
+		console.log('center '+ JSON.stringify(config.premises[premise].circle));
+		console.log('point ' + JSON.stringify(point));
+		return geolib.isPointInCircle(point, 
+			config.premises[premise].circle.center, 
+			config.premises[premise].circle.radius);
+	}
+
 	exports.getCurrentPosition = _getCurrentPosition;
-	exports.isPointInside = _isPointInside;
+	exports.isPointInsidePolygon = _isPointInsidePolygon;
+	exports.isPointInsideCircle = _isPointInsideCircle;
 })

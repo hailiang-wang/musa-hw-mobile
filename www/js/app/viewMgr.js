@@ -285,21 +285,10 @@ define(function(require, exports, module) {
 	}
 
   function renderPeoplePage(){
-    $('#people .ui-grid-b').empty();
+    $('#people .list').empty();
     var people = mapController.people;
-    var pos = {
-      0: 'c',
-      1: 'a',
-      2: 'b'
-    };
-    var cursor = 0;
-    _.keys(people).forEach(function(userId){
-      $('#people .ui-grid-b').append(function(){
-        cursor += 1;
-        return '<div class="ui-block-{0}">'.f(pos[cursor % 3])
-              +    '<img alt="" src="{0}" style="width: 80px; height: 80px" />'.f(people[userId].picture)
-              +'</div>'
-      });
+    _.keys(people).sort().forEach(function(userId){
+      console.log('PeoplePage add ' + userId);
     });
   }
 
@@ -314,7 +303,7 @@ define(function(require, exports, module) {
                   case 0:
                     $("#map").hide();
                     $("#people").show();
-                    renderPeoplePage();
+                    //renderPeoplePage();
                     break;
                   case 1:
                     $("#people").hide();
@@ -351,7 +340,7 @@ define(function(require, exports, module) {
                 if(data.lng && data.lat){
                   gps.getCurrentPosition().then(function(pos){
                       console.log('get position ...' + JSON.stringify(pos));
-                      if(gps.isPointInside(config.myPremise, pos.coords)){
+                      if(gps.isPointInsideCircle(config.myPremise, pos.coords)){
                         $.ajax({
                           type: "POST",
                           url: "http://{0}/rtls/locin".f(config.host),
@@ -421,29 +410,6 @@ define(function(require, exports, module) {
           }
       });
     }); 
-
-    /**
-     * handle logout event
-     */
-    $("#signOutBtn").on('click', function(){
-      navigator.splashscreen.show();
-      $.ajax({
-          type: "GET",
-          url: "http://{0}/logout".f(config.host),
-          success: function(data){
-              console.log("LOGOUT user's session is cleaned in server.")
-              store.deleteUserSID();
-              window.location = 'login.html';
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) { 
-              console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
-              console.log("[error] Status: " + textStatus); 
-              console.log("[error] Error: " + errorThrown); 
-              store.deleteUserSID();
-              window.location = 'login.html';
-          }
-      });
-    });
 
   })();
 

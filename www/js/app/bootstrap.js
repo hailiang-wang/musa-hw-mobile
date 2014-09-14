@@ -180,6 +180,12 @@ define(['jqm', 'swiper', 'mapbox',
 
             $('body').append("<div class='ui-loader-background'> </div>");
         
+
+            /**
+             * Log-In via LinkedIn Passport
+             * ======================================
+             */
+
             $('#lkdLoginBtn').on('click', function(){
                 $('#lkdLoginBtn').addClass('ui-state-disabled');
                 $.mobile.loading( "show", {
@@ -212,6 +218,59 @@ define(['jqm', 'swiper', 'mapbox',
                     }
                 });
             });
+            /**
+             * Register locally
+             * ======================================
+             */
+            $('#locRegisBtn').on('click', function(){
+                window.location = 'signup.html';
+            });
+
+            /**
+             * Sign In locally
+             * ======================================
+             */
+            $('#locLoginBtn').on('click', function(){
+                var username = $('#email').val();
+                var password = $('#password').val();
+                
+                if(username && password){
+                    // wait the keyboard hidden
+                    navigator.splashscreen.show();
+                    $('#email').val('');
+                    $('#password').val('');
+                    $.ajax({
+                        url: 'http://{0}/auth/local'.f(config.host),
+                        type: 'POST',
+                        data: JSON.stringify({email:username, password: password}),
+                        dataType: 'json',
+                        headers:{
+                            'Content-Type' : 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        success: function(response){
+                            navigator.splashscreen.hide();
+                            alert(JSON.stringify(response));
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown){
+                            console.log('Login throw an error');
+                            console.log(errorThrown);
+                            navigator.splashscreen.hide();
+                            noty({
+                                text:'',
+                                type:'warning',
+                                layout:'center',
+                                timeout: 2000
+                            });
+                        }
+                    });
+                }else{
+                    noty({text: '邮箱或密码不能为空.',
+                          layout:'center',
+                          timeout: 2000,
+                          type: 'warning'})
+                }
+            })
         }
 
         function signupHandler () {
