@@ -2,7 +2,7 @@
 * Licensed Materials - Property of Hai Liang Wang
 * All Rights Reserved.
 */
-define(['jqm', 'swiper', 'mapbox', 
+define(['jqm', 'swiper', 'mapbox',
     'app/config', 'app/service/mbaas', 'app/viewMgr',
     'app/service/map','app/service/sseclient',
     'app/service/store','noty', 'app/service/agent',
@@ -84,7 +84,7 @@ define(['jqm', 'swiper', 'mapbox',
                     reverse: false,
                     changeHash: false
                 });
-            }); 
+            });
             $("#userBtn").on('click',function(){
                 $.mobile.changePage( "user.html", {
                     transition: "none",
@@ -92,7 +92,7 @@ define(['jqm', 'swiper', 'mapbox',
                     reverse: false,
                     changeHash: false
                 });
-            });  
+            });
         }
 
 
@@ -112,10 +112,10 @@ define(['jqm', 'swiper', 'mapbox',
                             viewMgr.renderUserProfilePage();
                             break;
                         case 'notification':
-                            console.log('beforehide this page to notification page ...')
+                            console.log('beforehide this page to notification page ...');
                             break;
                         default:
-                            console.log('you can never find me.')
+                            console.log('you can never find me.');
                             break;
                     }
                 },
@@ -159,7 +159,7 @@ define(['jqm', 'swiper', 'mapbox',
                         $("#people").hide();
                         setTimeout(function(){
                             navigator.splashscreen.hide();
-                        },2000)
+                        },2000);
                     });
                 }, function(err){
                     // err callback
@@ -195,7 +195,7 @@ define(['jqm', 'swiper', 'mapbox',
                         navigator.splashscreen.show();
                         // login succ
                         var succUrl = event.url;
-                        var sid = succUrl.replace('http://localhost/?','')
+                        var sid = succUrl.replace('http://localhost/?','');
                         store.setUserSID(sid);
                         window.location = 'home.html';
                     }else if(event.url == 'http://localhost/'){
@@ -207,12 +207,184 @@ define(['jqm', 'swiper', 'mapbox',
                     }
                 });
             });
-        };
+        }
 
-        return {home:function(){
-            homeHandler();
-        },login: function(){
-            loginHandler();
-        }};
+        function signupHandler () {
+
+            var rules = {
+                    username: /^\w+$/i,
+                    email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
+                    password: /^.+$/i
+                },
+                userEmail;
+
+            navigator.splashscreen.hide();
+            $('#signupBtn').button('option', 'disabled', true);
+
+            $("#vericode").on("pagecreate", function(event, ui) {
+                $('#activeBtn').button('option', 'disabled', true);
+            });
+            // $('#activeBtn').button('option', 'disabled', true);
+            $('#signupBtn').on('click', function (e) {
+
+                var params = {
+                    username: $('#username').val(),
+                    password: $('#password').val(),
+                    email: $('#email').val()
+                };
+
+                $.mobile.loading( "show", {
+                    textVisible: false,
+                    theme: "a",
+                    textonly: false
+                });
+
+                $.ajax({
+                    url: 'http://hwcafe.mybluemix.net/auth/local/signup',
+                    type: 'POST',
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json'
+                    },
+                    data: JSON.stringify(params),
+                    dataType: 'json',
+                    timeout: 20000,
+                    complete: function (xhr, status) {
+                        var rst;
+
+                        $.mobile.loading( "hide");
+                        userEmail = params.email;
+
+                        if(xhr.status === 200) {
+                            rst = xhr.responseJSON;
+
+                            if(rst.rc == '1') {
+                                $.mobile.changePage('#vericode', {
+                                    transition: 'slideup'
+                                });
+                            } else if(rst.rc == '3') {
+                                $('#signup').find('.errorTip').text('邮箱已经被注册！');
+                            } else if(rst.rc == '4') {
+                                $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+                            } else if(rst.rc == '5') {
+                                $('#signup').find('.errorTip').text('非法请求！');
+                            } else {
+                                $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+                            }
+                        } else if (xhr.status === 404) {
+                            $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+                        } else {
+                            $('#signup').find('.errorTip').text('服务器通信错误！');
+                        }
+                    }
+                });
+                
+            });
+
+            $('#activeBtn').on('click', function (e) {
+                var params = {
+                    code: $('#code').val(),
+                    email: userEmail
+                };
+
+                $.mobile.loading( "show", {
+                    textVisible: false,
+                    theme: "a",
+                    textonly: false
+                });
+
+                $.ajax({
+                    url: 'http://hwcafe.mybluemix.net/auth/local/verify',
+                    type: 'POST',
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json'
+                    },
+                    data: JSON.stringify(params),
+                    dataType: 'json',
+                    timeout: 20000,
+                    complete: function (xhr, status) {
+                        var rst;
+                        $.mobile.loading( "hide");
+
+                        if(xhr.status === 200) {
+                            rst = xhr.responseJSON;
+
+                            if(rst.rc == '1') {
+                                store.setUserSID(rst.sid);
+                                navigator.splashscreen.show();
+                                window.location = 'home.html';
+                            } else if(rst.rc == '2') {
+                                $('#vericode').find('.errorTip').text('验证码错误！');
+                            } else if(rst.rc == '3') {
+                                $('#vericode').find('.errorTip').text('尝试次数过多，注册失败！！');
+                            } else if(rst.rc == '4') {
+                                $('#vericode').find('.errorTip').text('非法请求！');
+                            } else if(rst.rc == '5') {
+                                $('#vericode').find('.errorTip').text('服务器通信错误！');
+                            } else {
+                                $('#vericode').find('.errorTip').text('网络错误，请稍后重试！');
+                            }
+                        } else if (xhr.status === 404) {
+                            $('#vericode').find('.errorTip').text('网络错误，请稍后重试！');
+                        } else {
+                            $('#vericode').find('.errorTip').text('服务器通信错误！');
+                        }
+                    }
+                });
+            });
+
+            $('#username,#email,#password').on('input', function (e) {
+                var $el;
+
+                for(var id in rules) {
+                    $el = $('#' + id);
+
+                    if(!rules[id].test($el.val())) {
+                        $('#signupBtn').button('disable');
+                        return false;
+                    }
+
+                }
+
+                $('#signupBtn').button('enable');
+            });
+
+            $('#code').on('input', function (e) {
+                var $t = $(this);
+
+                if(!/^\w+$/.test($t.val())) {
+                    $('#activeBtn').button('disable');
+                    return false;
+                }
+
+                $('#activeBtn').button('option', 'disabled', false);
+
+            });
+
+            $('#username,#email,#password').on('change', function (e) {
+                var $t = $(this),
+                    id = $t.attr('id');
+
+                if(!rules[id].test($t.val())) {
+                    $t.closest('.ui-input-text').addClass('ui-input-error');
+                } else {
+                    $t.closest('.ui-input-text').removeClass('ui-input-error');
+                }
+
+            });
+        }
+
+        return {
+            home: function() {
+                homeHandler();
+            },
+            login: function() {
+                loginHandler();
+            },
+            signup: function() {
+                signupHandler();
+            }
+        };
     }
 );
