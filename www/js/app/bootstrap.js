@@ -40,33 +40,7 @@ define(['jqm', 'swiper', 'mapbox',
             });
         });
 
-        function getUserProfile(callback){
-            //var reqHeaders = {accept:"application/json"}
-            // connection available
-            util.getNetwork().then(function(networkType){
-                $.ajax({
-                    type: "GET",
-                    url: "http://{0}/user/me".f(config.host),
-                    dataType: 'json',
-                    // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-                    timeout: 20000,
-                    success: function(data){
-                        //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                        
-                        callback(data);
-                    },
-                    error:function(XMLHttpRequest, textStatus, errorThrown){
-                        console.log('[error] failed to request remote server for user profile');
-                        console.log(textStatus);
-                        console.log(errorThrown);
-                        window.location = 'login.html';
-                    }
-                });
-            },function(err){
-                // no network
-                callback(store.getUserProfile());
-            });
-        }
+
 
         function ngv(){
             $("#homeBtn").on('click',function(){
@@ -95,6 +69,30 @@ define(['jqm', 'swiper', 'mapbox',
             });
         }
 
+        function getUserProfile(callback){
+            //var reqHeaders = {accept:"application/json"}
+            // connection available
+            util.getNetwork().then(function(networkType){
+                $.ajax({
+                    type: "GET",
+                    url: "http://{0}/user/me".f(config.host),
+                    dataType: 'json',
+                    // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+                    timeout: 20000,
+                    success: function(data){
+                        //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                        callback(data);
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log(errorThrown);
+                        window.location = 'login.html';
+                    }
+                });
+            },function(err){
+                // no network
+                callback(store.getUserProfile());
+            });
+        }
 
         function homeHandler(){
             ngv();
