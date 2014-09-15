@@ -249,15 +249,42 @@ define(['jqm', 'swiper', 'mapbox',
                             'Accept': 'application/json'
                         },
                         success: function(response){
-                            navigator.splashscreen.hide();
-                            alert(JSON.stringify(response));
+                            if(response.rc == 1){
+                                store.setUserSID(response.sid);
+                                window.location = 'home.html';
+                            }else if(response.rc == 2){
+                                navigator.splashscreen.hide();
+                                noty({
+                                    text:'用户名不存在，请确认后再输入.',
+                                    type:'warning',
+                                    layout:'center',
+                                    timeout: 2000
+                                });
+                            }else if(response.rc == 3){
+                                navigator.splashscreen.hide();
+                                noty({
+                                    text:'密码错误，请确认后再输入.',
+                                    type:'warning',
+                                    layout:'center',
+                                    timeout: 2000
+                                });
+                            }else {
+                                navigator.splashscreen.hide();
+                                noty({
+                                    text:'服务器返回信息无法理解，确认应用是最新版本.',
+                                    type:'warning',
+                                    layout:'center',
+                                    timeout: 2000
+                                });
+                            }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown){
                             console.log('Login throw an error');
+                            console.log(textStatus);
                             console.log(errorThrown);
                             navigator.splashscreen.hide();
                             noty({
-                                text:'',
+                                text:'服务器通信错误！',
                                 type:'warning',
                                 layout:'center',
                                 timeout: 2000
