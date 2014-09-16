@@ -11,8 +11,8 @@
                 <div class='title'>
                     我
                 </div>
-                <button id="eidtProfileBtn" class="musa-nostate-btn ui-btn ui-icon-edit ui-btn-icon-notext ui-corner-all">
-                </button>
+                <a id="eidtProfileBtn" href="#popupProfileEditor" data-rel="popup" data-transition="fade" data-position-to="window"  class="musa-nostate-btn ui-btn ui-icon-edit ui-btn-icon-notext ui-corner-all">
+                </a>
                 <!-- http://andymatthews.net/code/jQuery-Mobile-Icon-Pack/ has a miss point about sign in and sign out-->
                 <button id="signOutBtn" class="musa-nostate-btn ui-btn ui-icon-sign-in ui-btn-icon-notext ui-corner-all">
                 </button>           
@@ -55,6 +55,20 @@
                 <div class="ui-grid-solo">
                     <div class="ui-block-a"><input onclick="SnowOpenMyLKDProfile()" type="button" value="更多"></div>
                 </div>
+            </div>
+            <div id="popupProfileEditor" data-role="popup" data-overlay-theme="a" data-theme="b" data-dismissible="false" class="ui-corner-all">
+            <!-- <button onclick="$('#popupProfileEditor').popup('close');return false;" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right"></button> -->
+                <form>
+                    <div style="padding:10px 20px;">
+                        <input type="text" name="eduText" id="un" value="" placeholder="曾经就读于 ..." data-theme="a">
+                        <input type="text" name="posText" id="un" value="" placeholder="目前在哪里工作 ..." data-theme="a">
+                        <input type="text" name="skillText" id="un" value="" placeholder="专业技能 ..." data-theme="a">
+                        <input type="text" name="interestText" id="un" value="" placeholder="兴趣 ..." data-theme="a">
+                        <button type="submit" id='saveProfileBtn' class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-save ui-btn-inline">保存</button>
+                        <button type="submit" id='closeProfileEditorBtn' class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-undo ui-btn-inline">取消</button>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>

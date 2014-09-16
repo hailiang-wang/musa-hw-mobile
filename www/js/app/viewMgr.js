@@ -193,6 +193,30 @@ define(function(require, exports, module) {
      [link, "_system"]);
   }
 
+  function _updateUserProfile(newProfile){
+    var deferred = $.Deferred();
+    $.ajax({
+      url: 'http://{0}/user/me'.f(config.host),
+      type: 'PUT',
+      data: JSON.stringify({profile: newProfile}),
+      dataType: 'json',
+      headers:{
+        'Content-Type' : 'application/json',
+        'Accept' : 'application/json'
+      },
+      success: function(response){
+        deferred.resolve(response);
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+        console.log("[error] PUT http://{0}/user/me throw an error.".f(config.host));
+        console.log("[error] Status: " + textStatus); 
+        console.log("[error] Error: " + errorThrown); 
+        deferred.reject({textStatus: textStatus, error: errorThrown });
+      }
+    });        
+    return deferred.promise();  
+  }
+
   function _renderUserProfilePage(){
 
       // bind events
@@ -275,28 +299,26 @@ define(function(require, exports, module) {
       }
 
       // modify local user profile
-      $('#eidtProfileBtn').on('click', function(){
-          var profile = store.getUserProfile();
-          console.log('get the current user profile ' + JSON.stringify(profile));
-          $.ajax({
-            url: 'http://{0}/user/me'.f(config.host),
-            type: 'PUT',
-            data: JSON.stringify({profile: profile}),
-            dataType: 'json',
-            headers:{
-              'Content-Type' : 'application/json',
-              'Accept' : 'application/json'
-            },
-            success: function(response){
-              console.log(JSON.stringify(response));
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-              console.log("[error] PUT http://{0}/user/me throw an error.".f(config.host));
-              console.log("[error] Status: " + textStatus); 
-              console.log("[error] Error: " + errorThrown); 
-            }
-          });          
-      })
+      // $('#eidtProfileBtn').on('click', function(){
+      //     var profile = store.getUserProfile();
+      //     profile._json.interests = 'I like singing';
+      //     _updateUserProfile(profile).then(function(response){
+      //       // refresh user profile page
+      //       noty({
+      //         type: 'information',
+      //         text: '更新成功.',
+      //         layout: 'center',
+      //         timeout: 2000
+      //       }); 
+      //     }, function(err){
+      //       noty({
+      //         type: 'warning',
+      //         text: '发生错误，请更新应用或者重新登录。',
+      //         layout: 'center',
+      //         timeout: 2000
+      //       });
+      //     });
+      // })
   }
 
 	function _respPushNotificationArrival(){
