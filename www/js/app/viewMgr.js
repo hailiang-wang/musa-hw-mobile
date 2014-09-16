@@ -194,6 +194,7 @@ define(function(require, exports, module) {
   }
 
   function _renderUserProfilePage(){
+
       // bind events
       /**
        * handle logout event
@@ -219,6 +220,12 @@ define(function(require, exports, module) {
       });
 
       var user = store.getUserProfile();
+
+      // if local passport, show the eidt btn
+      if(user.provider !== 'local'){
+        $('#eidtProfileBtn').hide();
+      }
+
       // displayName
       $('#user-index .content .blurContainer').empty();
       $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
@@ -266,6 +273,30 @@ define(function(require, exports, module) {
           // no interest
           $('#user-index .blurry p.interest').append('{0} <br> '.f("您什么也没有写。"));
       }
+
+      // modify local user profile
+      $('#eidtProfileBtn').on('click', function(){
+          var profile = store.getUserProfile();
+          console.log('get the current user profile ' + JSON.stringify(profile));
+          $.ajax({
+            url: 'http://{0}/user/me'.f(config.host),
+            type: 'PUT',
+            data: JSON.stringify({profile: profile}),
+            dataType: 'json',
+            headers:{
+              'Content-Type' : 'application/json',
+              'Accept' : 'application/json'
+            },
+            success: function(response){
+              console.log(JSON.stringify(response));
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+              console.log("[error] PUT http://{0}/user/me throw an error.".f(config.host));
+              console.log("[error] Status: " + textStatus); 
+              console.log("[error] Error: " + errorThrown); 
+            }
+          });          
+      })
   }
 
 	function _respPushNotificationArrival(){
