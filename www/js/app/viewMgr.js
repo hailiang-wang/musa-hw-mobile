@@ -249,6 +249,19 @@ define(function(require, exports, module) {
       switch(user.provider){
         case 'local':
           $('.more-linkedin-profile').hide();
+          // insert values into profileEditor
+          if(user._json.educations._total > 0)
+            $('#eduText').val(user._json.educations.values[0].schoolName);
+
+          if(user._json.skills._total > 0)
+            $('#skillText').val(user._json.skills.values[0].skill.name);
+
+          if(user._json.positions._total > 0)
+            $('#posText').val(user._json.positions.values[0].company.name);
+
+          if(user._json.interests)
+            $('#interestText').val(user._json.interests);
+
           break;
         case 'linkedin':
           $('#eidtProfileBtn').hide();
@@ -274,7 +287,7 @@ define(function(require, exports, module) {
           // how to render it Master?Bachelor, now just show up a school
           $.each(user._json.educations.values, function(index, education){
               if( index < 1){
-                  $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree));
+                  $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree||''));
               }
           })
       }else{
@@ -313,26 +326,54 @@ define(function(require, exports, module) {
       }
 
       // modify local user profile
-      // $('#eidtProfileBtn').on('click', function(){
-      //     var profile = store.getUserProfile();
-      //     profile._json.interests = 'I like singing';
-      //     _updateUserProfile(profile).then(function(response){
-      //       // refresh user profile page
-      //       noty({
-      //         type: 'information',
-      //         text: '更新成功.',
-      //         layout: 'center',
-      //         timeout: 2000
-      //       }); 
-      //     }, function(err){
-      //       noty({
-      //         type: 'warning',
-      //         text: '发生错误，请更新应用或者重新登录。',
-      //         layout: 'center',
-      //         timeout: 2000
-      //       });
-      //     });
-      // })
+      $('#saveProfileBtn').on('click', function(){
+          var profile = store.getUserProfile();
+          var interests = $('#interestText').val();
+          var skills = $('#skillText').val();
+          var education = $('#eduText').val();
+          var positions = $('#posText').val();
+          // set profile 
+          if(interests){
+            profile._json.interests = interests;
+          }
+          if(skills){
+            profile._json.skills._total = 1;
+            profile._json.skills.values[0] = { skill:{
+              name: skills
+            }};
+          }
+          if(education){
+            profile._json.educations._total = 1;
+            profile._json.educations.values[0] = { schoolName : education};
+          }
+          if(positions){
+            profile._json.positions._total = 1;
+            profile._json.positions.values[0] = { isCurrent : true,
+               company: {
+                name : positions 
+              }
+            }
+          }
+
+          console.log('update profile by ' + JSON.stringify(profile));
+
+          _updateUserProfile(profile).then(function(response){
+            // refresh user profile page
+            noty({
+              type: 'information',
+              text: '更新成功.',
+              layout: 'center',
+              timeout: 2000
+            }); 
+          }, function(err){
+            noty({
+              type: 'warning',
+              text: '发生错误，请更新应用或者重新登录。',
+              layout: 'center',
+              timeout: 2000
+            });
+          });
+      })
   }
 
 	function _respPushNotificationArrival(){
