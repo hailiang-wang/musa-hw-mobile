@@ -244,17 +244,31 @@ define(function(require, exports, module) {
       });
 
       var user = store.getUserProfile();
-
+      var defaultAvatar = 'img/user-default-avatar.png';
       // if local passport, show the eidt btn
-      if(user.provider !== 'local'){
-        $('#eidtProfileBtn').hide();
+      switch(user.provider){
+        case 'local':
+          $('.more-linkedin-profile').hide();
+          break;
+        case 'linkedin':
+          $('#eidtProfileBtn').hide();
+          defaultAvatar = 'img/linkedin-default-avatar.png'
+          break;
+        default:
+          console.log('You can find me.')
+        break;
       }
 
       // displayName
       $('#user-index .content .blurContainer').empty();
       $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
       // user avatar
-      $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
+      if(user._json.pictureUrl ){
+        $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
+      } else {
+        // no user pic, add a image for user choosing a photo
+        $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(defaultAvatar));
+      }
       // collegue
       if(user._json.educations._total > 0){
           // how to render it Master?Bachelor, now just show up a school
