@@ -11,8 +11,8 @@ define(function(require, exports, module) {
 	var notiSwiper;
   var inViewSlideKeys;
 
-  function showModal(){
-    $("#notification .content").append('<div class="modalWindow"/>');
+  function showModal(containerDiv){
+    $(containerDiv).append('<div class="modalWindow"/>');
     $.mobile.loading('show');
   }
 
@@ -20,12 +20,37 @@ define(function(require, exports, module) {
     $(".modalWindow").remove();
     $.mobile.loading('hide');
   }
+  
+  function _getUserProfile(callback){
+      //var reqHeaders = {accept:"application/json"}
+      // connection available
+      util.getNetwork().then(function(networkType){
+          $.ajax({
+              type: "GET",
+              url: "http://{0}/user/me".f(config.host),
+              dataType: 'json',
+              // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+              timeout: 20000,
+              success: function(data){
+                  //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                  callback(data);
+              },
+              error:function(XMLHttpRequest, textStatus, errorThrown){
+                  console.log(errorThrown);
+                  window.location = 'login.html';
+              }
+          });
+      },function(err){
+          // no network
+          callback(store.getUserProfile());
+      });
+  }
 
   function _initNotificationPage(){
 
     $("#notificationsBtn").addClass('ui-btn-active');
 
-    showModal();
+    showModal("#notification .content");
       
     $('#notification .header .title').append('<a href="#" onclick="SnowBackToNotificationsList()" data-shadow="false"' 
     + 'class="musa-nostate-btn ui-btn ui-icon-back ui-btn-icon-left">'
@@ -359,12 +384,70 @@ define(function(require, exports, module) {
 
           _updateUserProfile(profile).then(function(response){
             // refresh user profile page
-            noty({
-              type: 'information',
-              text: '更新成功.',
-              layout: 'center',
-              timeout: 2000
-            }); 
+            _getUserProfile(function(data){
+              $('#user-index .blurry p').empty();
+              store.setUserProfile(data);
+              /*
+               * add the card value and set input box values
+               */
+
+               // collegue
+              if(data._json.educations._total > 0){
+                  // how to render it Master?Bachelor, now just show up a school
+                  $.each(data._json.educations.values, function(index, education){
+                      if( index < 1){
+                          $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree||''));
+                      }
+                  })
+              }else{
+                  // no school
+                  $('#user-index .blurry p.edu').append('{0} <br> '.f("您什么也没有写。"));
+              }
+              // positions
+              if(data._json.positions._total > 0){
+                  $.each(data._json.positions.values,function(index, position){
+                      if(position.isCurrent){
+                          $('#user-index .blurry p.company').text(position.company.name);
+                      }
+                  })
+              }else{
+                  $('#user-index .blurry p.company').append('{0} <br> '.f("您什么也没有写。"));
+                  // no positions available
+              }
+              // skills
+              if(data._json.skills._total > 0){
+                  // how to render it Master?Bachelor, now just show up a school
+                  $.each(data._json.skills.values, function(index, skill){
+                      if(index < 3){
+                          $('#user-index .blurry p.skill').append('{0} <br> '.f(skill.skill.name));
+                      }
+                  })
+              }else{
+                  // no skills
+                  $('#user-index .blurry p.skill').append('{0} <br> '.f("您什么也没有写。"));
+              }
+              // interest
+              if(data._json.interests){
+                  $('#user-index .blurry p.interest').append('{0} <br> '.f(user._json.interests));
+              }else{
+                  // no interest
+                  $('#user-index .blurry p.interest').append('{0} <br> '.f("您什么也没有写。"));
+              }
+
+              if(data._json.educations._total > 0)
+                $('#eduText').val(data._json.educations.values[0].schoolName);
+
+              if(data._json.skills._total > 0)
+                $('#skillText').val(data._json.skills.values[0].skill.name);
+
+              if(data._json.positions._total > 0)
+                $('#posText').val(data._json.positions.values[0].company.name);
+
+              if(data._json.interests)
+                $('#interestText').val(data._json.interests);
+
+            });
+
           }, function(err){
             noty({
               type: 'warning',
@@ -373,7 +456,7 @@ define(function(require, exports, module) {
               timeout: 2000
             });
           });
-      })
+      });
   }
 
 	function _respPushNotificationArrival(){
@@ -521,6 +604,7 @@ define(function(require, exports, module) {
 
   })();
 
+  exports.getUserProfile = _getUserProfile;
   exports.respPushNotificationArrival = _respPushNotificationArrival;
   exports.createMap = mapController.createMap;
   exports.createHomeSwiperHeader = _createHomeSwiperHeader;

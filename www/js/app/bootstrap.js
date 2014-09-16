@@ -69,30 +69,7 @@ define(['jqm', 'swiper', 'mapbox',
             });
         }
 
-        function getUserProfile(callback){
-            //var reqHeaders = {accept:"application/json"}
-            // connection available
-            util.getNetwork().then(function(networkType){
-                $.ajax({
-                    type: "GET",
-                    url: "http://{0}/user/me".f(config.host),
-                    dataType: 'json',
-                    // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-                    timeout: 20000,
-                    success: function(data){
-                        //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                        callback(data);
-                    },
-                    error:function(XMLHttpRequest, textStatus, errorThrown){
-                        console.log(errorThrown);
-                        window.location = 'login.html';
-                    }
-                });
-            },function(err){
-                // no network
-                callback(store.getUserProfile());
-            });
-        }
+
 
         function homeHandler(){
             ngv();
@@ -140,7 +117,7 @@ define(['jqm', 'swiper', 'mapbox',
                 cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), userSid, function(){
                     // succ callback
                     // create home page at initializing 
-                    getUserProfile(function(data){
+                    viewMgr.getUserProfile(function(data){
                         // TODO support api /user/me for local passport 
                         store.setUserId(data.emails[0].value);
                         store.setUserProfile(data);
