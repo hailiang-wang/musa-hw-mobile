@@ -385,67 +385,10 @@ define(function(require, exports, module) {
           _updateUserProfile(profile).then(function(response){
             // refresh user profile page
             _getUserProfile(function(data){
-              $('#user-index .blurry p').empty();
               store.setUserProfile(data);
               /*
                * add the card value and set input box values
                */
-
-               // collegue
-              if(data._json.educations._total > 0){
-                  // how to render it Master?Bachelor, now just show up a school
-                  $.each(data._json.educations.values, function(index, education){
-                      if( index < 1){
-                          $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree||''));
-                      }
-                  })
-              }else{
-                  // no school
-                  $('#user-index .blurry p.edu').append('{0} <br> '.f("您什么也没有写。"));
-              }
-              // positions
-              if(data._json.positions._total > 0){
-                  $.each(data._json.positions.values,function(index, position){
-                      if(position.isCurrent){
-                          $('#user-index .blurry p.company').text(position.company.name);
-                      }
-                  })
-              }else{
-                  $('#user-index .blurry p.company').append('{0} <br> '.f("您什么也没有写。"));
-                  // no positions available
-              }
-              // skills
-              if(data._json.skills._total > 0){
-                  // how to render it Master?Bachelor, now just show up a school
-                  $.each(data._json.skills.values, function(index, skill){
-                      if(index < 3){
-                          $('#user-index .blurry p.skill').append('{0} <br> '.f(skill.skill.name));
-                      }
-                  })
-              }else{
-                  // no skills
-                  $('#user-index .blurry p.skill').append('{0} <br> '.f("您什么也没有写。"));
-              }
-              // interest
-              if(data._json.interests){
-                  $('#user-index .blurry p.interest').append('{0} <br> '.f(user._json.interests));
-              }else{
-                  // no interest
-                  $('#user-index .blurry p.interest').append('{0} <br> '.f("您什么也没有写。"));
-              }
-
-              if(data._json.educations._total > 0)
-                $('#eduText').val(data._json.educations.values[0].schoolName);
-
-              if(data._json.skills._total > 0)
-                $('#skillText').val(data._json.skills.values[0].skill.name);
-
-              if(data._json.positions._total > 0)
-                $('#posText').val(data._json.positions.values[0].company.name);
-
-              if(data._json.interests)
-                $('#interestText').val(data._json.interests);
-
             });
 
           }, function(err){
@@ -460,7 +403,6 @@ define(function(require, exports, module) {
   }
 
 	function _respPushNotificationArrival(){
-    console.log('get noti ...');
 		util.getNotification().then(function(data){
       console.log(JSON.stringify(data));
       if(_.isObject(data.notifications)){

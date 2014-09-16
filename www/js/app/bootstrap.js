@@ -84,6 +84,7 @@ define(['jqm', 'swiper', 'mapbox',
                             console.log('beforehide this page to notifications page ...');
                             break;
                         case 'user-index':
+                            console.log('beforehide next page - user-index');
                             viewMgr.renderUserProfilePage();
                             break;
                         case 'notification':
@@ -103,6 +104,9 @@ define(['jqm', 'swiper', 'mapbox',
                                 break;
                             case 'notification':
                                 viewMgr.initNotificationPage();
+                                break;
+                            case 'user-index':
+                                console.log('show user-index');
                                 break;
                             default:
                                 break;
