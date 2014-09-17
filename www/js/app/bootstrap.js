@@ -108,6 +108,10 @@ define(['jqm', 'swiper', 'mapbox',
                             case 'user-index':
                                 console.log('show user-index');
                                 break;
+                             case 'profile-editor':
+                                console.log('show editor');
+                                viewMgr.renderProfileEditor();
+                                break;
                             default:
                                 break;
                         }

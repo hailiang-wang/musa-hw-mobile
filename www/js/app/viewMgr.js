@@ -218,6 +218,100 @@ define(function(require, exports, module) {
      [link, "_system"]);
   }
 
+  // render user profile editor page
+  function _renderProfileEditor(){
+
+    var profile = store.getUserProfile();
+    // insert values into profile fields
+    if(profile._json.educations._total > 0)
+      $('#eduText').val(profile._json.educations.values[0].schoolName);
+
+    if(profile._json.skills._total > 0)
+      $('#skillText').val(profile._json.skills.values[0].skill.name);
+
+    if(profile._json.positions._total > 0)
+      $('#posText').val(profile._json.positions.values[0].company.name);
+
+    if(profile._json.interests)
+      $('#interestText').val(profile._json.interests);
+
+    /**
+     * modify local user profile
+     */
+    $('#saveProfileBtn').on('click', function(){
+        var interests = $('#interestText').val();
+        var skills = $('#skillText').val();
+        var education = $('#eduText').val();
+        var positions = $('#posText').val();
+        // set profile 
+        if(interests){
+          profile._json.interests = interests;
+        }
+        if(skills){
+          profile._json.skills._total = 1;
+          profile._json.skills.values[0] = { skill:{
+            name: skills
+          }};
+        }
+        if(education){
+          profile._json.educations._total = 1;
+          profile._json.educations.values[0] = { schoolName : education};
+        }
+        if(positions){
+          profile._json.positions._total = 1;
+          profile._json.positions.values[0] = { isCurrent : true,
+             company: {
+              name : positions 
+            }
+          }
+        }
+
+        console.log('update profile by ' + JSON.stringify(profile));
+        util.getNetwork().then(function(){
+          _updateUserProfile(profile).then(function(response){
+            // refresh user profile page
+            _getUserProfile(function(data){
+              store.setUserProfile(data);
+              /*
+               * add the card value and set input box values
+               */
+              $.mobile.changePage( "user.html", {
+                  transition: "none",
+                  reloadPage: false,
+                  reverse: true,
+                  changeHash: false
+              });
+            });
+          }, function(err){
+            noty({
+              type: 'warning',
+              text: '发生错误，请更新应用或者重新登录。',
+              layout: 'center',
+              timeout: 2000
+            });
+        });
+      }, function(err){
+        noty({
+              type: 'warning',
+              text: '无网络服务.',
+              layout: 'center',
+              timeout: 2000
+        });
+      });
+
+    });
+
+    // cancel editing user profile
+    $('#cancelEditProfileBtn').on('click', function(){
+      $.mobile.changePage( "user.html", {
+          transition: "none",
+          reloadPage: false,
+          reverse: true,
+          changeHash: false
+      });
+    });
+  }
+
   function _updateUserProfile(newProfile){
     var deferred = $.Deferred();
     $.ajax({
@@ -244,48 +338,13 @@ define(function(require, exports, module) {
 
   function _renderUserProfilePage(){
 
-      // bind events
-      /**
-       * handle logout event
-       */
-      $("#signOutBtn").on('click', function(){
-        navigator.splashscreen.show();
-        $.ajax({
-            type: "GET",
-            url: "http://{0}/logout".f(config.host),
-            success: function(data){
-                console.log("LOGOUT user's session is cleaned in server.")
-                store.deleteUserSID();
-                window.location = 'login.html';
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
-                console.log("[error] Status: " + textStatus); 
-                console.log("[error] Error: " + errorThrown); 
-                store.deleteUserSID();
-                window.location = 'login.html';
-            }
-        });
-      });
-
       var user = store.getUserProfile();
       var defaultAvatar = 'img/user-default-avatar.png';
       // if local passport, show the eidt btn
       switch(user.provider){
         case 'local':
           $('.more-linkedin-profile').hide();
-          // insert values into profileEditor
-          if(user._json.educations._total > 0)
-            $('#eduText').val(user._json.educations.values[0].schoolName);
 
-          if(user._json.skills._total > 0)
-            $('#skillText').val(user._json.skills.values[0].skill.name);
-
-          if(user._json.positions._total > 0)
-            $('#posText').val(user._json.positions.values[0].company.name);
-
-          if(user._json.interests)
-            $('#interestText').val(user._json.interests);
 
           break;
         case 'linkedin':
@@ -350,56 +409,42 @@ define(function(require, exports, module) {
           $('#user-index .blurry p.interest').append('{0} <br> '.f("您什么也没有写。"));
       }
 
-      // modify local user profile
-      $('#saveProfileBtn').on('click', function(){
-          var profile = store.getUserProfile();
-          var interests = $('#interestText').val();
-          var skills = $('#skillText').val();
-          var education = $('#eduText').val();
-          var positions = $('#posText').val();
-          // set profile 
-          if(interests){
-            profile._json.interests = interests;
-          }
-          if(skills){
-            profile._json.skills._total = 1;
-            profile._json.skills.values[0] = { skill:{
-              name: skills
-            }};
-          }
-          if(education){
-            profile._json.educations._total = 1;
-            profile._json.educations.values[0] = { schoolName : education};
-          }
-          if(positions){
-            profile._json.positions._total = 1;
-            profile._json.positions.values[0] = { isCurrent : true,
-               company: {
-                name : positions 
-              }
+      /**
+       * handle logout event
+       */
+      $("#signOutBtn").on('click', function(){
+        navigator.splashscreen.show();
+        $.ajax({
+            type: "GET",
+            url: "http://{0}/logout".f(config.host),
+            success: function(data){
+                console.log("LOGOUT user's session is cleaned in server.")
+                store.deleteUserSID();
+                window.location = 'login.html';
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
+                console.log("[error] Status: " + textStatus); 
+                console.log("[error] Error: " + errorThrown); 
+                store.deleteUserSID();
+                window.location = 'login.html';
             }
-          }
-
-          console.log('update profile by ' + JSON.stringify(profile));
-
-          _updateUserProfile(profile).then(function(response){
-            // refresh user profile page
-            _getUserProfile(function(data){
-              store.setUserProfile(data);
-              /*
-               * add the card value and set input box values
-               */
-            });
-
-          }, function(err){
-            noty({
-              type: 'warning',
-              text: '发生错误，请更新应用或者重新登录。',
-              layout: 'center',
-              timeout: 2000
-            });
-          });
+        });
       });
+
+      /**
+       * open user profile editor
+       */      
+      $('#eidtProfileBtn').on('click', function(){
+        $.mobile.changePage( "profile-editor.html", {
+            transition: "none",
+            reloadPage: false,
+            reverse: true,
+            changeHash: false
+        });
+      });
+
+   
   }
 
 	function _respPushNotificationArrival(){
@@ -553,6 +598,7 @@ define(function(require, exports, module) {
   exports.initNotificationSlides = _initNotificationSlides;
   exports.initNotificationPage = _initNotificationPage;
   exports.renderUserProfilePage = _renderUserProfilePage;
+  exports.renderProfileEditor = _renderProfileEditor;
 
 	/**
 	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.

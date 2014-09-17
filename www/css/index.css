@@ -90,7 +90,7 @@
     /* .ui-content makes a padding 1em in the view, fix it by marking !important */
     padding: 0px!important;
     top: 70px;
-    height: 454px!important;
+    height: 455px!important;
     margin: 0px!important;
   } 
 
@@ -269,6 +269,43 @@
   #user-index .content .ui-body.profile-card p{
     color:black;
     font-size:13px;
+  }
+
+  #profile-editor .header{
+    height: 70px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #profile-editor .header .title{
+    padding-top:30px;
+    text-align: left;
+    padding-left: 30px;
+    font-size: 15px;
+  }
+
+  #profile-editor .content.ui-content {
+    background-image:url('../img/user-background.png')  !important;
+    padding: 0px!important;
+    top: 70px;
+    height: 455px!important;
+    margin: 0px!important;
+  }
+
+  #saveProfileBtn {
+    border: none !important; 
+    padding-top:40px; 
+    width:50px; 
+    height:25px; 
+    left:220px
+  }
+
+  #cancelEditProfileBtn {
+    border: none !important; 
+    padding-top:40px; 
+    width:50px; 
+    height:25px; 
+    left:270px
   }
 
   /* http://stackoverflow.com/questions/12200444/remove-hover-click-states-of-buttons */
