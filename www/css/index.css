@@ -63,12 +63,12 @@
     bottom: 0px; 
     margin: 0px; 
     padding: 0px;
-    background-image: -webkit-gradient(linear, left top, left bottom, from( #FFF51E ), to( #FFFFFF )); /* Saf4+, Chrome */
-    background-image: -webkit-linear-gradient( #FFF51E, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
-    background-image:    -moz-linear-gradient( #FFF51E, #FFFFFF ); /* FF3.6 */
-    background-image:     -ms-linear-gradient( #FFF51E, #FFFFFF ); /* IE10 */
-    background-image:      -o-linear-gradient( #FFF51E, #FFFFFF ); /* Opera 11.10+ */
-    background-image:         linear-gradient( #FFF51E, #FFFFFF );  
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
+    background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
+    background-image:         linear-gradient( #0380B5, #FFFFFF );  
     background-size: 100%;
     height: 455px;
   }
@@ -294,10 +294,18 @@
   }
 
   #user-index .content.ui-content {
-    background-image:url('../img/user-background.png')  !important;
-    background-repeat: no-repeat;
-    width:100%;
-    height:450px;
+    top:70px; 
+    bottom: 0px; 
+    margin: 0px; 
+    padding: 0px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
+    background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
+    background-image:         linear-gradient( #0380B5, #FFFFFF );  
+    background-size: 100%;
+    height: 455px;
   }
 
   #user-index .content .blurContainer {
