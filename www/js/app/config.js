@@ -26,7 +26,7 @@ define({
             ],
             circle: {
                 center: {latitude: 40.04359197610995, longitude: 116.2894301339035},
-                radius : 50        
+                radius : 100        
             }
         },
         CheKuCafe : {

@@ -69,15 +69,6 @@ requirejs(['jquery','cordova.js', 'app/config',
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
 
-
-$('#qrcodeBtn' ).on('touchend click', function() {
-    var self = this;
-    setTimeout(function() {
-            $(self).removeClass("ui-btn-active");
-        },
-    0);
-});
-
 var app = {
     // Application Constructor
     initialize: function() {
