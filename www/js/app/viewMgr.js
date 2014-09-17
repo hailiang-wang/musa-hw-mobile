@@ -175,7 +175,7 @@ define(function(require, exports, module) {
               var sld = slides[key];
               if( _.indexOf(inViewSlideKeys, key) == -1){
                 notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
-                      'swiper-slide {0}'.f(sld.isRead ? '':'unread'));
+                      'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
                 inViewSlideKeys.push(key);
                 console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
               }
