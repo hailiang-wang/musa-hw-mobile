@@ -95,7 +95,7 @@ define(function(require, exports, module) {
         return '<div class="card">'
                 + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link)
                   + '<img src="sample/msg-demo.png" style="vertical-align:middle;">'
-                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:black;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(title, 160), util.getDate(date))
+                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:#18260E;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(title, 160), util.getDate(date))
                 + '</a>'
               + '</div>';
       } else{
@@ -106,7 +106,6 @@ define(function(require, exports, module) {
   function _initNotificationSlides(){
       var holdPosition = 0;
       var slideNumber = 0;
-      var unreadMsg = 0;
 
       inViewSlideKeys = [];
       notiSwiper = new Swiper('#notifications .swiper-container',{
@@ -157,9 +156,6 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
         var sld = slides[key];
-        if(sld.isRead)
-          unreadMsg += 1;
-
         notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
               'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
         inViewSlideKeys.push(key);
