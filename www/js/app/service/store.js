@@ -37,7 +37,8 @@ define(function(require, exports, module) {
 				server : data.server,
 				title : data.title,
 				date : data.date,
-				tags : data.tags
+				tags : data.tags,
+				isRead : data.isRead||false
 		};
 		console.log('[DEBUG] save notifications ... ' + JSON.stringify(json));
 		window.localStorage.setItem(key, JSON.stringify(json));
@@ -73,6 +74,14 @@ define(function(require, exports, module) {
 		window.localStorage.removeItem('MUSA_USER_SID'.f(_getUserId()));
 	}
 
+	function _setNotificationAsRead(id){	
+		var json = _getNotifications()[id];
+		console.log('get json ' + JSON.stringify(json));
+		json.isRead = true;
+		json.id = id;
+		_saveNotifications(json);
+	}
+
 	exports.saveNotifications = _saveNotifications;
 	exports.getNotifications = _getNotifications;
 	exports.setUserProfile = _setUserProfile;
@@ -84,4 +93,5 @@ define(function(require, exports, module) {
 	exports.getAppVersion = _getAppVersion;
 	exports.setUserId = _setUserId;
 	exports.getUserId = _getUserId;
+	exports.setNotificationAsRead = _setNotificationAsRead;
 });
