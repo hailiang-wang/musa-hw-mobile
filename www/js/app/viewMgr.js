@@ -9,7 +9,9 @@ define(function(require, exports, module) {
   var util = require('app/util');
   var homeSwiper;
 	var notiSwiper;
+  var peopleSwiper;
   var inViewSlideKeys;
+  var inPeopleSlideKeys;
 
   function showModal(containerDiv){
     $(containerDiv).append('<div class="modalWindow"/>');
@@ -145,13 +147,13 @@ define(function(require, exports, module) {
               $('#notifications .messages .refreshing').show();
 
               //Load slides
-              loadNewSlides();
+              loadNewNotificationSlides();
             }else{
               $('#notifications .messages .release-to-refresh').hide();
               $('#notifications .messages .pull-to-refresh').hide();
             }
           }
-        });
+      });
       var slides = store.getNotifications();
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
@@ -161,7 +163,7 @@ define(function(require, exports, module) {
         inViewSlideKeys.push(key);
       });
       console.log(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
-      function loadNewSlides() {
+      function loadNewNotificationSlides() {
           /* 
           Probably you should do some Ajax Request here
           But we will just use setTimeout
@@ -469,8 +471,74 @@ define(function(require, exports, module) {
   function renderPeoplePage(){
     $('#people .list').empty();
     var people = mapController.people;
+    inPeopleSlideKeys = [];
+    peopleSwiper = new Swiper('#people .swiper-container', {
+        mode:'vertical',
+        watchActiveIndex: true,
+        slidesPerView: 'auto',
+        freeMode: false,
+        slideElement: 'li',
+        grabCursor: true,
+        onTouchStart: function() {
+          holdPosition = 0;
+        },
+        onResistanceBefore: function(s, pos){
+          holdPosition = pos;
+          if( holdPosition > 100){
+              $('#people .pull-to-refresh').hide();
+              $('#people .release-to-refresh').show();
+          }else if(holdPosition > 30){
+              $('#people .release-to-refresh').hide();
+              $('#people .pull-to-refresh').show();
+          }else{
+              $('#people .release-to-refresh').hide();
+              $('#people .pull-to-refresh').hide();
+          }
+        },
+        onTouchEnd: function(){
+          if (holdPosition > 100) {
+              // Hold Swiper in required position
+              peopleSwiper.setWrapperTranslate(0,100,0)
+
+              //Dissalow futher interactions
+              peopleSwiper.params.onlyExternal=true
+
+              //Show loader
+              $('#people .release-to-refresh').hide();
+              $('#people .pull-to-refresh').hide();
+              $('#people .refreshing').show();
+              loadNewPeopleSlides();
+            }else{
+              $('#people .release-to-refresh').hide();
+              $('#people .pull-to-refresh').hide();
+            }
+          }
+      }
+    );
+    function loadNewPeopleSlides(){
+      //Release interactions and set wrapper
+      peopleSwiper.setWrapperTranslate(0,0,0)
+      peopleSwiper.params.onlyExternal=false;
+
+      //Update active slide
+      peopleSwiper.updateActiveSlide(0)
+      $('#people .refreshing').hide();
+    }
+
+    function getPeopleSilde(userId, displayName, userPic, userStatus){
+        return '<div class="card">'
+          + '<a href="#" onclick="SnowOpenPeopleCard(\'{0}\')">'.f(userId)
+            + '<img src="{0}" style="">'.f(userPic)
+            + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:#18260E;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(userStatus, 200), displayName)
+          + '</a>'
+        + '</div>';
+    }
+
+    // add the current online user
     _.keys(people).sort().forEach(function(userId){
-      console.log('PeoplePage add ' + userId);
+      peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+                'swiper-slide ui-li-static ui-body-inherit');
+      inPeopleSlideKeys.push(userId);
     });
   }
 
@@ -485,7 +553,7 @@ define(function(require, exports, module) {
                   case 0:
                     $("#map").hide();
                     $("#people").show();
-                    //renderPeoplePage();
+                    renderPeoplePage();
                     break;
                   case 1:
                     $("#people").hide();

@@ -23,11 +23,11 @@ define(function(require, exports, module) {
 			    var index = _.indexOf(_getMarkerNames(), data.username);
 			    if(index == -1){
 			      // create new marker
-			      _addMarkerInMap(data.username, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile),
+			      _addMarkerInMap(data.username, data.displayName, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile),
 			      	data.picture);
 			    }else{
 			      // update marker
-			      _updateMarkerInMap(data.username, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture),
+			      _updateMarkerInMap(data.username, data.displayName, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture),
 			      	data.picture);
 			    }
 				break;
@@ -74,7 +74,7 @@ define(function(require, exports, module) {
 		});
   	}
 
-	function _addMarkerInMap(username, lat, lng, popUpHtml, picture, status){
+	function _addMarkerInMap(username, displayName, lat, lng, popUpHtml, picture, status){
 		if(markers[username]){
 			console.log('try to create a marker that does already exist for {0}'.f(username));
 		} else {
@@ -83,6 +83,7 @@ define(function(require, exports, module) {
 			    .bindPopup(popUpHtml)
 			    .openPopup();
 			markers[username] = {picture: picture||'sample/user-default.png',
+								displayName: displayName,
 								status: status||'How do you do.',
 								marker: marker};
 		}
@@ -92,7 +93,7 @@ define(function(require, exports, module) {
 		return _.keys(markers);
 	}
 
-	function _updateMarkerInMap(username, lat, lng, popUpHtml, picture, status){
+	function _updateMarkerInMap(username, displayName, lat, lng, popUpHtml, picture, status){
 		if(markers[username]){
 			// add a marker in the given location, attach some popup content to it and open the popup
 			markers[username].marker.setLatLng([lat, lng]);
@@ -101,6 +102,7 @@ define(function(require, exports, module) {
 			    .openPopup();
 			markers[username].picture = picture;
 			markers[username].status = status;
+			markers[username].displayName = displayName;
 		} else {
 			console.log('try to update a marker that does not exist for {0}'.f(username));
 		}
