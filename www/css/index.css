@@ -1,8 +1,11 @@
-/* style queries http://stephen.io/mediaqueries/#iPhone */
 
+
+
+/* style queries http://stephen.io/mediaqueries/#iPhone */
 /*iPhone 5 in portrait */
 @media only screen and (min-device-width : 320px) and (max-device-height : 568px) and (orientation : portrait) {
-  
+
+
   .modalWindow{
     width: 100%;
     height: 454px;
@@ -66,6 +69,19 @@
   }
 
   /* notifications */
+  #notifications .ui-body-inherit{
+    background: #333 /*{a-body-background-color}*/;
+    border-color: #B8D9FF /*{a-body-border}*/;
+    color: #fff /*{a-body-color}*/;
+    text-shadow: 0 /*{a-body-shadow-x}*/ 1px /*{a-body-shadow-y}*/ 0 /*{a-body-shadow-radius}*/ #B8D9FF /*{a-body-shadow-color}*/;
+    /* Copied from 1.3 custom theme: */
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #B8D9FF ), to( #FFFFFF )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #B8D9FF, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #B8D9FF, #FFFFFF ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #B8D9FF, #FFFFFF ); /* IE10 */
+    background-image:      -o-linear-gradient( #B8D9FF, #FFFFFF ); /* Opera 11.10+ */
+    background-image:         linear-gradient( #B8D9FF, #FFFFFF );    
+  }
 
   #notifications .header{
     height: 70px;

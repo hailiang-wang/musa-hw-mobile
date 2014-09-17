@@ -92,7 +92,7 @@ define(function(require, exports, module) {
         return '<div class="card">'
                 + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\')">'.f(title, link)
                   + '<img src="sample/msg-demo.png" style="vertical-align:middle;">'
-                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(title, 160), util.getDate(date))
+                  + '<span style="color:red;display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:purple;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(title, 160), util.getDate(date))
                 + '</a>'
               + '</div>';
       } else{
