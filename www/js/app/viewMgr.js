@@ -515,13 +515,28 @@ define(function(require, exports, module) {
     function loadNewPeopleSlides(){
       var people = mapController.people;
       // add the new online user
-      _.keys(people).sort().forEach(function(userId){
-        if(_.indexOf(inPeopleSlideKeys, userId) == -1){
+      var currentPeopleKeys = _.keys(people).sort();
+
+      var newComers = _.difference(currentPeopleKeys, inPeopleSlideKeys);
+      var leftPeople = _.difference(inPeopleSlideKeys, currentPeopleKeys);
+
+      newComers.forEach(function(userId){
+        try{
           peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
                     'swiper-slide ui-li-static ui-body-inherit');
           inPeopleSlideKeys.push(userId);
+        }catch(err){
+          console.log(err);
         }
       });
+
+      leftPeople.forEach(function(userId){
+        try{
+          console.log('someone has left: ' + userId);
+        }catch(err){
+          console.log(err);          
+        }
+      }); 
 
       //Release interactions and set wrapper
       peopleSwiper.setWrapperTranslate(0,0,0)
