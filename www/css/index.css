@@ -178,6 +178,14 @@
     top: 70px;
     height: 455px!important;
     margin: 0px!important;
+    bottom: 0px; 
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
+    background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
+    background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
+    background-image:         linear-gradient( #0380B5, #FFFFFF );  
+    background-size: 100%;
   } 
 
   #notifications .messages .refresh {
