@@ -17,7 +17,8 @@ define(function(require, exports, module) {
 		switch(data.type){
 			case 'visible':
 			    // show the visible btn if painting himself
-			    if(data.username === userEmail){
+			    if(data.username === userEmail &&
+			    	($('#map').is(":visible"))){
 			    	$("#closeShowUpStatusBtn").show();
 			    }
 			    var index = _.indexOf(_getMarkerNames(), data.username);
@@ -42,6 +43,15 @@ define(function(require, exports, module) {
 				break;
 		}
 		// TODO show a note for data changing in people circle
+		if((!($('#map').is(":visible"))) &&
+			 ($('#people').is(":visible"))){
+			noty({
+				text: '圈子变更...',
+				type:'information',
+				timeout: 1000,
+				layout:'center'
+			});
+		}
 
 	});
 
