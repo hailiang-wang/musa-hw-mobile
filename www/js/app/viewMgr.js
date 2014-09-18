@@ -520,23 +520,30 @@ define(function(require, exports, module) {
       var newComers = _.difference(currentPeopleKeys, inPeopleSlideKeys);
       var leftPeople = _.difference(inPeopleSlideKeys, currentPeopleKeys);
 
+      // remove left people
+      try{
+        peopleSwiper.slides.forEach(function(sld){
+          if(_.indexOf(leftPeople, sld.data('userid')) != -1){
+              sld.remove();
+          }
+        });
+      }catch(err){
+        console.log(err);          
+      }
+
+      // add new comer into slide
       newComers.forEach(function(userId){
+        var candidate;
         try{
-          peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+          candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
                     'swiper-slide ui-li-static ui-body-inherit');
+          candidate.data('userid', userId);
           inPeopleSlideKeys.push(userId);
         }catch(err){
+          candidate = null;
           console.log(err);
         }
       });
-
-      leftPeople.forEach(function(userId){
-        try{
-          console.log('someone has left: ' + userId);
-        }catch(err){
-          console.log(err);          
-        }
-      }); 
 
       //Release interactions and set wrapper
       peopleSwiper.setWrapperTranslate(0,0,0)
@@ -558,9 +565,14 @@ define(function(require, exports, module) {
 
     // add the current online user
     _.keys(people).sort().forEach(function(userId){
-      peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
-                'swiper-slide ui-li-static ui-body-inherit');
-      inPeopleSlideKeys.push(userId);
+      try{
+        var candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+                  'swiper-slide ui-li-static ui-body-inherit');
+        candidate.data('userid', userId);
+        inPeopleSlideKeys.push(userId);
+      }catch(err){
+        console.log(err);
+      }
     });
   }
 
