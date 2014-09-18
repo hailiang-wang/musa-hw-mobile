@@ -158,7 +158,7 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
+        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.cmshost, key), sld.date), 
               'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
         inViewSlideKeys.push(key);
       });
@@ -343,7 +343,6 @@ define(function(require, exports, module) {
   }
 
   function _renderUserProfilePage(){
-
       var user = store.getUserProfile();
       var defaultAvatar = 'img/user-default-avatar.png';
       // if local passport, show the eidt btn
@@ -449,8 +448,6 @@ define(function(require, exports, module) {
             changeHash: false
         });
       });
-
-   
   }
 
 	function _respPushNotificationArrival(){

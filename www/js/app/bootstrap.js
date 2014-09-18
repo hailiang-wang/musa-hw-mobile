@@ -129,7 +129,7 @@ define(['jqm', 'swiper', 'mapbox',
                         // TODO support api /user/me for local passport 
                         store.setUserId(data.emails[0].value);
                         store.setUserProfile(data);
-                        //window.localStorage.removeItem('hailiang.hl.wang@gmail.com-NOTIFICATIONS');
+                        // window.localStorage.removeItem('hailiang.hl.wang@gmail.com-NOTIFICATIONS');
                         mbaas.push.init(data.emails[0].value);
                         viewMgr.respPushNotificationArrival();
                         viewMgr.createHomeSwiperHeader();
