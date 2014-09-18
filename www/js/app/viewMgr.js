@@ -513,6 +513,16 @@ define(function(require, exports, module) {
       }
     );
     function loadNewPeopleSlides(){
+      var people = mapController.people;
+      // add the new online user
+      _.keys(people).sort().forEach(function(userId){
+        if(_.indexOf(inPeopleSlideKeys, userId) == -1){
+          peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+                    'swiper-slide ui-li-static ui-body-inherit');
+          inPeopleSlideKeys.push(userId);
+        }
+      });
+
       //Release interactions and set wrapper
       peopleSwiper.setWrapperTranslate(0,0,0)
       peopleSwiper.params.onlyExternal=false;
