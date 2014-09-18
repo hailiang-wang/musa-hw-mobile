@@ -41,6 +41,8 @@ define(function(require, exports, module) {
 				console.log('unknow sse event type.');
 				break;
 		}
+		// TODO show a note for data changing in people circle
+
 	});
 
  	function _createMap(){

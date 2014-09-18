@@ -465,8 +465,23 @@ define(function(require, exports, module) {
     });
 	}
 
+  function renderHomeMap(){
+    $("#people").hide();
+    $("#map").show();
+    $('#qrcodeBtn').show();
+    if(mapController.people[store.getUserId()]){
+      $('#closeShowUpStatusBtn').show();
+    }
+  }
+
   function renderPeoplePage(){
     $('#people .list').empty();
+    $('#qrcodeBtn').hide();
+    $('#closeShowUpStatusBtn').hide();
+    $("#map").hide();
+    $("#people").show();
+    // hide btns for map
+
     var people = mapController.people;
     inPeopleSlideKeys = [];
     peopleSwiper = new Swiper('#people .swiper-container', {
@@ -585,13 +600,10 @@ define(function(require, exports, module) {
           onSlideChangeEnd : function(swiper, direction){
               switch(swiper.activeIndex % 2){
                   case 0:
-                    $("#map").hide();
-                    $("#people").show();
                     renderPeoplePage();
                     break;
                   case 1:
-                    $("#people").hide();
-                    $("#map").show();
+                    renderHomeMap();
                     break;
                   default :
                     console.log('fine me if you can.');
