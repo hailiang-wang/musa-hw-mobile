@@ -140,10 +140,21 @@ define(function(require, exports, module) {
         return txt;
     }
 
+    function _getHomeSwiperPage(){
+        if($('#map').is(':visible')){
+            return 1;
+        }else if($('#people').is(':visible')){
+            return 2;
+        }else {
+            return 0;
+        }
+    }
+
     return { 
         getDate : _getDate,
         getNetwork : _getNetwork,
         getNotification : _getNotification,
-        trimByPixel: _trimByPixel
+        trimByPixel: _trimByPixel,
+        getHomeSwiperPage: _getHomeSwiperPage
     };
 })

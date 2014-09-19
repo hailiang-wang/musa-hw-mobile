@@ -137,7 +137,8 @@ define(['jqm', 'swiper', 'mapbox',
                         sseclient.start();
                         // Fix Home Btn unactive issue
                         $("#homeBtn").addClass('ui-btn-active');
-                        // set default style for some btn
+                        // set default style for some btns
+                        $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
                         $("#closeShowUpStatusBtn").hide();
                         // hide people page
                         $("#people").hide();

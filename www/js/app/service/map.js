@@ -3,6 +3,7 @@
 */
 define(function(require, exports, module) {
 	var config = require('app/config');
+	var util = require('app/util');
 	var store = require('app/service/store');
 	L.mapbox.accessToken = config.premises[config.myPremise].mapbox.accessToken;
  	var markers = {};
@@ -43,16 +44,10 @@ define(function(require, exports, module) {
 				break;
 		}
 		// TODO show a note for data changing in people circle
-		if((!($('#map').is(":visible"))) &&
-			 ($('#people').is(":visible"))){
-			noty({
-				text: '圈子变更...',
-				type:'information',
-				timeout: 1000,
-				layout:'center'
-			});
+		if(util.getHomeSwiperPage() == 2){
+			$('#headerBtn1').buttonMarkup({icon:'bullseye'}, false);
+			$('#headerBtn1').show();
 		}
-
 	});
 
  	function _createMap(){

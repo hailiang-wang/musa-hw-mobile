@@ -466,7 +466,64 @@ define(function(require, exports, module) {
   function renderHomeMap(){
     $("#people").hide();
     $("#map").show();
+    $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
+    $('#headerBtn1').unbind();
     $('#headerBtn1').show();
+    // Scan QR 
+    $('#headerBtn1').on('click', function(){
+      try{
+        cordova.plugins.barcodeScanner.scan(
+          function (result) {
+              var code = result.text;
+              if(code){
+                var data = JSON.parse(code);
+                if(data.lng && data.lat){
+                  gps.getCurrentPosition().then(function(pos){
+                      console.log('get position ...' + JSON.stringify(pos));
+                      if(gps.isPointInsideCircle(config.myPremise, pos.coords)){
+                        $.ajax({
+                          type: "POST",
+                          url: "http://{0}/rtls/locin".f(config.host),
+                          dataType: 'json',
+                          data: JSON.stringify({ lat: data.lat, lng: data.lng}),
+                          headers: {
+                              "Accept": "application/json",
+                              "Content-Type": "application/json"
+                          },
+                          success: function(data){
+                              console.log(JSON.stringify(data));
+                          },
+                          error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                              console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+                              console.log("[error] Status: " + textStatus); 
+                              console.log("[error] Error: " + errorThrown); 
+                          }
+                        });
+                      }else{
+                        noty({text: '您当前不在{0}.'.f(config.myPremise),
+                          layout: 'center',
+                          type: 'warning',
+                          timeout: 2000});
+                      }
+                  }, function(err){
+                    noty({text: '无法获得GPS位置服务信息.',
+                          layout: 'center',
+                          type: 'warning',
+                          timeout: 2000})
+                  });
+                }else{
+                  console.log('do not have position data !');
+                }
+              }
+          },
+          function (error) {
+            console.log(error);
+          }
+        );
+      }catch(e){
+        console.log(e);
+      }
+    });
     if(mapController.people[store.getUserId()]){
       $('#closeShowUpStatusBtn').show();
     }
@@ -475,11 +532,14 @@ define(function(require, exports, module) {
   function renderPeoplePage(){
     $('#people').css('background','');
     $('#people .list').empty();
-    $('#headerBtn1').hide();
     $('#closeShowUpStatusBtn').hide();
+    $('#headerBtn1').hide();
     $("#map").hide();
     $("#people").show();
-    // hide btns for map
+    $('#headerBtn1').unbind();
+    $('#headerBtn1').on('click', function(){
+      renderPeoplePage();
+    });
 
     var people = mapController.people;
     inPeopleSlideKeys = [];
@@ -637,62 +697,6 @@ define(function(require, exports, module) {
   * Bind some events from UI
   */ 
   (function(){
-    // Scan QR 
-    $('#headerBtn1').on('click', function(){
-      try{
-        cordova.plugins.barcodeScanner.scan(
-          function (result) {
-              var code = result.text;
-              if(code){
-                var data = JSON.parse(code);
-                if(data.lng && data.lat){
-                  gps.getCurrentPosition().then(function(pos){
-                      console.log('get position ...' + JSON.stringify(pos));
-                      if(gps.isPointInsideCircle(config.myPremise, pos.coords)){
-                        $.ajax({
-                          type: "POST",
-                          url: "http://{0}/rtls/locin".f(config.host),
-                          dataType: 'json',
-                          data: JSON.stringify({ lat: data.lat, lng: data.lng}),
-                          headers: {
-                              "Accept": "application/json",
-                              "Content-Type": "application/json"
-                          },
-                          success: function(data){
-                              console.log(JSON.stringify(data));
-                          },
-                          error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                              console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-                              console.log("[error] Status: " + textStatus); 
-                              console.log("[error] Error: " + errorThrown); 
-                          }
-                        });
-                      }else{
-                        noty({text: '您当前不在{0}.'.f(config.myPremise),
-                          layout: 'center',
-                          type: 'warning',
-                          timeout: 2000});
-                      }
-                  }, function(err){
-                    noty({text: '无法获得GPS位置服务信息.',
-                          layout: 'center',
-                          type: 'warning',
-                          timeout: 2000})
-                  });
-                }else{
-                  console.log('do not have position data !');
-                }
-              }
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      }catch(e){
-        console.log(e);
-      }
-    });
-    
     /**
      * stop sharing location
      */
