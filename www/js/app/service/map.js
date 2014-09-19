@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 			    // show the visible btn if painting himself
 			    if(data.username === userEmail &&
 			    	($('#map').is(":visible"))){
-			    	$("#closeShowUpStatusBtn").show();
+			    	$("#headerBtn2").show();
 			    }
 			    var index = _.indexOf(_getMarkerNames(), data.username);
 			    if(index == -1){
@@ -35,7 +35,7 @@ define(function(require, exports, module) {
 				break;
 			case 'invisible':
 				if(data.username === userEmail){
-			    	$("#closeShowUpStatusBtn").hide();
+			    	$("#headerBtn2").hide();
 			    }
 		    	_deleteMarkerByName(data.username);
 				break;

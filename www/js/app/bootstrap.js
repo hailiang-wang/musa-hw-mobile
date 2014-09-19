@@ -139,7 +139,7 @@ define(['jqm', 'swiper', 'mapbox',
                         $("#homeBtn").addClass('ui-btn-active');
                         // set default style for some btns
                         $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
-                        $("#closeShowUpStatusBtn").hide();
+                        $("#headerBtn2").hide();
                         // hide people page
                         $("#people").hide();
                         setTimeout(function(){

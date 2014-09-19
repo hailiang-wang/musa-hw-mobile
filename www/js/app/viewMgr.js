@@ -525,14 +525,14 @@ define(function(require, exports, module) {
       }
     });
     if(mapController.people[store.getUserId()]){
-      $('#closeShowUpStatusBtn').show();
+      $('#headerBtn2').show();
     }
   }
 
   function renderPeoplePage(){
     $('#people').css('background','');
     $('#people .list').empty();
-    $('#closeShowUpStatusBtn').hide();
+    $('#headerBtn2').hide();
     $('#headerBtn1').hide();
     $("#map").hide();
     $("#people").show();
@@ -659,7 +659,7 @@ define(function(require, exports, module) {
     }else{
       peopleSwiper.destroy();
       peopleSwiper = null;
-      $('#people').css('background','url("img/nobody-in-circle2.png") no-repeat');
+      $('#people').css('background','url("img/nobody-in-circle.png") no-repeat');
     }
   }
 
@@ -700,7 +700,7 @@ define(function(require, exports, module) {
     /**
      * stop sharing location
      */
-    $("#closeShowUpStatusBtn").on('click', function(){
+    $("#headerBtn2").on('click', function(){
       var profile = store.getUserProfile();
       var email = profile.emails[0].value;
       $.ajax({
