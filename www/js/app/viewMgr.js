@@ -349,8 +349,6 @@ define(function(require, exports, module) {
       switch(user.provider){
         case 'local':
           $('.more-linkedin-profile').hide();
-
-
           break;
         case 'linkedin':
           $('#eidtProfileBtn').hide();
@@ -475,6 +473,7 @@ define(function(require, exports, module) {
   }
 
   function renderPeoplePage(){
+    $('#people').css('background','');
     $('#people .list').empty();
     $('#qrcodeBtn').hide();
     $('#closeShowUpStatusBtn').hide();
@@ -567,6 +566,12 @@ define(function(require, exports, module) {
       //Update active slide
       peopleSwiper.updateActiveSlide(0)
       $('#people .refreshing').hide();
+
+      if(peopleSwiper.slides.length == 0){
+        peopleSwiper.destroy();
+        peopleSwiper = null;
+        $('#people').css('background','url("img/nobody-in-circle2.png") no-repeat');
+      }
     }
 
     function getPeopleSilde(userId, displayName, userPic, userStatus){
@@ -579,16 +584,23 @@ define(function(require, exports, module) {
     }
 
     // add the current online user
-    _.keys(people).sort().forEach(function(userId){
-      try{
-        var candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
-                  'swiper-slide ui-li-static ui-body-inherit');
-        candidate.data('userid', userId);
-        inPeopleSlideKeys.push(userId);
-      }catch(err){
-        console.log(err);
-      }
-    });
+    var candidates = _.keys(people).sort();
+    if(candidates.length > 0){
+      candidates.forEach(function(userId){
+        try{
+          var candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+                    'swiper-slide ui-li-static ui-body-inherit');
+          candidate.data('userid', userId);
+          inPeopleSlideKeys.push(userId);
+        }catch(err){
+          console.log(err);
+        }
+      });
+    }else{
+      peopleSwiper.destroy();
+      peopleSwiper = null;
+      $('#people').css('background','url("img/nobody-in-circle2.png") no-repeat');
+    }
   }
 
   function _createHomeSwiperHeader(){
