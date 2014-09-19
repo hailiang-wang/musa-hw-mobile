@@ -466,7 +466,7 @@ define(function(require, exports, module) {
   function renderHomeMap(){
     $("#people").hide();
     $("#map").show();
-    $('#qrcodeBtn').show();
+    $('#headerBtn1').show();
     if(mapController.people[store.getUserId()]){
       $('#closeShowUpStatusBtn').show();
     }
@@ -475,7 +475,7 @@ define(function(require, exports, module) {
   function renderPeoplePage(){
     $('#people').css('background','');
     $('#people .list').empty();
-    $('#qrcodeBtn').hide();
+    $('#headerBtn1').hide();
     $('#closeShowUpStatusBtn').hide();
     $("#map").hide();
     $("#people").show();
@@ -638,7 +638,7 @@ define(function(require, exports, module) {
   */ 
   (function(){
     // Scan QR 
-    $('#qrcodeBtn').on('click', function(){
+    $('#headerBtn1').on('click', function(){
       try{
         cordova.plugins.barcodeScanner.scan(
           function (result) {

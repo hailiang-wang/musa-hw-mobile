@@ -1,0 +1,437 @@
+.modalWindow{
+  width: 100%;
+  height: 454px;
+  position: absolute;
+  z-index: 20;
+  background: white;
+  opacity: 0.7;
+}
+
+.ui-loader{
+    z-index: 1501;
+}
+
+#map { 
+  position:absolute; 
+  top:70px; bottom:0; 
+  width:100%;
+}
+#home-swiper-header .swiper-container {
+  height: 70px;
+  width: 640px;
+}
+
+#home-swiper-header .header-swiper-title {
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+#home-swiper-header .pagination {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  bottom:5px;
+  width: 100%;
+}
+#home-swiper-header .swiper-pagination-switch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #999;
+  box-shadow: 0px 1px 2px #555 inset;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+#home-swiper-header .swiper-active-switch {
+  background: #fff;
+}
+
+#home-swiper-header .bulletin {
+  background: #fff;
+}
+
+#people {
+  top:70px; 
+  bottom: 0px; 
+  margin: 0px; 
+  padding: 0px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
+  background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
+  background-image:         linear-gradient( #0380B5, #FFFFFF );  
+  background-size: 100%;
+  height: 455px;
+}
+
+#people .refresh {
+  position: absolute;
+  left: 0;
+  top: 0px;
+  z-index: 0;
+  color: #000000;
+  text-align: center;
+  line-height: 60px;
+  width: 100%;
+  opacity: 1;
+  font-size: 15px;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+  display: none;
+}
+
+#people .swiper-container {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+
+#people .list {
+  padding:0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+#people .swiper-slide {
+  height: 60px;
+  width: 100%;
+  /*line-height: 100px;*/
+  opacity: 0.2;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+}
+
+#people .swiper-slide-visible {
+  opacity: 1;
+}
+
+#people .swiper-slide .card {
+  vertical-align: top;
+  padding: 0px;
+  margin: 0px;
+  font-style: italic;
+  font-size: 16px;
+}
+
+#people .swiper-wrapper a {
+  text-decoration: none;
+  text-align: center;
+}
+
+#people .swiper-slide img {
+  height: 60px;
+  width: 60px;
+  padding: 0px;
+}
+
+/* notifications */
+#notifications .unread {
+  width: 100%;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #FFFFFF ), to( #99FF4B )); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #FFFFFF, #99FF4B ); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #FFFFFF, #99FF4B ); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #FFFFFF, #99FF4B ); /* IE10 */
+  background-image:      -o-linear-gradient( #FFFFFF, #99FF4B ); /* Opera 11.10+ */
+  background-image:         linear-gradient( #FFFFFF, #99FF4B );    
+}
+
+#notifications .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#notifications .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+}
+
+#notifications .header a.ui-btn{
+  border: none !important;
+  top:25px;
+  left:30px; 
+}
+
+#notifications .notifications.ui-content{
+  /* .ui-content makes a padding 1em in the view, fix it by marking !important */
+  padding: 0px!important;
+  top: 70px;
+  height: 455px!important;
+  margin: 0px!important;
+  bottom: 0px; 
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
+  background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
+  background-image:         linear-gradient( #0380B5, #FFFFFF );  
+  background-size: 100%;
+} 
+
+#notifications .messages .refresh {
+  position: absolute;
+  left: 0;
+  top: 0px;
+  z-index: 0;
+  color: #000000;
+  text-align: center;
+  line-height: 60px;
+  width: 100%;
+  opacity: 1;
+  font-size: 15px;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+  display: none;
+}
+
+#notifications .messages.swiper-container {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+
+#notifications .messages .list {
+  padding:0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+#notifications .messages .swiper-slide {
+  height: 60px;
+  width: 100%;
+  /*line-height: 100px;*/
+  opacity: 0.2;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+}
+
+#notifications .messages .swiper-slide-visible {
+  opacity: 1;
+}
+
+#notifications .messages .swiper-slide .card {
+  vertical-align: top;
+  padding: 0px;
+  margin: 0px;
+  font-style: italic;
+  font-size: 16px;
+}
+
+#notifications .messages .swiper-wrapper a {
+  text-decoration: none;
+  text-align: center;
+}
+
+#notifications .messages .swiper-slide img {
+  height: 72px;
+  width: 72px;
+  padding: 0px;
+}
+
+/* notification */
+#notification .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#notification .header .title a.ui-btn{
+  left: 30px;
+  top : 20px;
+  font-size: 15px;
+  text-align: left;
+  border: none !important;
+}
+
+#notification .content.ui-content{
+  /* .ui-content makes a padding 1em in the view, fix it by marking !important */
+  top: 70px;
+  padding: 0px!important;
+  margin: 0px!important;
+} 
+
+#notification iframe {
+  width: 100%!important;
+  height: 100%!important;
+}
+
+/*  user profile, status, settings */
+#user-index .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#user-index .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+}
+
+#user-index svg {
+  height:0;
+}
+
+#user-index .content.ui-content {
+  top:70px; 
+  bottom: 0px; 
+  margin: 0px; 
+  padding: 0px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
+  background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
+  background-image:         linear-gradient( #0380B5, #FFFFFF );  
+  background-size: 100%;
+  height: 455px;
+}
+
+#user-index .content .blurContainer {
+  position:fixed;
+  width:300px;
+  height:80px;
+  top: 45%;
+  left: 50%;
+  margin:-150px 0 0 -150px;
+  border-radius:120px;
+  box-shadow:inset 0px 1px 0px 0px #fff, inset 0px -1px 2px 0px #000, 0 5px 8px rgba(0, 0, 0, .8), 0 0px 0px 1px rgba(0, 0, 0, .3);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+  z-index:2;
+}
+#user-index .content .blurry {
+  position:fixed;
+  z-index:1;
+  width:300px;
+  height:300px;
+  top: 60%;
+  left: 50%;
+  margin:-150px 0 0 -150px;
+  border-radius:120px;
+  background:-moz-element(#main) no-repeat fixed;
+  /*background-size:118%; /* You may use zoom for extra realism */
+  filter:url(#f1);
+  color:#fff;
+  font-weight:bold;
+}
+
+#user-index .content .blurContainer h1 {
+  font:small-caps bold 17px Times New Roman;
+  text-transform:capitalize;
+  text-align:left;
+  color:yellow;
+  padding:20px 0 0 30px;
+  display:block;
+  height:50%;
+  border-radius:60px 60px 10px 10px;
+  text-shadow:0 1px 0px rgba(255, 255, 255, .75);
+  background-repeat: no-repeat;
+  background-position: 80% 50%;
+  background-size: 50px 50px;
+}
+
+#user-index .content .ui-body.profile-card{
+  height:120px;
+}
+#user-index .content .ui-body.profile-card p{
+  color:black;
+  font-size:13px;
+}
+
+#profile-editor .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#profile-editor .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 15px;
+}
+
+#profile-editor .content.ui-content {
+  background-image:url('../img/user-background.png')  !important;
+  padding: 0px!important;
+  top: 70px;
+  height: 455px!important;
+  margin: 0px!important;
+}
+
+#saveProfileBtn {
+  border: none !important; 
+  padding-top:40px; 
+  width:50px; 
+  height:25px; 
+  left:220px
+}
+
+#cancelEditProfileBtn {
+  border: none !important; 
+  padding-top:40px; 
+  width:50px; 
+  height:25px; 
+  left:270px
+}
+
+/* http://stackoverflow.com/questions/12200444/remove-hover-click-states-of-buttons */
+.musa-nostate-btn {
+  background: -webkit-linear-gradient(#85E0FF, #85E0FF) repeat scroll 0 0 #FFFFFF !important;
+}
+
+#headerBtn1 {
+  border: none !important; 
+  padding-top:40px; 
+  width:50px; 
+  height:25px; 
+  left:270px
+}
+
+#closeShowUpStatusBtn {
+  border: none !important; 
+  padding-top:40px; 
+  width:50px; 
+  height:25px; 
+  left:220px;
+}
+
+#signOutBtn {
+  border: none !important; 
+  padding-top:40px; 
+  width:50px; 
+  height:25px; 
+  left:270px
+}
+#eidtProfileBtn {
+  border: none !important; 
+  padding-top:40px; 
+  width:50px; 
+  height:25px; 
+  left:220px
+}
