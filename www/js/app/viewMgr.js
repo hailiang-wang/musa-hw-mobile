@@ -570,7 +570,7 @@ define(function(require, exports, module) {
       if(peopleSwiper.slides.length == 0){
         peopleSwiper.destroy();
         peopleSwiper = null;
-        $('#people').css('background','url("img/nobody-in-circle2.png") no-repeat');
+        $('#people').css('background','url("img/nobody-in-circle.png") no-repeat');
       }
     }
 
