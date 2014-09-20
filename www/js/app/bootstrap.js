@@ -164,8 +164,131 @@ define(['jqm', 'swiper', 'mapbox',
             });
 
             $('body').append("<div class='ui-loader-background'> </div>");
-        
 
+            var $loginInputs = $('#loginEmail,#loginPassword'),
+                $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
+                rules = {
+                    username: /^\w+$/i,
+                    email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
+                    password: /^.+$/i
+                },
+                inSubmit = false,
+                userEmail;
+
+            /**
+             * login input events
+             */
+            $loginInputs.on('focus', function (e) {
+                $('#loginContent').addClass('login-focus');
+            }).on('blur', function (e) {
+                if(inSubmit) return false;
+                $('#loginContent').removeClass('login-focus');
+            });
+            /**
+             * signup input events
+             */
+            $signupInputs.on('focus', function (e) {
+                $('#loginContent').addClass('signup-focus');
+            }).on('blur', function (e) {
+                $('#loginContent').removeClass('signup-focus');
+            }).on('input', function (e) {
+                var $el;
+
+                for(var id in rules) {
+                    $el = $('#' + $.camelCase('signup-' + id));
+
+                    if(!rules[id].test($el.val())) {
+                        $('#signupBtn').button('option', 'disabled', true);
+                        return false;
+                    }
+
+                }
+
+                $('#signupBtn').button('option','disabled', false);
+
+            }).on('change', function (e) {
+                var $t = $(this),
+                    id = '';
+
+                try {
+                    id = /^signup(\w+)$/i.exec($t.attr('id'))[1].toLowerCase();
+                } catch (error) {
+                    id = '';
+                }
+
+                if(!rules[id].test($t.val())) {
+                    $t.closest('.ui-input-text').addClass('ui-input-error');
+                } else {
+                    $t.closest('.ui-input-text').removeClass('ui-input-error');
+                }
+
+            });
+
+            $('#signupBtn').button('option', 'disabled', true);
+            // $('#activeBtn').button('option', 'disabled', true);
+            $('#signupBtn').on('touchend', function (e) {
+
+                var params = {
+                    username: $('#signupUsername').val(),
+                    password: $('#signupPassword').val(),
+                    email: $('#signupEmail').val()
+                };
+
+                inSubmit = true;
+
+                // $.mobile.loading( "show", {
+                //     textVisible: false,
+                //     theme: "a",
+                //     textonly: false
+                // });
+
+                window.navigator.splashscreen.show();
+
+                $.ajax({
+                    url: 'http://hwcafe.mybluemix.net/auth/local/signup',
+                    type: 'POST',
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept': 'application/json'
+                    },
+                    data: JSON.stringify(params),
+                    dataType: 'json',
+                    timeout: 20000,
+                    complete: function (xhr, status) {
+                        var rst;
+
+                        inSubmit = false;
+
+                        // $.mobile.loading("hide");
+                        userEmail = params.email;
+
+                        if(xhr.status === 200) {
+                            rst = xhr.responseJSON;
+
+                            if(rst.rc == '1') {
+                                $.mobile.changePage('#vericode', {
+                                    transition: 'fade'
+                                });
+                            } else if(rst.rc == '3') {
+                                $('#signup').find('.errorTip').text('邮箱已经被注册！');
+                            } else if(rst.rc == '4') {
+                                $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+                            } else if(rst.rc == '5') {
+                                $('#signup').find('.errorTip').text('非法请求！');
+                            } else {
+                                $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+                            }
+                        } else if (xhr.status === 404) {
+                            $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+                        } else {
+                            $('#signup').find('.errorTip').text('服务器通信错误！');
+                        }
+                    }
+                });
+                
+                return false;
+                
+            });
             /**
              * Log-In via LinkedIn Passport
              * ======================================
@@ -208,7 +331,9 @@ define(['jqm', 'swiper', 'mapbox',
              * ======================================
              */
             $('#locRegisBtn').on('click', function(){
-                window.location = 'signup.html';
+                $.mobile.changePage('#signup', {
+                    transition: 'slideup'
+                });
             });
 
             /**
@@ -280,175 +405,95 @@ define(['jqm', 'swiper', 'mapbox',
                     noty({text: '邮箱或密码不能为空.',
                           layout:'center',
                           timeout: 2000,
-                          type: 'warning'})
+                          type: 'warning'});
                 }
-            })
+            });
+            /**
+             * verify code page
+             */
+            $("#vericode").on("pagecreate", function(event, ui) {
+
+                $('#activeBtn').button('option', 'disabled', true);
+
+                $('#activeBtn').on('touchend', function (e) {
+                    var params = {
+                        code: $('#code').val(),
+                        email: userEmail
+                    };
+
+                    $.mobile.loading( "show", {
+                        textVisible: false,
+                        theme: "a",
+                        textonly: false
+                    });
+
+                    $.ajax({
+                        url: 'http://hwcafe.mybluemix.net/auth/local/verify',
+                        type: 'POST',
+                        headers: {
+                            'Content-Type':'application/json',
+                            'Accept': 'application/json'
+                        },
+                        data: JSON.stringify(params),
+                        dataType: 'json',
+                        timeout: 20000,
+                        complete: function (xhr, status) {
+                            var rst;
+                            $.mobile.loading( "hide");
+
+                            if(xhr.status === 200) {
+                                rst = xhr.responseJSON;
+
+                                if(rst.rc == '1') {
+                                    store.setUserSID(rst.sid);
+                                    navigator.splashscreen.show();
+                                    window.location = 'home.html';
+                                } else if(rst.rc == '2') {
+                                    $('#vericode').find('.errorTip').text('验证码错误！');
+                                } else if(rst.rc == '3') {
+                                    $('#vericode').find('.errorTip').text('尝试次数过多，注册失败！！');
+                                    var timeout = setTimeout(function () {
+                                        window.location = 'login.html';
+                                    }, 2000);
+                                } else if(rst.rc == '4') {
+                                    $('#vericode').find('.errorTip').text('非法请求！');
+                                } else if(rst.rc == '5') {
+                                    $('#vericode').find('.errorTip').text('服务器通信错误！');
+                                } else {
+                                    $('#vericode').find('.errorTip').text('网络错误，请稍后重试！');
+                                }
+                            } else if (xhr.status === 404) {
+                                $('#vericode').find('.errorTip').text('网络错误，请稍后重试！');
+                            } else {
+                                $('#vericode').find('.errorTip').text('服务器通信错误！');
+                            }
+                        }
+                    });
+
+                    return false;
+
+                });
+
+                $('#code').on('input', function (e) {
+                    var $t = $(this);
+
+                    if(!/^\w+$/.test($t.val())) {
+                        $('#activeBtn').button('disable');
+                        return false;
+                    }
+
+                    $('#activeBtn').button('option', 'disabled', false);
+
+                });
+
+                window.navigator.splashscreen.hide();
+
+            });
         }
 
         function signupHandler () {
 
-            var rules = {
-                    username: /^\w+$/i,
-                    email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
-                    password: /^.+$/i
-                },
-                userEmail;
-
-            navigator.splashscreen.hide();
-            $('#signupBtn').button('option', 'disabled', true);
-
-            $("#vericode").on("pagecreate", function(event, ui) {
-                $('#activeBtn').button('option', 'disabled', true);
-            });
-            // $('#activeBtn').button('option', 'disabled', true);
-            $('#signupBtn').on('click', function (e) {
-
-                var params = {
-                    username: $('#username').val(),
-                    password: $('#password').val(),
-                    email: $('#email').val()
-                };
-
-                $.mobile.loading( "show", {
-                    textVisible: false,
-                    theme: "a",
-                    textonly: false
-                });
-
-                $.ajax({
-                    url: 'http://hwcafe.mybluemix.net/auth/local/signup',
-                    type: 'POST',
-                    headers: {
-                        'Content-Type':'application/json',
-                        'Accept': 'application/json'
-                    },
-                    data: JSON.stringify(params),
-                    dataType: 'json',
-                    timeout: 20000,
-                    complete: function (xhr, status) {
-                        var rst;
-
-                        $.mobile.loading( "hide");
-                        userEmail = params.email;
-
-                        if(xhr.status === 200) {
-                            rst = xhr.responseJSON;
-
-                            if(rst.rc == '1') {
-                                $.mobile.changePage('#vericode', {
-                                    transition: 'slideup'
-                                });
-                            } else if(rst.rc == '3') {
-                                $('#signup').find('.errorTip').text('邮箱已经被注册！');
-                            } else if(rst.rc == '4') {
-                                $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
-                            } else if(rst.rc == '5') {
-                                $('#signup').find('.errorTip').text('非法请求！');
-                            } else {
-                                $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
-                            }
-                        } else if (xhr.status === 404) {
-                            $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
-                        } else {
-                            $('#signup').find('.errorTip').text('服务器通信错误！');
-                        }
-                    }
-                });
-                
-            });
-
-            $('#activeBtn').on('click', function (e) {
-                var params = {
-                    code: $('#code').val(),
-                    email: userEmail
-                };
-
-                $.mobile.loading( "show", {
-                    textVisible: false,
-                    theme: "a",
-                    textonly: false
-                });
-
-                $.ajax({
-                    url: 'http://hwcafe.mybluemix.net/auth/local/verify',
-                    type: 'POST',
-                    headers: {
-                        'Content-Type':'application/json',
-                        'Accept': 'application/json'
-                    },
-                    data: JSON.stringify(params),
-                    dataType: 'json',
-                    timeout: 20000,
-                    complete: function (xhr, status) {
-                        var rst;
-                        $.mobile.loading( "hide");
-
-                        if(xhr.status === 200) {
-                            rst = xhr.responseJSON;
-
-                            if(rst.rc == '1') {
-                                store.setUserSID(rst.sid);
-                                navigator.splashscreen.show();
-                                window.location = 'home.html';
-                            } else if(rst.rc == '2') {
-                                $('#vericode').find('.errorTip').text('验证码错误！');
-                            } else if(rst.rc == '3') {
-                                $('#vericode').find('.errorTip').text('尝试次数过多，注册失败！！');
-                            } else if(rst.rc == '4') {
-                                $('#vericode').find('.errorTip').text('非法请求！');
-                            } else if(rst.rc == '5') {
-                                $('#vericode').find('.errorTip').text('服务器通信错误！');
-                            } else {
-                                $('#vericode').find('.errorTip').text('网络错误，请稍后重试！');
-                            }
-                        } else if (xhr.status === 404) {
-                            $('#vericode').find('.errorTip').text('网络错误，请稍后重试！');
-                        } else {
-                            $('#vericode').find('.errorTip').text('服务器通信错误！');
-                        }
-                    }
-                });
-            });
-
-            $('#username,#email,#password').on('input', function (e) {
-                var $el;
-
-                for(var id in rules) {
-                    $el = $('#' + id);
-
-                    if(!rules[id].test($el.val())) {
-                        $('#signupBtn').button('disable');
-                        return false;
-                    }
-
-                }
-
-                $('#signupBtn').button('enable');
-            });
-
-            $('#code').on('input', function (e) {
-                var $t = $(this);
-
-                if(!/^\w+$/.test($t.val())) {
-                    $('#activeBtn').button('disable');
-                    return false;
-                }
-
-                $('#activeBtn').button('option', 'disabled', false);
-
-            });
-
-            $('#username,#email,#password').on('change', function (e) {
-                var $t = $(this),
-                    id = $t.attr('id');
-
-                if(!rules[id].test($t.val())) {
-                    $t.closest('.ui-input-text').addClass('ui-input-error');
-                } else {
-                    $t.closest('.ui-input-text').removeClass('ui-input-error');
-                }
-
-            });
+            
         }
 
         return {

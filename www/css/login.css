@@ -1,57 +1,183 @@
 /*  login profile, status, settings */
 
-#login-index {
-  background-image:url('../img/login-background.jpg')  !important;
-  background-repeat: no-repeat;
-  width:100%;
-}
+.version
+{
+    font-size: .5em;
 
-.version {
     width: 100%;
-    font-size: 0.5em;
-    margin-left: 70%;
     padding-top: 20%;
+
+    text-align: right;
+
+    color: #1e5abf;
     text-shadow: none;
-    color: #1E5ABF;
 }
 
-.ui-loader-background {
-    width:100%;
-    height:100%;
-    top:0;
-    margin: 0;
-    background: rgba(0, 0, 0, 0.3);
-    display:none;
+.ui-loader-background
+{
     position: fixed;
-    z-index:100;
+    z-index: 100;
+    top: 0;
+
+    display: none;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+    background: rgba(0, 0, 0, .3);
 }
 
-.ui-loading .ui-loader-background {
-    display:block;
+.ui-loading .ui-loader-background
+{
+    display: block;
 }
 
-#login-index .content.ui-content{
-    padding-top: 80px!important;
-    margin: 0px!important;
+#login-index
+{
+    width: 100%;
+
+    background-image: url('../img/login-background.jpg')  !important;
+    background-repeat: no-repeat;
 }
 
-.local-login-form {
-    position:relative;
-    width:285px
+#loginContent
+{
+    height: 100%;
 }
 
-.local-login-form input{
-    width:285px;
+.form-login
+{
+    box-sizing: border-box;
+    height: 40%;
+    padding-top: 5%;
 }
 
-#email-img {
-    position:absolute;
-    right:5px;
-    top: 5px;
+.form-signup
+{
+    box-sizing: border-box;
+    height: 40%;
 }
 
-#password-img {
-    position:absolute;
-    right:5px;
-    top:50px;
+.login-focus .form-login,.signup-focus .form-signup
+{
+    height: 100%;
+}
+
+.login-focus .form-signup,.signup-focus .form-login
+{
+    height: 0;
+}
+
+.form-musa
+{
+    overflow: hidden;
+}
+
+.form-musa .ui-input-text
+{
+    -webkit-transition: all .2s linear;
+            transition: all .2s linear;
+
+    color: #666;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-musa .ui-input-text .fa
+{
+    color: #aaa;
+}
+
+.form-musa .ui-input-text.ui-focus
+{
+    border-color: #999;
+    background-color: #f5f5f5;
+    box-shadow: 1px 1px 1px #ccc;
+}
+
+.form-musa .ui-btn.ui-input-btn
+{
+    font-size: 20px;
+    line-height: 20px;
+
+    text-align: center;
+
+    color: #fff;
+    border-color: #38c;
+    background-color: #38c;
+    text-shadow: 0 1px 0 #059;
+}
+
+.form-musa .ui-btn.ui-input-btn:hover
+{
+    color: #fff;
+    border-color: #fff;
+    box-shadow: inset(0 0 1px #999);
+}
+
+.form-musa .ui-btn.ui-input-btn.ui-focus
+{
+    outline: none;
+    box-shadow: none;
+}
+
+.form-musa .ui-input-text.ui-focus .fa
+{
+    color: #aaa;
+}
+
+.form-musa .ui-btn.ui-input-btn.ui-btn-active
+{
+    box-shadow: inset(0 0 1px #999);
+}
+
+.form-musa .ui-input-text.ui-input-error
+{
+    border-color: #f33;
+    background-color: #fee;
+}
+
+.form-musa .ui-btn-disabled
+{
+    pointer-events: none;
+
+    opacity: .6;
+}
+
+.form-musa .ui-input-text.ui-input-error .fa
+{
+    color: #f33;
+}
+
+.form-musa .ui-input-group label
+{
+    font-size: 16px;
+
+    display: inline-block;
+
+    box-sizing: border-box;
+    width: 30px;
+    padding-left: 10px;
+
+    text-align: center;
+}
+
+.form-musa .ui-input-group input
+{
+    display: inline-block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin-right: 0;
+    margin-left: -36px;
+    padding-left: 36px;
+}
+
+#signupBtn
+{
+    text-indent: .5em;
+    letter-spacing: 1em;
 }
