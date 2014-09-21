@@ -477,8 +477,7 @@ define(function(require, exports, module) {
                   gps.getCurrentPosition().then(function(pos){
                       console.log('get position ...' + JSON.stringify(pos));
                       if(gps.isPointInsideCircle(config.myPremise, pos.coords)){
-
-
+                        
                         // change a page to get user status 
                         $('#popupStatus').popup( "open", {
                           transition: "fade"
