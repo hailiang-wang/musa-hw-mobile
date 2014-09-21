@@ -341,14 +341,14 @@ define(['jqm', 'swiper', 'mapbox',
              * ======================================
              */
             $('#locLoginBtn').on('click', function(){
-                var username = $('#email').val();
-                var password = $('#password').val();
+                var username = $('#loginEmail').val();
+                var password = $('#loginPassword').val();
                 
                 if(username && password){
                     // wait the keyboard hidden
                     navigator.splashscreen.show();
-                    $('#email').val('');
-                    $('#password').val('');
+                    $('#loginEmail').val('');
+                    $('#loginPassword').val('');
                     $.ajax({
                         url: 'http://{0}/auth/local'.f(config.host),
                         type: 'POST',

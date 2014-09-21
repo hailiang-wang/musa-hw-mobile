@@ -358,10 +358,16 @@
 #user-index .content .ui-body.profile-card{
   height:120px;
 }
+
+#user-index .content .ui-body.profile-card i{
+  color:green;
+}
+
 #user-index .content .ui-body.profile-card p{
   color:black;
   font-size:13px;
 }
+
 
 #profile-editor .header{
   height: 70px;
@@ -382,6 +388,29 @@
   top: 70px;
   height: 455px!important;
   margin: 0px!important;
+}
+
+#profile-editor .ui-input-group label{
+    font-size: 16px;
+
+    display: inline-block;
+
+    box-sizing: border-box;
+    width: 30px;
+    padding-left: 10px;
+
+    text-align: center;
+}
+
+#profile-editor .ui-input-group input
+{
+    display: inline-block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin-right: 0;
+    margin-left: -36px;
+    padding-left: 36px;
 }
 
 #saveProfileBtn {
