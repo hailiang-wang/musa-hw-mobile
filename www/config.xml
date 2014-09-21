@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.musa.snowball" version="0.0.20140921_1019" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.musa.snowball" version="0.0.20140921_1037" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Snowball</name>
     <description>
       Project to show real time matrix in Hello World Cafe.
     </description>
     <author email="hailiang.hl.wang@gmail.com" href="http://helloworld-cafe.com">
-      Hai Liang Wang
+      Hai Liang Wang, Jian Fei Zhao
     </author>
     <content src="home.html" />
     <access origin="*" />
