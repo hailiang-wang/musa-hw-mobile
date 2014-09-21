@@ -491,20 +491,12 @@ define(['jqm', 'swiper', 'mapbox',
             });
         }
 
-        function signupHandler () {
-
-            
-        }
-
         return {
             home: function() {
                 homeHandler();
             },
             login: function() {
                 loginHandler();
-            },
-            signup: function() {
-                signupHandler();
             }
         };
     }

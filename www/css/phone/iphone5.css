@@ -368,7 +368,6 @@
   font-size:13px;
 }
 
-
 #profile-editor .header{
   height: 70px;
   width: 100%;
@@ -383,11 +382,13 @@
 }
 
 #profile-editor .content.ui-content {
-  background-image:url('../img/user-background.png')  !important;
   padding: 0px!important;
   top: 70px;
-  height: 455px!important;
   margin: 0px!important;
+}
+
+#profile-editor .content.ui-content .panel {
+  padding:10px 20px 0px 20px; 
 }
 
 #profile-editor .ui-input-group label{

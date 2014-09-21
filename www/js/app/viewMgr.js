@@ -226,7 +226,7 @@ define(function(require, exports, module) {
 
   // render user profile editor page
   function _renderProfileEditor(){
-
+    $("#userBtn").addClass('ui-btn-active');
     var profile = store.getUserProfile();
     // insert values into profile fields
     if(profile._json.educations._total > 0)

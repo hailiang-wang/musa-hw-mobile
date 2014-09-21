@@ -97,8 +97,6 @@ var app = {
                 bootstrap.home();
             }else if(pathname.endsWith('login.html')){
                 bootstrap.login();
-            }else if(pathname.endsWith('signup.html')){
-                bootstrap.signup();
             }
         });
     }
