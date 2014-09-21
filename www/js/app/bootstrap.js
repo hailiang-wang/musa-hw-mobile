@@ -69,8 +69,6 @@ define(['jqm', 'swiper', 'mapbox',
             });
         }
 
-
-
         function homeHandler(){
             ngv();
             // http://api.jquerymobile.com/pagecontainer/
@@ -139,7 +137,9 @@ define(['jqm', 'swiper', 'mapbox',
                         $("#homeBtn").addClass('ui-btn-active');
                         // set default style for some btns
                         $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
+                        viewMgr.bindQRbtn();
                         $("#headerBtn2").hide();
+                        // TODO btn not bind for QR Code
                         // hide people page
                         $("#people").hide();
                         setTimeout(function(){

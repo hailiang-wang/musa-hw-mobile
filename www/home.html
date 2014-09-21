@@ -52,8 +52,17 @@
                     </ul>
                 </div>
             </div>
+            <div data-role="popup" id="popupStatus" data-theme="b" class="ui-corner-all">
+                <a href="#" data-rel="back" data-role="button" data-theme="b" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-btn-icon-notext"></a>
+                <form>
+                    <div style="padding:10px 20px;">
+                        <label for="myStatus"><i class="fa fa-share-alt"></i></label>
+                        <textarea cols="40" rows="20" name="textarea" id="myStatus" placeholder="How are you ?" data-theme="b"></textarea>
+                        <button id='submitStatusBtn' type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">分享</button>
+                    </div>
+                </form>
+            </div>
         </div>
-
         <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
             <div data-role='navbar'>
                 <ul>

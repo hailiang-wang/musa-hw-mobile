@@ -463,12 +463,8 @@ define(function(require, exports, module) {
     });
 	}
 
-  function renderHomeMap(){
-    $("#people").hide();
-    $("#map").show();
-    $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
+  function bindQRbtn(){
     $('#headerBtn1').unbind();
-    $('#headerBtn1').show();
     // Scan QR 
     $('#headerBtn1').on('click', function(){
       try{
@@ -481,24 +477,41 @@ define(function(require, exports, module) {
                   gps.getCurrentPosition().then(function(pos){
                       console.log('get position ...' + JSON.stringify(pos));
                       if(gps.isPointInsideCircle(config.myPremise, pos.coords)){
-                        $.ajax({
-                          type: "POST",
-                          url: "http://{0}/rtls/locin".f(config.host),
-                          dataType: 'json',
-                          data: JSON.stringify({ lat: data.lat, lng: data.lng}),
-                          headers: {
-                              "Accept": "application/json",
-                              "Content-Type": "application/json"
-                          },
-                          success: function(data){
-                              console.log(JSON.stringify(data));
-                          },
-                          error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                              console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-                              console.log("[error] Status: " + textStatus); 
-                              console.log("[error] Error: " + errorThrown); 
-                          }
+
+
+                        // change a page to get user status 
+                        $('#popupStatus').popup( "open", {
+                          transition: "fade"
                         });
+
+                        $('#submitStatusBtn').unbind();
+                        $('#submitStatusBtn').on('click', function(){
+                          $.ajax({
+                            type: "POST",
+                            url: "http://{0}/rtls/locin".f(config.host),
+                            dataType: 'json',
+                            data: JSON.stringify({ 
+                              lat: data.lat, 
+                              lng: data.lng,
+                              status: $('#myStatus').val()
+                            }),
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            success: function(data){
+                                console.log(JSON.stringify(data));
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+                                console.log("[error] Status: " + textStatus); 
+                                console.log("[error] Error: " + errorThrown); 
+                            }
+                          });
+                          
+                        });
+
+
                       }else{
                         noty({text: '您当前不在{0}.'.f(config.myPremise),
                           layout: 'center',
@@ -524,6 +537,14 @@ define(function(require, exports, module) {
         console.log(e);
       }
     });
+  }
+
+  function renderHomeMap(){
+    $("#people").hide();
+    $("#map").show();
+    $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
+    $('#headerBtn1').show();
+    bindQRbtn();
     if(mapController.people[store.getUserId()]){
       $('#headerBtn2').show();
     }
@@ -733,6 +754,7 @@ define(function(require, exports, module) {
   exports.initNotificationPage = _initNotificationPage;
   exports.renderUserProfilePage = _renderUserProfilePage;
   exports.renderProfileEditor = _renderProfileEditor;
+  exports.bindQRbtn = bindQRbtn;
 
 	/**
 	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.
