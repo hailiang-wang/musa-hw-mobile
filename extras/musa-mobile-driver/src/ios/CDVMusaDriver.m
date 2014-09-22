@@ -43,4 +43,31 @@
     }
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
+
+- (void) removeCookieByDomain: (CDVInvokedUrlCommand *)command
+{
+    NSLog(@"invoke removeCookieByDomain");
+    CDVPluginResult * result = nil;
+    NSString *appUrl = [command.arguments objectAtIndex:0];
+    if ([appUrl isEqual: [NSNull null]] ){
+        NSLog(@"fail removing cookie, the appUrl value is nil.");
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+    }else{
+        // get domain
+        NSURL *url = [NSURL URLWithString:[appUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSString *domain = [url host];
+        NSHTTPCookieStorage * sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+        NSArray * cookies = [sharedCookieStorage cookies];
+        for (NSHTTPCookie * cookie in cookies){
+            NSLog(@"%@",cookie.domain);
+            if ([cookie.domain rangeOfString:domain].location != NSNotFound){
+                [sharedCookieStorage deleteCookie:cookie];
+            }
+        }
+        NSLog(@"cooke is removed for logout event.");
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"succeed"];
+    }
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
 @end

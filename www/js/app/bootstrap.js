@@ -119,6 +119,7 @@ define(['jqm', 'swiper', 'mapbox',
                 }
             });
             var userSid = store.getUserSID();
+            alert('getUserSID ' + userSid);
             if(userSid){
                 cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), userSid, function(){
                     // succ callback
@@ -360,6 +361,7 @@ define(['jqm', 'swiper', 'mapbox',
                         },
                         success: function(response){
                             if(response.rc == 1){
+                                alert('setUserSID ' + JSON.stringify(response));
                                 store.setUserSID(response.sid);
                                 window.location = 'home.html';
                             }else if(response.rc == 2){
