@@ -545,6 +545,7 @@ define(function(require, exports, module) {
       }catch(e){
         console.log(e);
       }
+      return false;
     });
   }
 
