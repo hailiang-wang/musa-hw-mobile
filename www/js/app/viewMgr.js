@@ -480,8 +480,17 @@ define(function(require, exports, module) {
                         
                         // change a page to get user status 
                         $('#popupStatus').popup( "open", {
-                          transition: "fade"
+                          transition: "fade",
+                          positionTo: "window"
                         });
+
+                        // the first attempt will not center the pop as the window
+                        // is not full set
+                        // setTimeout(function(){
+                        //   $('#popupStatus').popup("reposition",{
+                        //     positionTo: "window"
+                        //   });
+                        // }, 500);
 
                         $('#submitStatusBtn').unbind();
                         $('#submitStatusBtn').on('click', function(){
@@ -492,7 +501,8 @@ define(function(require, exports, module) {
                             data: JSON.stringify({ 
                               lat: data.lat, 
                               lng: data.lng,
-                              status: $('#myStatus').val()
+                              status: $('#myStatus').val(),
+                              duration : $('#sharingDuration').val() * 60000
                             }),
                             headers: {
                                 "Accept": "application/json",
