@@ -54,15 +54,13 @@
             </div>
             <div data-role="popup" id="popupStatus" data-theme="b" class="ui-corner-all">
                 <a href="#" data-rel="back" data-role="button" data-theme="b" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-btn-icon-notext"></a>
-                <form>
-                    <div style="padding:10px 20px;">
-                        <label for="myStatus"><i class="fa fa-share-alt">分享状态</i></label>
-                        <textarea cols="40" rows="20" name="textarea" id="myStatus" placeholder="和朋友们说点什么?" data-theme="b"></textarea>
-                        <label for="sharing-duration"><i class="fa fa-history">持续时间(分钟)</i></label>
-                        <input id="sharingDuration" type="range" name="sharing-duration" id="slider-fill-mini" value="15" min="5" max="60" data-highlight="true" data-theme="b" data-track-theme="b">
-                        <button id='submitStatusBtn' type="submit" class="ui-btn ui-corner-all ui-shadow">确定</button>
-                    </div>
-                </form>
+                <div style="padding:10px 20px;">
+                    <label for="myStatus"><i class="fa fa-share-alt">分享状态</i></label>
+                    <textarea cols="40" rows="20" name="textarea" id="myStatus" placeholder="和朋友们说点什么?" data-theme="b"></textarea>
+                    <label for="sharing-duration"><i class="fa fa-history">持续时间(分钟)</i></label>
+                    <input id="sharingDuration" type="range" name="sharing-duration" id="slider-fill-mini" value="15" min="5" max="60" data-highlight="true" data-theme="b" data-track-theme="b">
+                     <a href="#" id='submitStatusBtn' data-rel="back" data-theme="b" class="ui-btn ui-shadow ui-mini ui-corner-all"><i class="fa fa-map-marker">确定</i></a>
+                </div>
             </div>
         </div>
         <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
