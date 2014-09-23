@@ -432,7 +432,7 @@
 
 /* http://stackoverflow.com/questions/12200444/remove-hover-click-states-of-buttons */
 .musa-nostate-btn {
-  background: -webkit-linear-gradient(#85E0FF, #85E0FF) repeat scroll 0 0 #FFFFFF !important;
+  background: -webkit-linear-gradient(#2d312b, #2d312b) repeat scroll 0 0 #FFFFFF !important;
 }
 
 #headerBtn1 {

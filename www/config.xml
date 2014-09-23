@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.musa.snowball" version="0.0.20140922_2039" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.musa.snowball" version="0.0.20140923_0838" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Snowball</name>
     <description>
       Project to show real time matrix in Hello World Cafe.
@@ -11,4 +11,7 @@
     <access origin="*" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <preference name="StatusBarOverlaysWebView" value="true" /> 
+    <preference name="StatusBarBackgroundColor" value="#000000" />
+    <preference name="StatusBarStyle" value="lightcontent" />
 </widget>
