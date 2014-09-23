@@ -328,8 +328,8 @@
   position:fixed;
   z-index:1;
   width:300px;
-  height:300px;
-  top: 60%;
+  height:320px;
+  top: 65%;
   left: 50%;
   margin:-150px 0 0 -150px;
   border-radius:120px;
@@ -356,7 +356,7 @@
 }
 
 #user-index .content .ui-body.profile-card{
-  height:120px;
+  height: 160px;
 }
 
 #user-index .content .ui-body.profile-card i{
