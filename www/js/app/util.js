@@ -117,7 +117,7 @@ define(function(require, exports, module) {
         var deferred = $.Deferred();
         $.ajax({
             type: 'get',
-            url: 'http://{0}/mobile/notification'.f(config.host),
+            url: 'http://{0}/user/notifications'.f(config.host),
             headers: {accept: 'application/json'},
             success: function(data){
                 deferred.resolve(data);
