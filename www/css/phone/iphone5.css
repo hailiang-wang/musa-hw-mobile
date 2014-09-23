@@ -315,8 +315,8 @@
 #user-index .content .blurContainer {
   position:fixed;
   width:300px;
-  height:80px;
-  top: 45%;
+  height:60px;
+  top: 40%;
   left: 50%;
   margin:-150px 0 0 -150px;
   border-radius:120px;
@@ -329,7 +329,7 @@
   z-index:1;
   width:300px;
   height:320px;
-  top: 65%;
+  top: 52%;
   left: 50%;
   margin:-150px 0 0 -150px;
   border-radius:120px;
@@ -337,7 +337,6 @@
   /*background-size:118%; /* You may use zoom for extra realism */
   filter:url(#f1);
   color:#fff;
-  font-weight:bold;
 }
 
 #user-index .content .blurContainer h1 {
@@ -345,7 +344,7 @@
   text-transform:capitalize;
   text-align:left;
   color:yellow;
-  padding:20px 0 0 30px;
+  padding:10px 0 0 30px;
   display:block;
   height:50%;
   border-radius:60px 60px 10px 10px;
@@ -355,17 +354,8 @@
   background-size: 50px 50px;
 }
 
-#user-index .content .ui-body.profile-card{
-  height: 160px;
-}
-
 #user-index .content .ui-body.profile-card i{
   color:green;
-}
-
-#user-index .content .ui-body.profile-card p{
-  color:black;
-  font-size:13px;
 }
 
 #profile-editor .header{
@@ -393,20 +383,16 @@
 
 #profile-editor .ui-input-group label{
     font-size: 16px;
-
     display: inline-block;
-
     box-sizing: border-box;
     width: 30px;
     padding-left: 10px;
-
     text-align: center;
 }
 
 #profile-editor .ui-input-group input
 {
     display: inline-block;
-
     box-sizing: border-box;
     width: 100%;
     margin-right: 0;

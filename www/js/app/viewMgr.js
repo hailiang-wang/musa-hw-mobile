@@ -232,9 +232,6 @@ define(function(require, exports, module) {
     if(profile._json.educations._total > 0)
       $('#eduText').val(profile._json.educations.values[0].schoolName);
 
-    if(profile._json.skills._total > 0)
-      $('#skillText').val(profile._json.skills.values[0].skill.name);
-
     if(profile._json.positions._total > 0)
       $('#posText').val(profile._json.positions.values[0].company.name);
 
@@ -246,18 +243,11 @@ define(function(require, exports, module) {
      */
     $('#saveProfileBtn').on('click', function(){
         var interests = $('#interestText').val();
-        var skills = $('#skillText').val();
         var education = $('#eduText').val();
         var positions = $('#posText').val();
         // set profile 
         if(interests){
           profile._json.interests = interests;
-        }
-        if(skills){
-          profile._json.skills._total = 1;
-          profile._json.skills.values[0] = { skill:{
-            name: skills
-          }};
         }
         if(education){
           profile._json.educations._total = 1;
@@ -389,21 +379,21 @@ define(function(require, exports, module) {
               }
           })
       }else{
-          $('#user-index .blurry p.company').append('{0} <br> '.f("您什么也没有写。"));
+          $('#user-index .blurry p.company').append('{0} '.f("您什么也没有写。"));
           // no positions available
       }
-      // skills
-      if(user._json.skills._total > 0){
-          // how to render it Master?Bachelor, now just show up a school
-          $.each(user._json.skills.values, function(index, skill){
-              if(index < 3){
-                  $('#user-index .blurry p.skill').append('{0} <br> '.f(skill.skill.name));
-              }
-          })
-      }else{
-          // no skills
-          $('#user-index .blurry p.skill').append('{0} <br> '.f("您什么也没有写。"));
-      }
+      // // skills
+      // if(user._json.skills._total > 0){
+      //     // how to render it Master?Bachelor, now just show up a school
+      //     $.each(user._json.skills.values, function(index, skill){
+      //         if(index < 3){
+      //             $('#user-index .blurry p.skill').append('{0} '.f(skill.skill.name));
+      //         }
+      //     })
+      // }else{
+      //     // no skills
+      //     $('#user-index .blurry p.skill').append('{0} <br> '.f("您什么也没有写。"));
+      // }
       // interest
       if(user._json.interests){
           $('#user-index .blurry p.interest').append('{0} <br> '.f(user._json.interests));
