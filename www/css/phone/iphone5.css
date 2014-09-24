@@ -400,6 +400,19 @@
     padding-left: 36px;
 }
 
+#settings-index .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#settings-index .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+}
+
 #saveProfileBtn {
   border: none !important; 
   padding-top:40px; 

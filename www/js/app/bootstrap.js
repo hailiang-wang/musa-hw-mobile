@@ -41,7 +41,6 @@ define(['jqm', 'swiper', 'mapbox',
         });
 
 
-
         function ngv(){
             $("#homeBtn").on('click',function(){
                 $.mobile.changePage( "home.html", {
@@ -61,6 +60,14 @@ define(['jqm', 'swiper', 'mapbox',
             });
             $("#userBtn").on('click',function(){
                 $.mobile.changePage( "user.html", {
+                    transition: "none",
+                    reloadPage: false,
+                    reverse: false,
+                    changeHash: false
+                });
+            });
+            $("#settingsBtn").on('click',function(){
+                $.mobile.changePage( "settings.html", {
                     transition: "none",
                     reloadPage: false,
                     reverse: false,
@@ -88,6 +95,9 @@ define(['jqm', 'swiper', 'mapbox',
                         case 'notification':
                             console.log('beforehide this page to notification page ...');
                             break;
+                        case 'settings-index':
+                            console.log('beforehide this page to settings page ...');
+                            break;
                         default:
                             console.log('you can never find me.');
                             break;
@@ -105,6 +115,9 @@ define(['jqm', 'swiper', 'mapbox',
                                 break;
                             case 'user-index':
                                 console.log('show user-index');
+                                break;
+                            case 'settings-index':
+                                console.log('show settings');
                                 break;
                              case 'profile-editor':
                                 console.log('show editor');
