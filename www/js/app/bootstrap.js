@@ -97,6 +97,7 @@ define(['jqm', 'swiper', 'mapbox',
                             break;
                         case 'settings-index':
                             console.log('beforehide this page to settings page ...');
+                            viewMgr.renderSettingsPage();
                             break;
                         default:
                             console.log('you can never find me.');
@@ -141,7 +142,7 @@ define(['jqm', 'swiper', 'mapbox',
                         store.setUserId(data.emails[0].value);
                         store.setUserProfile(data);
                         // window.localStorage.removeItem('hailiang.hl.wang@gmail.com-NOTIFICATIONS');
-                        mbaas.push.init(data.emails[0].value);
+                        viewMgr.initIBMPushService();
                         viewMgr.respPushNotificationArrival();
                         viewMgr.createHomeSwiperHeader();
                         viewMgr.createMap();

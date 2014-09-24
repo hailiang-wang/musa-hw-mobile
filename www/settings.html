@@ -6,14 +6,37 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
     </head>
     <body>
-        <div id='settings-index' data-role='page' data-theme='a' data-title='settings' >
+        <div id='settings-index' data-role='page' data-theme='a' data-title='sun-o' >
             <div class='header' data-role='header' data-position='fixed' data-tap-toggle="false">
                 <div class='title'>
                     设置
                 </div>     
             </div>
             <div data-role='content' class='settings'>
-               设置...
+                <ul data-role="listview" data-theme='c' data-inset="true" data-divider-theme="c">
+                    <li data-role="list-divider">订阅项</li>
+                    <li>
+                        活动:
+                        <select name="subActivity" id="subActivity" data-role="slider" data-mini="true">
+                            <option value="off">off</option>
+                            <option value="on">on</option>
+                        </select>
+                    </li>
+                    <li>
+                        资讯:
+                        <select name="subItnews" id="subItnews" data-role="slider" data-mini="true">
+                            <option value="off">off</option>
+                            <option value="on">on</option>
+                        </select> 
+                    </li>
+                    <li>
+                        优惠:
+                        <select name="subPromotion" id="subPromotion" data-role="slider" data-mini="true">
+                            <option value="off">off</option>
+                            <option value="on">on</option>
+                        </select>
+                    </li>
+                </ul>
             </div>
         </div>
     </body>

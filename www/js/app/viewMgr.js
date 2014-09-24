@@ -7,11 +7,16 @@ define(function(require, exports, module) {
   var mapController = require('app/service/map');
   var gps = require('app/service/gps');
   var util = require('app/util');
+  var mbaas = require('app/service/mbaas');
   var homeSwiper;
 	var notiSwiper;
   var peopleSwiper;
   var inViewSlideKeys;
   var inPeopleSlideKeys;
+
+  function _initIBMPushService(){
+    mbaas.push.init(store.getUserId());
+  }
 
   function showModal(containerDiv){
     $(containerDiv).append('<div class="modalWindow"/>');
@@ -75,6 +80,69 @@ define(function(require, exports, module) {
           reverse: false,
           changeHash: false
       });
+  }
+
+  function _renderSettingsPage(){
+    var currSubTags = store.getSubTags();
+    currSubTags.forEach(function(tagName){
+      switch(tagName){
+        case "activity":
+          // http://stackoverflow.com/questions/496052/jquery-setting-the-selected-value-of-a-select-control-via-its-text-description
+          $("#subActivity").val('on'); 
+          $("#subActivity").slider("refresh");
+          break;
+        case "itnews":
+          $('#subItnews').val('on');
+          $("#subItnews").slider("refresh");
+          break;
+        case "promotion":
+          $('#subPromotion').val('on');
+          $("#subPromotion").slider("refresh");
+          break;
+        default:
+          console.log('tag {0} is not supported.'.f(tagName));
+          break;
+      }
+    });
+
+    [
+      {el:"#subActivity", tagName:"activity"},
+      {el:"#subItnews", tagName:"itnews"},
+      {el:"#subPromotion", tagName:"promotion"}
+    ].forEach(function(candidate){
+      // bind events for activity tag
+      $(candidate.el).unbind();
+      $(candidate.el).change(function(){
+        try{
+          if($(candidate.el).val() == 'off'){
+            // 不接收
+              console.log('unsubscribeTag {0}'.f(candidate.tagName));
+              mbaas.push.unsubTag(candidate.tagName).then(function(response){
+                currSubTags = store.removeSubTag(candidate.tagName);
+              },function(err){
+                console.log('unsubscribeTag {0} failed.'.f(candidate.tagName));
+                console.log(err);
+                // notify user and reset the slider
+                $(candidate.el).val('on'); 
+                $(candidate.el).slider("refresh");
+              });
+          }else{
+            // 接收
+            console.log('subscribeTag {0}'.f(candidate.tagName));
+            mbaas.push.subTag(candidate.tagName).then(function(response){
+              currSubTags.push(candidate.tagName);
+              store.setSubTags(currSubTags);
+            },function(err){
+              console.log(err);
+              $(candidate.el).val('off'); 
+              $(candidate.el).slider("refresh");
+            });
+          }
+        }catch(err){
+          console.log(err);
+        }
+      });   
+    });
   }
 
   function _openMsg(id, title, link){
@@ -759,12 +827,14 @@ define(function(require, exports, module) {
   exports.getUserProfile = _getUserProfile;
   exports.respPushNotificationArrival = _respPushNotificationArrival;
   exports.createMap = mapController.createMap;
+  exports.initIBMPushService = _initIBMPushService;
   exports.createHomeSwiperHeader = _createHomeSwiperHeader;
   exports.initNotificationSlides = _initNotificationSlides;
   exports.initNotificationPage = _initNotificationPage;
   exports.renderUserProfilePage = _renderUserProfilePage;
   exports.renderProfileEditor = _renderProfileEditor;
   exports.bindQRbtn = bindQRbtn;
+  exports.renderSettingsPage = _renderSettingsPage;
 
 	/**
 	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.

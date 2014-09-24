@@ -23,6 +23,24 @@ define(function(require, exports, module) {
 		return window.localStorage.getItem('MUSA_USER_ID');
 	}
 
+	function _getSubTags(){
+		return JSON.parse(window.localStorage.getItem('{0}-SUBTAGS'.f(_getUserId()))||'[]');
+	}
+
+	function _setSubTags(data){
+		window.localStorage.setItem('{0}-SUBTAGS'.f(_getUserId()), JSON.stringify(data));
+	}
+
+	function _removeSubTag(tagName){
+		if(_.indexOf(_getSubTags(), tagName) != -1){
+			var tmp = _.without(_getSubTags(), tagName);
+			_setSubTags(tmp);
+			return tmp;
+		}else{
+			return _getSubTags();
+		}
+	}
+
 	function _saveNotifications(data){
 		var key = '{0}-NOTIFICATIONS'.f(_getUserId());
 		var blob = window.localStorage.getItem(key);
@@ -94,4 +112,7 @@ define(function(require, exports, module) {
 	exports.setUserId = _setUserId;
 	exports.getUserId = _getUserId;
 	exports.setNotificationAsRead = _setNotificationAsRead;
+	exports.getSubTags = _getSubTags;
+	exports.setSubTags = _setSubTags;
+	exports.removeSubTag = _removeSubTag;
 });
