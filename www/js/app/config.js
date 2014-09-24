@@ -1,6 +1,6 @@
 define({
     host: "hwcafe.mybluemix.net",
-    cmshost: "hwcafecms.mybluemix.net",
+    ssehost: "hwcafesse.mybluemix.net",
     path: '/mobile/auth/linkedin',
     pushAppId : 'a87432fd-2d2e-43d4-91c9-0832af4d4aec',
     pushAppRoute: 'hwcafe.mybluemix.net',

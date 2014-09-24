@@ -158,7 +158,7 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.cmshost, key), sld.date), 
+        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key), sld.date), 
               'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
         inViewSlideKeys.push(key);
       });

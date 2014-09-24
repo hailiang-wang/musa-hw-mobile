@@ -120,7 +120,7 @@ define(['jqm', 'swiper', 'mapbox',
             });
             var userSid = store.getUserSID();
             if(userSid){
-                cordova.plugins.musa.setCookieByDomain('http://{0}/'.f(config.host), userSid, function(){
+                cordova.plugins.musa.setCookieByDomain('http://{0}/,http://{1}/'.f(config.host, config.ssehost), userSid, function(){
                     // succ callback
                     // create home page at initializing 
                     viewMgr.getUserProfile(function(data){
