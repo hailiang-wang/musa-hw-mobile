@@ -520,10 +520,18 @@ define(function(require, exports, module) {
 		util.getNotification().then(function(data){
       console.log(JSON.stringify(data));
       if(_.isObject(data.notifications)){
+        var tags = store.getSubTags();
         var keys = _.keys(data.notifications);
         keys.forEach(function(key){
-          var notification = JSON.parse(data.notifications[key]);
-          store.saveNotifications(notification);
+          try{
+            var notification = JSON.parse(data.notifications[key]);
+            // check if the notification is subscribed by this user
+            if(_.indexOf(tags, notification.category) != -1){
+              store.saveNotifications(notification);
+            }
+          }catch(e){
+            console.log(e);
+          }
         });
       }
     },function(err){
