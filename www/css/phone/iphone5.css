@@ -436,6 +436,26 @@
   background: -webkit-linear-gradient(#FFF, #FFF) repeat scroll 0 0 #FFFFFF !important;
 }
 
+#reset-pwd .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#reset-pwd .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+}
+
+#reset-pwd .content.ui-content{
+  top: 70px;
+  height: 455px!important;
+  width: 100%!important;
+  background-color: #FFFFFF;
+}
+
 #saveProfileBtn {
   border: none !important; 
   padding-top:40px; 

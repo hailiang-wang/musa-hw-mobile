@@ -88,7 +88,7 @@ define(function(require, exports, module) {
       $('#settings-index .appVersion').text('v'+version);
     });
 
-
+    // add btns for handling subscriptions
     var currSubTags = store.getSubTags();
     currSubTags.forEach(function(tagName){
       switch(tagName){
@@ -148,6 +148,17 @@ define(function(require, exports, module) {
           console.log(err);
         }
       });   
+    });
+
+    // change page to reset password
+    $('#settings-index .resetPwdBtn').on('click',function(){
+      $.mobile.changePage('reset-pwd.html', {
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
+      return false;
     });
   }
 
