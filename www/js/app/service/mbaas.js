@@ -2,6 +2,7 @@
 define(function(require, exports, module) {
 	var config = require('app/config');
     var _push;
+    var store = require('app/service/store');
 
     function _setupPushNotificationService(username){
         IBMBluemix.hybrid.initialize({applicationId: config.pushAppId,
@@ -25,6 +26,12 @@ define(function(require, exports, module) {
         _push.registerDevice(device.uuid, username, '(function(msg){setTimeout(handleApplePushNotificationArrival(msg),5000);})').then(
             function(response) {
                 console.log('bluemix push registered device ' + JSON.stringify(response));
+                _push.getSubscriptions().done(function(response){
+                    console.log('get subscriptions in mbaas '+ JSON.stringify(response.subscriptions));
+                    store.setSubTags(response.subscriptions);
+                }, function(err){
+                    console.error(err)
+                });
             }, 
             function(error) {    
                 console.log('bluemix push error registering device ' + error);

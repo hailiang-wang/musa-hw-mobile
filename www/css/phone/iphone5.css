@@ -315,6 +315,9 @@
 
 #user-index .content.ui-content li span{
   padding-left: 20px;
+  font:small-caps bold 17px Times New Roman; 
+  text-align:left;  
+  color:purple;  
 }
 
 #user-index .more-linkedin-profile{
