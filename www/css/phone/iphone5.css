@@ -287,70 +287,36 @@
   font-size: 25px;
 }
 
-#user-index svg {
-  height:0;
-}
-
 #user-index .content.ui-content {
-  top:70px; 
-  bottom: 0px; 
-  margin: 0px; 
-  padding: 0px;
-  background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
-  background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
-  background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
-  background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
-  background-image:         linear-gradient( #0380B5, #FFFFFF );  
-  background-size: 100%;
   height: 455px;
+  padding: 0px!important;
+  margin: 0px!important;
 }
 
-#user-index .content .blurContainer {
-  position:fixed;
-  width:300px;
-  height:60px;
-  top: 40%;
-  left: 50%;
-  margin:-150px 0 0 -150px;
-  border-radius:120px;
-  box-shadow:inset 0px 1px 0px 0px #fff, inset 0px -1px 2px 0px #000, 0 5px 8px rgba(0, 0, 0, .8), 0 0px 0px 1px rgba(0, 0, 0, .3);
-  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
-  z-index:2;
-}
-#user-index .content .blurry {
-  position:fixed;
-  z-index:1;
-  width:300px;
-  height:320px;
-  top: 52%;
-  left: 50%;
-  margin:-150px 0 0 -150px;
-  border-radius:120px;
-  background:-moz-element(#main) no-repeat fixed;
-  /*background-size:118%; /* You may use zoom for extra realism */
-  filter:url(#f1);
-  color:#fff;
-}
-
-#user-index .content .blurContainer h1 {
-  font:small-caps bold 17px Times New Roman;
-  text-transform:capitalize;
-  text-align:left;
-  color:yellow;
-  padding:10px 0 0 30px;
-  display:block;
-  height:50%;
-  border-radius:60px 60px 10px 10px;
-  text-shadow:0 1px 0px rgba(255, 255, 255, .75);
+#user-index .content.ui-content .avatar{
+  background-image: url("../../img/user-profile-blur.png");
   background-repeat: no-repeat;
-  background-position: 80% 50%;
-  background-size: 50px 50px;
+  background-size: 100%;
+  width: 100%!important;
+  height: 200px!important;
+  top: 70px;
 }
 
-#user-index .content .ui-body.profile-card i{
-  color:green;
+#user-index .content.ui-content .avatar img{ 
+  width: 90px;
+  height: 90px;
+  padding-top: 55px;
+  padding-left: 115px;
 }
+
+#user-index .content.ui-content li i{
+  padding-left: 12px;
+}
+
+#user-index .content.ui-content li span{
+  padding-left: 20px;
+}
+
 
 #profile-editor .header{
   height: 70px;
