@@ -15,31 +15,35 @@
             <div data-role='content' class='settings'>
                 <ul data-role="listview" data-theme='c' data-inset="true" data-divider-theme="c">
                     <li data-role="list-divider">订阅项</li>
-                    <li>
+                    <li class="packed">
                         <span>活动</span>
                         <select name="subActivity" id="subActivity" data-role="slider" data-mini="true">
                             <option value="off">off</option>
                             <option value="on">on</option>
                         </select>
                     </li>
-                    <li>
+                    <li class="packed">
                         <span>资讯</span>
                         <select name="subItnews" id="subItnews" data-role="slider" data-mini="true">
                             <option value="off">off</option>
                             <option value="on">on</option>
                         </select> 
                     </li>
-                    <li>
+                    <li class="packed">
                         <span>优惠</span>
                         <select name="subPromotion" id="subPromotion" data-role="slider" data-mini="true">
                             <option value="off">off</option>
                             <option value="on">on</option>
                         </select>
                     </li>
-                    <li data-role="list-divider">版本
+                    <li data-role="list-divider">安全</li>
+                    <li>
+                        <a href="#" class="resetPwdBtn ui-btn ui-mini ui-btn-inline ui-icon-key ui-btn-icon-left">重置密码</a>
+                    </li>
+                    <li data-role="list-divider">版本 </li>
+                    <li>
                         <span class="appVersion"></span>
                     </li>
-                    <li data-role="list-divider">安全</li>
                 </ul>
             </div>
         </div>

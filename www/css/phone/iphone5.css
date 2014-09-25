@@ -418,7 +418,7 @@
   top: -12px;
 }
 
-#settings-index li{
+#settings-index .packed{
   height: 20px;
 }
 
@@ -429,7 +429,11 @@
 }
 
 #settings-index .appVersion{
-  padding-left: 80px;
+  padding-left: 50px;
+}
+
+#settings-index .resetPwdBtn {
+  background: -webkit-linear-gradient(#FFF, #FFF) repeat scroll 0 0 #FFFFFF !important;
 }
 
 #saveProfileBtn {
