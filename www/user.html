@@ -9,7 +9,6 @@
         <div id='user-index' data-role='page' data-theme='a' data-title='user'>
             <div class='header' data-role='header' data-position='fixed' data-tap-toggle="false">
                 <div class='title'>
-                    我
                 </div>
                 <button id="eidtProfileBtn" class="musa-nostate-btn ui-btn ui-icon-edit ui-btn-icon-notext ui-corner-all">
                 <!-- http://andymatthews.net/code/jQuery-Mobile-Icon-Pack/ has a miss point about sign in and sign out-->
@@ -17,35 +16,30 @@
                 </button>           
             </div>
             <div class='content' data-role='content'>
-                <!-- use blur background http://jsfiddle.net/otinanaipali/cJvPH/1/-->
-                <div class="blurContainer">
-               </div>
-               <div class="blurry">
-                <!-- education university -->
-                <div class="ui-bar ui-bar-a profile-card">
-                    <label for=""><i class="fa fa-graduation-cap"></i></label>
-                    <p class='edu'></p>
+                <div class='avatar'>
+                    <img src=""/>
                 </div>
-                <!-- company -->
-                <div class="ui-bar ui-bar-a profile-card">
-                    <label for=""><i class="fa fa-briefcase"></i></label>
-                    <p class='company'></p>
-                </div>
-                <!-- skills -->
-                <!--                 
-                    <div class="ui-bar ui-bar-a profile-card">
-                        <label for=""><i class="fa fa-user-md"></i></label>
-                        <p class="skill"></p>
-                    </div>
-                -->
-                <!-- insterest -->
-                <div class="ui-bar ui-bar-a profile-card">
-                    <label for=""><i class="fa fa-dribbble"></i></label>
-                    <p class="interest"></p>
-                </div>
-                <div class="more-linkedin-profile ui-grid-solo">
-                    <div class="ui-block-a"><input onclick="SnowOpenMyLKDProfile()" type="button" value="更多"></div>
-                </div>
+                <ul data-role="listview" data-inset="false">
+                    <li>
+                        <i class="fa fa-graduation-cap">
+                            <span class="edu"></span>
+                        </i>
+                    </li>
+                    <li>
+                        <i class="fa fa-briefcase">
+                            <span class="company"></span>
+                        </i>
+                    </li>
+                    <li>
+                        <i class=" fa fa-dribbble">
+                            <span class="interest"></span>
+                        </i>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="more-linkedin-profile ui-grid-solo">
+                <div class="ui-block-a"><input onclick="SnowOpenMyLKDProfile()" type="button" value="更多"></div>
             </div>
         </div>
     </div>

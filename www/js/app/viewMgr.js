@@ -441,56 +441,44 @@ define(function(require, exports, module) {
       }
 
       // displayName
-      $('#user-index .content .blurContainer').empty();
-      $('#user-index .content .blurContainer').append('<h1>hey, {0} </h1>'.f(user.displayName));
+      $('#user-index .header .title').html('{0}'.f(user.displayName));
       // user avatar
       if(user._json.pictureUrl ){
-        $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(user._json.pictureUrl));
+        $('#user-index .avatar img').attr('src', user._json.pictureUrl);
       } else {
         // no user pic, add a image for user choosing a photo
-        $('#user-index .content .blurContainer h1').css('background-image','url("{0}")'.f(defaultAvatar));
+        $('#user-index .avatar img').attr('src', defaultAvatar);
       }
       // collegue
       if(user._json.educations._total > 0){
           // how to render it Master?Bachelor, now just show up a school
           $.each(user._json.educations.values, function(index, education){
               if( index < 1){
-                  $('#user-index .blurry p.edu').append('{0} {1} <br> '.f(education.schoolName, education.degree||''));
+                  $('#user-index i .edu').append('{0} {1} <br> '.f(education.schoolName, education.degree||''));
               }
           })
       }else{
           // no school
-          $('#user-index .blurry p.edu').append('{0} <br> '.f("您什么也没有写。"));
+          $('#user-index i .edu').append('{0} <br> '.f("您什么也没有写。"));
       }
       // positions
       if(user._json.positions._total > 0){
           $.each(user._json.positions.values,function(index, position){
               if(position.isCurrent){
-                  $('#user-index .blurry p.company').text(position.company.name);
+                  $('#user-index i .company').text(position.company.name);
               }
           })
       }else{
-          $('#user-index .blurry p.company').append('{0} '.f("您什么也没有写。"));
+          $('#user-index i .company').append('{0} '.f("您什么也没有写。"));
           // no positions available
       }
-      // // skills
-      // if(user._json.skills._total > 0){
-      //     // how to render it Master?Bachelor, now just show up a school
-      //     $.each(user._json.skills.values, function(index, skill){
-      //         if(index < 3){
-      //             $('#user-index .blurry p.skill').append('{0} '.f(skill.skill.name));
-      //         }
-      //     })
-      // }else{
-      //     // no skills
-      //     $('#user-index .blurry p.skill').append('{0} <br> '.f("您什么也没有写。"));
-      // }
-      // interest
+
+      // interests
       if(user._json.interests){
-          $('#user-index .blurry p.interest').append('{0} <br> '.f(user._json.interests));
+          $('#user-index i .interest').append('{0} <br> '.f(user._json.interests));
       }else{
           // no interest
-          $('#user-index .blurry p.interest').append('{0} <br> '.f("您什么也没有写。"));
+          $('#user-index i .interest').append('{0} <br> '.f("您什么也没有写。"));
       }
 
       /**
