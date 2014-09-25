@@ -413,6 +413,27 @@
   font-size: 25px;
 }
 
+#settings-index .content.ui-content{
+  height: 455px!important;
+  width: 100%!important;
+}
+
+#settings-index .ui-slider{
+  left: 150px;
+  width: 60px;
+  top: -12px;
+}
+
+#settings-index li{
+  height: 20px;
+}
+
+#settings-index li span{
+    font-size: 1em;
+    vertical-align: top;
+    width: 40%;
+}
+
 #saveProfileBtn {
   border: none !important; 
   padding-top:40px; 
