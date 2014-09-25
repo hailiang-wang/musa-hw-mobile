@@ -428,6 +428,10 @@
     width: 40%;
 }
 
+#settings-index .appVersion{
+  padding-left: 80px;
+}
+
 #saveProfileBtn {
   border: none !important; 
   padding-top:40px; 

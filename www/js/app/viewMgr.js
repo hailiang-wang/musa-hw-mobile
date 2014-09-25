@@ -83,6 +83,12 @@ define(function(require, exports, module) {
   }
 
   function _renderSettingsPage(){
+    // add appVersion
+    cordova.getAppVersion().then(function (version) {
+      $('#settings-index .appVersion').text('v'+version);
+    });
+
+
     var currSubTags = store.getSubTags();
     currSubTags.forEach(function(tagName){
       switch(tagName){
