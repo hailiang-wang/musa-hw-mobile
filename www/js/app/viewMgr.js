@@ -14,6 +14,12 @@ define(function(require, exports, module) {
   var inViewSlideKeys;
   var inPeopleSlideKeys;
 
+  var notificationsPng = {
+    itnews:"sample/noty-itnews.png",
+    activity:"sample/noty-activity.png",
+    promotion:"sample/noty-promotion.png"
+  };
+
   function _initIBMPushService(){
     mbaas.push.init(store.getUserId());
   }
@@ -177,18 +183,18 @@ define(function(require, exports, module) {
       });
     }
 
-  function getNotificationSilde(id, title, link, date){
+  function getNotificationSilde(id, title, link, date, category){
       if( link && (link !== "#")){
         return '<div class="card">'
                 + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link)
-                  + '<img src="sample/msg-demo.png" style="vertical-align:middle;">'
+                  + '<img src="{0}" style="vertical-align:middle;">'.f(notificationsPng[category])
                   + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:#18260E;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(title, 160), util.getDate(date))
                 + '</a>'
               + '</div>';
       } else{
         return '<div class="card">{0}</div>'.f(title);
       }
-    }
+  }
 
   function _initNotificationSlides(){
       var holdPosition = 0;
@@ -243,7 +249,7 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key), sld.date), 
+        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key), sld.date, sld.category), 
               'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
         inViewSlideKeys.push(key);
       });
@@ -261,7 +267,7 @@ define(function(require, exports, module) {
             slideKeys.sort().forEach(function(key){
               var sld = slides[key];
               if( _.indexOf(inViewSlideKeys, key) == -1){
-                notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date), 
+                notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date, sld.category), 
                       'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
                 inViewSlideKeys.push(key);
                 console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
