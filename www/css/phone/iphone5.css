@@ -142,12 +142,12 @@
 #notifications .unread {
   width: 100%;
   height: 100%;
-  background-image: -webkit-gradient(linear, left top, left bottom, from( #FFFFFF ), to( #99FF4B )); /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient( #FFFFFF, #99FF4B ); /* Chrome 10+, Saf5.1+ */
-  background-image:    -moz-linear-gradient( #FFFFFF, #99FF4B ); /* FF3.6 */
-  background-image:     -ms-linear-gradient( #FFFFFF, #99FF4B ); /* IE10 */
-  background-image:      -o-linear-gradient( #FFFFFF, #99FF4B ); /* Opera 11.10+ */
-  background-image:         linear-gradient( #FFFFFF, #99FF4B );    
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #FFAB7A ), to( #FFAB7A )); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #FFAB7A, #FFAB7A ); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #FFAB7A, #FFAB7A ); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #FFAB7A, #FFAB7A ); /* IE10 */
+  background-image:      -o-linear-gradient( #FFAB7A, #FFAB7A ); /* Opera 11.10+ */
+  background-image:         linear-gradient( #FFAB7A, #FFAB7A );    
 }
 
 #notifications .header{
@@ -175,14 +175,7 @@
   top: 70px;
   height: 455px!important;
   margin: 0px!important;
-  bottom: 0px; 
-  background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
-  background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
-  background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
-  background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
-  background-image:         linear-gradient( #0380B5, #FFFFFF );  
-  background-size: 100%;
+  bottom: 0px;
 } 
 
 #notifications .messages .refresh {
