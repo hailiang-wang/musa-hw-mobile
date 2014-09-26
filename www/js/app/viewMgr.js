@@ -486,32 +486,30 @@ define(function(require, exports, module) {
        */
       $("#signOutBtn").on('click', function(){
         navigator.splashscreen.show();
-        store.deleteUserSID();
-        window.location = 'login.html';
-        // $.ajax({
-        //     type: "GET",
-        //     url: "http://{0}/logout".f(config.host),
-        //     success: function(data){
-        //         console.log("LOGOUT user's session is cleaned in server.")
-        //         store.deleteUserSID();
-        //         cordova.plugins.musa.removeCookieByDomain(
-        //           'http://{0}/'.f(config.host),
-        //           function(){
-        //             window.location = 'login.html';
-        //           },
-        //           function(err){
-        //             window.location = 'login.html';
-        //           }
-        //         );
-        //     },
-        //     error: function(XMLHttpRequest, textStatus, errorThrown) { 
-        //         console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
-        //         console.log("[error] Status: " + textStatus); 
-        //         console.log("[error] Error: " + errorThrown); 
-        //         store.deleteUserSID();
-        //         window.location = 'login.html';
-        //     }
-        // });
+        $.ajax({
+            type: "GET",
+            url: "http://{0}/logout".f(config.host),
+            success: function(data){
+                console.log("LOGOUT user's session is cleaned in server.")
+                store.deleteUserSID();
+                cordova.plugins.musa.removeCookieByDomain(
+                  'http://{0}/'.f(config.host),
+                  function(){
+                    window.location = 'login.html';
+                  },
+                  function(err){
+                    window.location = 'login.html';
+                  }
+                );
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
+                console.log("[error] Status: " + textStatus); 
+                console.log("[error] Error: " + errorThrown); 
+                store.deleteUserSID();
+                window.location = 'login.html';
+            }
+        });
       });
 
       /**
