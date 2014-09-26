@@ -168,6 +168,171 @@ define(function(require, exports, module) {
     });
   }
 
+  function _renderResetPwdPage(){
+    $('#backToSettingsBtn').unbind();
+    $('#backToSettingsBtn').on('click', function(){
+      $.mobile.changePage('settings.html', {
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
+    });
+
+    // request to send a verifiy code to user mail
+    $('#submitNewPassword').on('click', function(){
+      var newPwd = $('#reset-pwd .newPassword').val();
+      if(newPwd){
+        var params = {
+                    username: store.getUserProfile().displayName,
+                    password: newPwd,
+                    email: store.getUserId()
+              };
+        $.ajax({
+            url: 'http://{0}/auth/local/signup'.f(config.host),
+            type: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept': 'application/json'
+            },
+            data: JSON.stringify(params),
+            dataType: 'json',
+            timeout: 20000,
+            success: function(response){
+              if(response.rc == 1){
+                $.mobile.changePage('reset-pwd-verify.html',{
+                    transition: "none",
+                    reloadPage: false,
+                    reverse: false,
+                    changeHash: false
+                });
+              }else{
+                alert(JSON.stringify(response));
+              }
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+              alert(errorThrown);
+            }
+        });
+      }else{
+        noty({
+          text: '新密码不能为空.',
+          timeout: 2000,
+          type: 'information',
+          layout: 'center'
+        });
+      }
+    });
+  }
+
+  function _renderResetPwdVerifyPage(){
+    $('#backToSettingsBtn').unbind();
+    $('#backToSettingsBtn').on('click', function(){
+      $.mobile.changePage('settings.html', {
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
+    });
+
+    // listen on btn click event to check the verify code
+    $('#submitVerifyCode').on('click', function(){
+      // TODO send verify code
+      var code = $('#reset-pwd-verify .code').val();
+      if(code){
+          $('#reset-pwd-verify .code').val('');
+          var params = {
+              code: code,
+              email: store.getUserId()
+          };
+          $.ajax({
+            url: 'http://{0}/auth/local/verify'.f(config.host),
+            type: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept': 'application/json'
+            },
+            data: JSON.stringify(params),
+            dataType: 'json',
+            timeout: 20000,
+            complete: function(xhr, status) {
+                var rst;
+                if(xhr.status === 200) {
+                    rst = xhr.responseJSON;
+                    if(rst.rc == '6') {
+                        // reset password successfully
+                        // logout the current user
+                        // reset user to login page
+                        navigator.splashscreen.show();
+                        logoutHandler();
+                    } else if(rst.rc == '2') {
+                        noty({
+                          text: '验证码错误.',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                    } else if(rst.rc == '3') {
+                        noty({
+                          text: '尝试测试过多.',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                        // TODO go back to settings page
+                    } else if(rst.rc == '4') {
+                        noty({
+                          text: '非法请求.',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                    } else if(rst.rc == '5') {
+                        noty({
+                          text: '服务器通信错误！',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                    } else {
+                        noty({
+                          text: '网络错误，请稍后重试！',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                    }
+                } else if (xhr.status === 404) {
+                     noty({
+                          text: '网络错误，请稍后重试！',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                } else {
+                     noty({
+                          text: '服务器通信错误！',
+                          timeout: 2000,
+                          layout: 'center',
+                          type: 'information'
+                        });
+                }
+            }
+        });
+      }else{
+        noty({
+          text: '验证码不能为空.',
+          timeout: 2000,
+          type: 'information',
+          layout: 'center'
+        });
+      }
+
+      return false;
+    });
+  }
+
   function _openMsg(id, title, link){
       window.SnowNotificationObject = {
         title : title,
@@ -423,6 +588,33 @@ define(function(require, exports, module) {
     return deferred.promise();  
   }
 
+  function logoutHandler(){
+      $.ajax({
+        type: "GET",
+        url: "http://{0}/logout".f(config.host),
+        success: function(data){
+            console.log("LOGOUT user's session is cleaned in server.")
+            store.deleteUserSID();
+            cordova.plugins.musa.removeCookieByDomain(
+              'http://{0}/'.f(config.host),
+              function(){
+                window.location = 'login.html';
+              },
+              function(err){
+                window.location = 'login.html';
+              }
+            );
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
+            console.log("[error] Status: " + textStatus); 
+            console.log("[error] Error: " + errorThrown); 
+            store.deleteUserSID();
+            window.location = 'login.html';
+        }
+      });
+  }
+
   function _renderUserProfilePage(){
       var user = store.getUserProfile();
       var defaultAvatar = 'img/user-default-avatar.png';
@@ -486,30 +678,7 @@ define(function(require, exports, module) {
        */
       $("#signOutBtn").on('click', function(){
         navigator.splashscreen.show();
-        $.ajax({
-            type: "GET",
-            url: "http://{0}/logout".f(config.host),
-            success: function(data){
-                console.log("LOGOUT user's session is cleaned in server.")
-                store.deleteUserSID();
-                cordova.plugins.musa.removeCookieByDomain(
-                  'http://{0}/'.f(config.host),
-                  function(){
-                    window.location = 'login.html';
-                  },
-                  function(err){
-                    window.location = 'login.html';
-                  }
-                );
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
-                console.log("[error] Status: " + textStatus); 
-                console.log("[error] Error: " + errorThrown); 
-                store.deleteUserSID();
-                window.location = 'login.html';
-            }
-        });
+        logoutHandler();
       });
 
       /**
@@ -852,6 +1021,8 @@ define(function(require, exports, module) {
   exports.renderProfileEditor = _renderProfileEditor;
   exports.bindQRbtn = bindQRbtn;
   exports.renderSettingsPage = _renderSettingsPage;
+  exports.renderResetPwdPage = _renderResetPwdPage;
+  exports.renderResetPwdVerifyPage = _renderResetPwdVerifyPage;
 
 	/**
 	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.

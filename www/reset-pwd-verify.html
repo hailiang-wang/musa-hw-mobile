@@ -6,20 +6,20 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width, height=device-height, target-densitydpi=device-dpi' />
     </head>
     <body>
-        <div id='reset-pwd' data-role='page' data-title='sun-o'>
+        <div id='reset-pwd-verify' data-role='page' data-title='sun-o'>
             <div class='header' data-role='header' data-position='fixed' data-tap-toggle="false">
                 <div class='title'>
                     <i id="backToSettingsBtn" class="fa fa-arrow-circle-left"> 宝莲灯 </i>
-                </div>    
+                </div>     
             </div>
             <div data-role='content' data-theme="c">
-                <div class="newPwdSection" style="padding:10px 20px;">
+                <div class="verifyCodeSection" style="padding:10px 20px;">
                     <form>
-                        <label for="newPassword"><i class="fa fa-key"> &nbsp; &nbsp; 新密码 </i>
+                        <label for="code"><i class="fa fa-unlock-alt"> &nbsp; &nbsp; 验证码 </i>
                         </label>
-                        <input cols="40" rows="20" name="newPassword" class="newPassword" type="password" data-clear-btn="true">
+                        <input cols="40" rows="20" name="code" class="code" data-clear-btn="true">
                         </input>
-                         <a href="#" data-theme="c" id='submitNewPassword' class="ui-btn ui-shadow ui-mini ui-corner-all">确定</a>
+                         <a href="#" data-theme="c" id='submitVerifyCode' class="ui-btn ui-shadow ui-mini ui-corner-all">确定</a>
                     </form>
                 </div>
             </div>

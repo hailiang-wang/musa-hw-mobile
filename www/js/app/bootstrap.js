@@ -99,6 +99,13 @@ define(['jqm', 'swiper', 'mapbox',
                             console.log('beforehide this page to settings page ...');
                             viewMgr.renderSettingsPage();
                             break;
+                        case 'reset-pwd':
+                            console.log('beforehide this page to reset-pwd page ...');
+                            viewMgr.renderResetPwdPage();
+                            break;
+                        case 'reset-pwd-verify':
+                            console.log('beforehide this page to reset-pwd-verify page ...');
+                            viewMgr.renderResetPwdVerifyPage();
                         default:
                             console.log('you can never find me.');
                             break;
@@ -249,17 +256,10 @@ define(['jqm', 'swiper', 'mapbox',
                 };
 
                 inSubmit = true;
-
-                // $.mobile.loading( "show", {
-                //     textVisible: false,
-                //     theme: "a",
-                //     textonly: false
-                // });
-
                 window.navigator.splashscreen.show();
 
                 $.ajax({
-                    url: 'http://hwcafe.mybluemix.net/auth/local/signup',
+                    url: 'http://{0}/auth/local/signup'.f(config.host),
                     type: 'POST',
                     headers: {
                         'Content-Type':'application/json',
@@ -455,7 +455,7 @@ define(['jqm', 'swiper', 'mapbox',
                     });
 
                     $.ajax({
-                        url: 'http://hwcafe.mybluemix.net/auth/local/verify',
+                        url: 'http://{0}/auth/local/verify'.f(config.host),
                         type: 'POST',
                         headers: {
                             'Content-Type':'application/json',

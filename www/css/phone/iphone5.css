@@ -428,6 +428,26 @@
   background-color: #FFFFFF;
 }
 
+#reset-pwd-verify .header{
+  height: 70px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#reset-pwd-verify .header .title{
+  padding-top:30px;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 25px;
+}
+
+#reset-pwd-verify .content.ui-content{
+  top: 70px;
+  height: 455px!important;
+  width: 100%!important;
+  background-color: #FFFFFF;
+}
+
 #saveProfileBtn {
   border: none !important; 
   padding-top:40px; 
