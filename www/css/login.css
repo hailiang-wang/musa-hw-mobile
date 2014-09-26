@@ -41,6 +41,9 @@
     background-size: 100%;
 }
 
+ul li a{
+  border: none !important;
+}
 #loginContent
 {
     height: 100%;
