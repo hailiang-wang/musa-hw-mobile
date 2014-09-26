@@ -106,6 +106,10 @@ define(['jqm', 'swiper', 'mapbox',
                         case 'reset-pwd-verify':
                             console.log('beforehide this page to reset-pwd-verify page ...');
                             viewMgr.renderResetPwdVerifyPage();
+                            break;
+                        case 'about-app':
+                            viewMgr.renderAboutAppPage();
+                            break;
                         default:
                             console.log('you can never find me.');
                             break;

@@ -33,6 +33,18 @@ define(function(require, exports, module) {
     $(".modalWindow").remove();
     $.mobile.loading('hide');
   }
+
+  function _renderAboutAppPage(){
+    $('#backToSettingsBtn').unbind();
+    $('#backToSettingsBtn').on('click', function(){
+      $.mobile.changePage('settings.html', {
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
+    });
+  }
   
   function _getUserProfile(callback){
       //var reqHeaders = {accept:"application/json"}
@@ -92,6 +104,16 @@ define(function(require, exports, module) {
     // add appVersion
     cordova.getAppVersion().then(function (version) {
       $('#settings-index .appVersion').text('v'+version);
+    });
+
+    // open about page
+    $('#aboutAppBtn').on('click', function(){
+      $.mobile.changePage('about.html',{
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
     });
 
     // add btns for handling subscriptions
@@ -1023,6 +1045,7 @@ define(function(require, exports, module) {
   exports.renderSettingsPage = _renderSettingsPage;
   exports.renderResetPwdPage = _renderResetPwdPage;
   exports.renderResetPwdVerifyPage = _renderResetPwdVerifyPage;
+  exports.renderAboutAppPage = _renderAboutAppPage;
 
 	/**
 	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.
