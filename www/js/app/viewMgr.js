@@ -596,7 +596,7 @@ define(function(require, exports, module) {
             console.log("LOGOUT user's session is cleaned in server.")
             store.deleteUserSID();
             cordova.plugins.musa.removeCookieByDomain(
-              'http://{0}/'.f(config.host),
+              'http://{0}/,http://{1}/'.f(config.host, config.ssehost),
               function(){
                 window.location = 'login.html';
               },

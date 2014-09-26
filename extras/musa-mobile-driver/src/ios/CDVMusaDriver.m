@@ -55,20 +55,23 @@
 {
     NSLog(@"invoke removeCookieByDomain");
     CDVPluginResult * result = nil;
-    NSString *appUrl = [command.arguments objectAtIndex:0];
-    if ([appUrl isEqual: [NSNull null]] ){
-        NSLog(@"fail removing cookie, the appUrl value is nil.");
+    NSString *appUrls = [command.arguments objectAtIndex:0];
+    if ([appUrls isEqual: [NSNull null]] ){
+        NSLog(@"fail removing cookie, the appUrls value is nil.");
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }else{
-        // get domain
-        NSURL *url = [NSURL URLWithString:[appUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        NSString *domain = [url host];
-        NSHTTPCookieStorage * sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        NSArray * cookies = [sharedCookieStorage cookies];
-        for (NSHTTPCookie * cookie in cookies){
-            NSLog(@"%@",cookie.domain);
-            if ([cookie.domain rangeOfString:domain].location != NSNotFound){
-                [sharedCookieStorage deleteCookie:cookie];
+        NSArray *items = [appUrls componentsSeparatedByString:@","];
+        for (id appUrl in items) {
+            NSLog(@"remove cookie for %@", appUrl);
+            NSURL *url = [NSURL URLWithString:[appUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            NSString *domain = [url host];
+            NSHTTPCookieStorage * sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            NSArray * cookies = [sharedCookieStorage cookies];
+            for (NSHTTPCookie * cookie in cookies){
+                if ([cookie.domain rangeOfString:domain].location != NSNotFound){
+                    NSLog(@"delete cookie of domain %@", domain);
+                    [sharedCookieStorage deleteCookie:cookie];
+                }
             }
         }
         NSLog(@"cooke is removed for logout event.");
