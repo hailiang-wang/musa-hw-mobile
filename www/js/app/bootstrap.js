@@ -183,13 +183,11 @@ define(['jqm', 'swiper', 'mapbox',
         function loginHandler(){
             // fix height for login page background
             $('#login-index').css('height', $(window).height()+'px');
-            cordova.getAppVersion().then(function (version) {
-                $('.version').text('v'+version);
-                navigator.splashscreen.hide();
-            });
 
             $('body').append("<div class='ui-loader-background'> </div>");
 
+            navigator.splashscreen.hide();
+            
             var $loginInputs = $('#loginEmail,#loginPassword'),
                 $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
                 rules = {

@@ -1,18 +1,5 @@
 /*  login profile, status, settings */
 
-.version
-{
-    font-size: .5em;
-
-    width: 100%;
-    padding-top: 20%;
-
-    text-align: right;
-
-    color: #1e5abf;
-    text-shadow: none;
-}
-
 .ui-loader-background
 {
     position: fixed;
