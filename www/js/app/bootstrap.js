@@ -363,55 +363,68 @@ define(['jqm', 'swiper', 'mapbox',
                     navigator.splashscreen.show();
                     $('#loginEmail').val('');
                     $('#loginPassword').val('');
+                    // Get cookie at first
+                    // this is a trick approach, in order to get the 
+                    // Set-Cookie value, first attempt to access an 
+                    // unsupport GET path, express will inject the 
+                    // Set-Cookie value into the headers. The browser
+                    // then accepts it. In the following post request,
+                    // Server side can get the req.cookies.
                     $.ajax({
                         url: 'http://{0}/auth/local'.f(config.host),
-                        type: 'POST',
-                        data: JSON.stringify({email:username, password: password}),
-                        dataType: 'json',
-                        headers:{
-                            'Content-Type' : 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        success: function(response){
-                            if(response.rc == 1){
-                                store.setUserSID(response.sid);
-                                window.location = 'home.html';
-                            }else if(response.rc == 2){
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text:'用户名不存在，请确认后再输入.',
-                                    type:'warning',
-                                    layout:'center',
-                                    timeout: 2000
-                                });
-                            }else if(response.rc == 3){
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text:'密码错误，请确认后再输入.',
-                                    type:'warning',
-                                    layout:'center',
-                                    timeout: 2000
-                                });
-                            }else {
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text:'服务器返回信息无法理解，确认应用是最新版本.',
-                                    type:'warning',
-                                    layout:'center',
-                                    timeout: 2000
-                                });
-                            }
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown){
-                            console.log('Login throw an error');
-                            console.log(textStatus);
-                            console.log(errorThrown);
-                            navigator.splashscreen.hide();
-                            noty({
-                                text:'服务器通信错误！',
-                                type:'warning',
-                                layout:'center',
-                                timeout: 2000
+                        type: 'GET',
+                        complete:function (xhr, status){
+                            $.ajax({
+                                url: 'http://{0}/auth/local'.f(config.host),
+                                type: 'POST',
+                                data: JSON.stringify({email:username, password: password}),
+                                dataType: 'json',
+                                headers:{
+                                    'Content-Type' : 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                success: function(response){
+                                    if(response.rc == 1){
+                                        store.setUserSID(response.sid);
+                                        window.location = 'home.html';
+                                    }else if(response.rc == 2){
+                                        navigator.splashscreen.hide();
+                                        noty({
+                                            text:'用户名不存在，请确认后再输入.',
+                                            type:'warning',
+                                            layout:'center',
+                                            timeout: 2000
+                                        });
+                                    }else if(response.rc == 3){
+                                        navigator.splashscreen.hide();
+                                        noty({
+                                            text:'密码错误，请确认后再输入.',
+                                            type:'warning',
+                                            layout:'center',
+                                            timeout: 2000
+                                        });
+                                    }else {
+                                        navigator.splashscreen.hide();
+                                        noty({
+                                            text:'服务器返回信息无法理解，确认应用是最新版本.',
+                                            type:'warning',
+                                            layout:'center',
+                                            timeout: 2000
+                                        });
+                                    }
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown){
+                                    console.log('Login throw an error');
+                                    console.log(textStatus);
+                                    console.log(errorThrown);
+                                    navigator.splashscreen.hide();
+                                    noty({
+                                        text:'服务器通信错误！',
+                                        type:'warning',
+                                        layout:'center',
+                                        timeout: 2000
+                                    });
+                                }
                             });
                         }
                     });
