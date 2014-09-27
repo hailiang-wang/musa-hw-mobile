@@ -28,12 +28,17 @@
     background-size: 100%;
 }
 
+
+
 ul li a{
   border: none !important;
 }
+
 #loginContent
 {
     height: 100%;
+    padding: 0px!important;
+    margin: 0px!important;
 }
 
 .form-login
@@ -173,12 +178,10 @@ ul li a{
 }
 
 #vericode {
-    background-image: -webkit-gradient(linear, left top, left bottom, from( #0380B5 ), to( #FFFFFF )); /* Saf4+, Chrome */
-    background-image: -webkit-linear-gradient( #0380B5, #FFFFFF ); /* Chrome 10+, Saf5.1+ */
-    background-image:    -moz-linear-gradient( #0380B5, #FFFFFF ); /* FF3.6 */
-    background-image:     -ms-linear-gradient( #0380B5, #FFFFFF ); /* IE10 */
-    background-image:      -o-linear-gradient( #0380B5, #FFFFFF ); /* Opera 11.10+ */
-    background-image:         linear-gradient( #0380B5, #FFFFFF );   
+    width: 100%;
+    background-image: url('../img/login-background.png');
+    background-repeat: repeat;
+    background-size: 100%;
 }
 
 #vericode .form-musa{
