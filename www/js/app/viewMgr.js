@@ -37,13 +37,13 @@ define(function(require, exports, module) {
 
   function _renderLoginPage(){
     var $loginInputs = $('#loginEmail,#loginPassword'),
-      $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
-      rules = {
-          username: /^\w+$/i,
-          email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
-          password: /^.+$/i
-      },
-      inSubmit = false;
+    $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
+    rules = {
+        username: /^\w+$/i,
+        email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
+        password: /^.+$/i
+    },
+    inSubmit = false;
 
     /**
      * login input events
@@ -361,6 +361,8 @@ define(function(require, exports, module) {
   }
 
   function _renderForgetPwdPage(){
+    $('#forget-pwd .errorTip').text('');
+
     $('#forgetPwdCancelBtn').on('click', function(){
       $.mobile.changePage('#login-index', {
           transition: "none",
@@ -368,6 +370,67 @@ define(function(require, exports, module) {
           reverse: false,
           changeHash: false
       });
+    });
+
+    $('#forgetPwdSubmitBtn').on('click', function(){
+      var email = $('#forgetPwdEmail').val();
+      var pwd = $('#forgetPwdpassword').val();
+      if(email && pwd){
+        userEmail = email;
+        $('#forgetPwdEmail').val('');
+        $('#forgetPwdpassword').val('');
+        // put request to generate new verify code
+        $.ajax({
+          url: 'http://{0}/auth/local/signup'.f(config.host),
+          type: 'PUT',
+          dataType: 'json',
+          data: JSON.stringify({
+            email: email,
+            password: pwd
+          }),
+          headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          success: function(resp){
+            console.log(JSON.stringify(resp));
+            if(resp && resp.rc){
+              switch(resp.rc){
+                case 1:
+                  // the verify code is send out
+                    $.mobile.changePage('#activation',{
+                        transition: "none",
+                        reloadPage: false,
+                        reverse: false,
+                        changeHash: false
+                    });
+                  break;
+                case 3:
+                  // the target user does not exist
+                  $('#forget-pwd').find('.errorTip').text('用户不存在');
+                  break;
+                case 4:
+                  // require parameters in request
+                  $('#forget-pwd').find('.errorTip').text('服务器返回，缺少参数');
+                  break;
+                default:
+                  // otherwise, just throw the err
+                  $('#forget-pwd').find('.errorTip').text('服务器发生错误，请联系客服');
+                  break;
+              }
+            }else{
+              // can not understand the response
+              console.error('CAN NOT UNDERSTAND THE RESPONSE.')
+            }
+          },
+          error: function(xhr, textStatus, errorThrown){
+            console.error(textStatus);
+            console.error(errorThrown);
+          }
+        });
+      }else{
+        $('#forget-pwd').find('.errorTip').text('邮箱或密码不能为空');
+      }
     });
   }
 

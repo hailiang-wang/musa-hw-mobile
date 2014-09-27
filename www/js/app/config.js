@@ -6,7 +6,7 @@ define({
     pushAppRoute: 'hwcafe.mybluemix.net',
     pushAppSecret : '049180170bdc55b6428f65f96f80518b37296000',
     debug: false,
-    weinre: 'http://192.168.1.103:9088/target/target-script-min.js#musa',
+    weinre: 'http://192.168.1.43:9088/target/target-script-min.js#musa',
     myPremise:'HelloWorldCafe',
     premises : {
     	HelloWorldCafe: {
