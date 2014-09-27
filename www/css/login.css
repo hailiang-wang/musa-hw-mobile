@@ -184,6 +184,15 @@ ul li a{
     background-size: 100%;
 }
 
+
 #vericode .form-musa{
     padding-top: 30%;
+}
+
+#forget-pwd
+{
+    width: 100%;
+    background-image: url('../img/login-background.png');
+    background-repeat: repeat;
+    background-size: 100%;
 }
