@@ -177,7 +177,7 @@ ul li a{
     letter-spacing: 1em;
 }
 
-#vericode {
+#activation {
     width: 100%;
     background-image: url('../img/login-background.png');
     background-repeat: repeat;
@@ -185,7 +185,7 @@ ul li a{
 }
 
 
-#vericode .form-musa{
+#activation .form-musa{
     padding-top: 30%;
 }
 
