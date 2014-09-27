@@ -15,6 +15,7 @@ plugins = ['com.ibm.mobile.cordova.ibmbluemix',
         'com.phonegap.plugins.barcodescanner',
         'org.apache.cordova.network-information',
         'org.apache.cordova.geolocation',
+        'org.apache.cordova.camera',
         'extras/musa-mobile-driver'
         ]
 

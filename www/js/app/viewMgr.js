@@ -13,6 +13,7 @@ define(function(require, exports, module) {
   var peopleSwiper;
   var inViewSlideKeys;
   var inPeopleSlideKeys;
+  var userEmail;
 
   var notificationsPng = {
     itnews:"sample/noty-itnews.png",
@@ -36,14 +37,13 @@ define(function(require, exports, module) {
 
   function _renderLoginPage(){
     var $loginInputs = $('#loginEmail,#loginPassword'),
-    $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
-    rules = {
-        username: /^\w+$/i,
-        email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
-        password: /^.+$/i
-    },
-    inSubmit = false,
-    userEmail;
+      $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
+      rules = {
+          username: /^\w+$/i,
+          email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
+          password: /^.+$/i
+      },
+      inSubmit = false;
 
     /**
      * login input events
