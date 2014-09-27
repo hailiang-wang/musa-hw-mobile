@@ -95,7 +95,6 @@ define(function(require, exports, module) {
     });
 
     $('#signupBtn').button('option', 'disabled', true);
-    // $('#activeBtn').button('option', 'disabled', true);
     $('#signupBtn').on('touchend', function (e) {
 
         var params = {
@@ -359,6 +358,17 @@ define(function(require, exports, module) {
     });
 
     window.navigator.splashscreen.hide();
+  }
+
+  function _renderForgetPwdPage(){
+    $('#forgetPwdCancelBtn').on('click', function(){
+      $.mobile.changePage('#login-index', {
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
+    });
   }
 
   function _renderAboutAppPage(){
@@ -1362,6 +1372,7 @@ define(function(require, exports, module) {
 
   exports.renderLoginPage = _renderLoginPage;
   exports.renderActivationPage = _renderActivationPage;
+  exports.renderForgetPwdPage = _renderForgetPwdPage;
   exports.getUserProfile = _getUserProfile;
   exports.respPushNotificationArrival = _respPushNotificationArrival;
   exports.createMap = mapController.createMap;

@@ -60,6 +60,9 @@ define(['jqm', 'swiper', 'mapbox',
                         case 'activation':
                             viewMgr.renderActivationPage();
                             break;
+                        case 'forget-pwd':
+                            viewMgr.renderForgetPwdPage();
+                            break;
                         default:
                             break;
                     }

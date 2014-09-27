@@ -28,10 +28,11 @@
     background-size: 100%;
 }
 
-
-
-ul li a{
+#login-index ul li a
+{
   border: none !important;
+  text-decoration: none;
+  color: white;
 }
 
 #loginContent
@@ -169,6 +170,10 @@ ul li a{
     margin-right: 0;
     margin-left: -36px;
     padding-left: 36px;
+}
+
+.musa-nostate-btn {
+  background: -webkit-linear-gradient(#3388cc, #3388cc) repeat scroll 0 0 #FFFFFF !important;
 }
 
 #signupBtn
