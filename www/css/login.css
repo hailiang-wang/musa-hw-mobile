@@ -32,6 +32,7 @@
 {
   border: none !important;
   text-decoration: none;
+  text-shadow: none;
   color: white;
 }
 
@@ -200,4 +201,9 @@
     background-image: url('../img/login-background.png');
     background-repeat: repeat;
     background-size: 100%;
+}
+
+.errorTip
+{
+    text-shadow: none;
 }
