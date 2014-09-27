@@ -1051,6 +1051,109 @@ define(function(require, exports, module) {
             changeHash: false
         });
       });
+      /**
+       * change user avatar
+       */
+      var cameraOptions = {
+        quality : 75,
+        destinationType : Camera.DestinationType.DATA_URL,
+        sourceType : Camera.PictureSourceType.SAVEDPHOTOALBUM,
+        allowEdit : true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 180,
+        targetHeight: 180,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+      };
+      /** 
+       * photo selection success callback
+       */
+      var cameraSuccess = function (imageData) {
+        $('.avatar img').attr('src', "data:image/jpeg;base64," + imageData);
+        $('.popSelect').slideUp(300);
+
+        util.getNetwork().then(function (data) {
+
+          $.ajax({
+            type:'POST',
+            url: 'http://hwcafe.mybluemix.net/user/avatar',
+            dataType: 'json',
+            data: JSON.stringify({
+              base64: 'data:image/png;base64,' + imageData
+            }),
+            headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            complete: function (xhr, status) {
+              var rst;
+
+              if(xhr.status == '200') {
+                rst = xhr.responseJSON;
+
+                if(rst.rc == '4') {
+                  noty({
+                    text: '上传失败，请稍后重试！',
+                    layout:'center',
+                    timeout: 2000,
+                    type: 'warning'
+                  });
+                }
+
+              } else {
+                noty({
+                  text: '上传失败，请稍后重试！',
+                  layout:'center',
+                  timeout: 2000,
+                  type: 'warning'
+                });
+              }
+
+            }
+          });
+
+        }, function (error) {
+          noty({
+            text: '网络错误，请稍后重试！',
+            layout:'center',
+            timeout: 2000,
+            type: 'warning'
+          });
+        });
+      };
+
+      var cameraError = function () {
+
+        $('.popSelect').slideUp(300);
+        noty({
+          text: '无法选择照片！',
+          layout:'center',
+          timeout: 2000,
+          type: 'warning'
+        });
+      };
+
+      $('#camera').on('touchend', function () {
+        cameraOptions.sourceType = Camera.PictureSourceType.CAMERA;
+        navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+      });
+
+      $('#photoLibrary').on('touchend', function () {
+        cameraOptions.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+        navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+      });
+
+      $('#cancel').on('touchend', function () {
+        $('.popSelect').slideUp(300);
+      });
+
+      $('.avatar').on('touchend', function () {
+        $('.popSelect').slideDown(300);
+      });
+
+      $('.popSelect').on('touchmove', function () {
+        return false;
+      });
   }
 
 	function _respPushNotificationArrival(){
