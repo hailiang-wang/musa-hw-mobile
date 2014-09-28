@@ -14,6 +14,12 @@ define(function(require, exports, module) {
 		window.localStorage.setItem('MUSA_SNOWBALL_VERSION', appVersion);
 	}
 
+	function _saveUserAvatar(data){
+		var profile = _getUserProfile();
+		profile._json.pictureUrl = data;
+		_setUserProfile(profile);
+	}
+
 	// email address
 	function _setUserId(id){
 		window.localStorage.setItem('MUSA_USER_ID', id);
@@ -116,4 +122,5 @@ define(function(require, exports, module) {
 	exports.getSubTags = _getSubTags;
 	exports.setSubTags = _setSubTags;
 	exports.removeSubTag = _removeSubTag;
+	exports.saveUserAvatar = _saveUserAvatar;
 });

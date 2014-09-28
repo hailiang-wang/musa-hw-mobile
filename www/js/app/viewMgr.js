@@ -1132,14 +1132,13 @@ define(function(require, exports, module) {
        * photo selection success callback
        */
       var cameraSuccess = function (imageData) {
-        $('.avatar img').attr('src', "data:image/jpeg;base64," + imageData);
-        $('.popSelect').slideUp(300);
-
         util.getNetwork().then(function (data) {
+          $('.popSelect').slideUp(300);
 
+          $.mobile.loading('show');
           $.ajax({
             type:'POST',
-            url: 'http://hwcafe.mybluemix.net/user/avatar',
+            url: 'http://{0}/user/avatar'.f(config.host),
             dataType: 'json',
             data: JSON.stringify({
               base64: 'data:image/png;base64,' + imageData
@@ -1149,6 +1148,7 @@ define(function(require, exports, module) {
               'Accept': 'application/json'
             },
             complete: function (xhr, status) {
+              $.mobile.loading('hide');
               var rst;
 
               if(xhr.status == '200') {
@@ -1161,6 +1161,9 @@ define(function(require, exports, module) {
                     timeout: 2000,
                     type: 'warning'
                   });
+                }else{
+                  $('.avatar img').attr('src', "data:image/jpeg;base64," + imageData);
+                  store.saveUserAvatar("data:image/jpeg;base64," + imageData);
                 }
 
               } else {
@@ -1171,13 +1174,11 @@ define(function(require, exports, module) {
                   type: 'warning'
                 });
               }
-
             }
           });
-
         }, function (error) {
           noty({
-            text: '网络错误，请稍后重试！',
+            text: '无网络服务',
             layout:'center',
             timeout: 2000,
             type: 'warning'
