@@ -1188,12 +1188,13 @@ define(function(require, exports, module) {
       var cameraError = function () {
 
         $('.popSelect').slideUp(300);
-        noty({
-          text: '无法选择照片！',
-          layout:'center',
-          timeout: 2000,
-          type: 'warning'
-        });
+        // Comment out for Issue #242 
+        // noty({
+        //   text: '无法选择照片！',
+        //   layout:'center',
+        //   timeout: 2000,
+        //   type: 'warning'
+        // });
       };
 
       $('#camera').on('touchend', function () {
