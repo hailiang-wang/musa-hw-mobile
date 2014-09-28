@@ -309,6 +309,12 @@
   padding-left: 115px;
 }
 
+#user-index .content.ui-content .avatar i{ 
+    padding-left: 280px;
+    color:black;
+}
+
+
 #user-index .content.ui-content li i{
   padding-left: 12px;
 }
