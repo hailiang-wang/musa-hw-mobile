@@ -17,6 +17,7 @@ plugins = ['com.ibm.mobile.cordova.ibmbluemix',
         'org.apache.cordova.network-information',
         'org.apache.cordova.geolocation',
         'org.apache.cordova.camera',
+        'org.apache.cordova.vibration',
         'extras/musa-mobile-driver'
         ]
 

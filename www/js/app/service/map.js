@@ -43,10 +43,19 @@ define(function(require, exports, module) {
 				console.log('unknow sse event type.');
 				break;
 		}
-		// TODO show a note for data changing in people circle
+
 		if(util.getHomeSwiperPage() == 2){
 			$('#headerBtn1').buttonMarkup({icon:'bullseye'}, false);
 			$('#headerBtn1').show();
+		}
+
+		try{
+			// add local notification
+			// TODO add settings for this option
+			// docs https://github.com/apache/cordova-plugin-vibration/blob/master/doc/index.md
+			navigator.vibrate(2000);
+		}catch(e){
+			console.error(e);
 		}
 	});
 
