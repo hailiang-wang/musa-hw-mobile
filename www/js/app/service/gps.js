@@ -32,16 +32,27 @@ define(function(require, exports, module) {
 		return deferred.promise();
 	}
 
-	function _isPointInsidePolygon(premise, point){
-		return geolib.isPointInside(point, config.premises[premise].polygon);
+	function _isPointInsidePolygon(metadata, premise, point){
+		if(metadata){
+			console.log(metadata);
+			return geolib.isPointInside(point, metadata[premise].polygon);
+		}else{
+			console.error('NO MAP METADATA.');
+			return false;
+		}
 	}
 
-	function _isPointInsideCircle(premise, point){
-		console.log('center '+ JSON.stringify(config.premises[premise].circle));
-		console.log('point ' + JSON.stringify(point));
-		return geolib.isPointInCircle(point, 
-			config.premises[premise].circle.center, 
-			config.premises[premise].circle.radius);
+	function _isPointInsideCircle(metadata, premise, point){
+		if(metadata){
+			console.log('center '+ JSON.stringify(metadata[premise].circle));
+			console.log('point ' + JSON.stringify(point));
+			return geolib.isPointInCircle(point, 
+				metadata[premise].circle.center, 
+				metadata[premise].circle.radius);
+		}else{
+			console.error('NO MAP METADATA.');
+			return false;
+		}
 	}
 
 	exports.getCurrentPosition = _getCurrentPosition;

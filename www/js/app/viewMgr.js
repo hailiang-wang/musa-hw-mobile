@@ -1258,7 +1258,7 @@ define(function(require, exports, module) {
                 if(data.lng && data.lat){
                   gps.getCurrentPosition().then(function(pos){
                       console.log('get position ...' + JSON.stringify(pos));
-                      if(gps.isPointInsideCircle(config.myPremise, pos.coords)){
+                      if(gps.isPointInsideCircle(store.getMaps(), config.myPremise, pos.coords)){
                         
                         // change a page to get user status 
                         $('#popupStatus').popup( "open", {
@@ -1299,10 +1299,7 @@ define(function(require, exports, module) {
                                 console.log("[error] Error: " + errorThrown); 
                             }
                           });
-                          
                         });
-
-
                       }else{
                         noty({text: '您当前不在{0}.'.f(config.myPremise),
                           layout: 'center',

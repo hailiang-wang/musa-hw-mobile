@@ -20,6 +20,19 @@ define(function(require, exports, module) {
 		_setUserProfile(profile);
 	}
 
+	function _setMaps(data){
+		window.localStorage.setItem('MUSA_MAPS', JSON.stringify(data));
+	}
+
+	function _getMaps(){
+		var value = window.localStorage.getItem('MUSA_MAPS');
+		if(value){
+			return JSON.parse(value);
+		}else{
+			return {};
+		}
+	}
+
 	// email address
 	function _setUserId(id){
 		window.localStorage.setItem('MUSA_USER_ID', id);
@@ -123,4 +136,6 @@ define(function(require, exports, module) {
 	exports.setSubTags = _setSubTags;
 	exports.removeSubTag = _removeSubTag;
 	exports.saveUserAvatar = _saveUserAvatar;
+	exports.getMaps = _getMaps;
+	exports.setMaps = _setMaps;
 });

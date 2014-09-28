@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 	var config = require('app/config');
 	var util = require('app/util');
 	var store = require('app/service/store');
-	L.mapbox.accessToken = config.premises[config.myPremise].mapbox.accessToken;
+	
  	var markers = {};
 	var map;
 
@@ -59,35 +59,66 @@ define(function(require, exports, module) {
 		}
 	});
 
+	function _getMapsMetadata(){
+		var deferred = $.Deferred();
+		$.ajax({
+			url:'http://{0}/rtls/maps'.f(config.host),
+			dataType: 'json',
+			headers:{
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+			success:function(resp){
+				// save metadata into database
+				store.setMaps(resp);
+				deferred.resolve(resp);
+			},
+			error:function(xhr, textStatus, errorThrown){
+				deferred.reject(errorThrown);
+			}
+		});
+		return deferred.promise();
+	}
+
  	function _createMap(){
+ 		var deferred = $.Deferred();
+
  		if(map){
  			map.remove();
  			map = null;
  		}
-		map = L.mapbox.map('map', config.premises[config.myPremise].mapbox.id).setView([0, 50], 3);
-		$.ajax({
-			type: 'GET',
-			url: "http://{0}/rtls/hw".f(config.host),
-			headers: {
-			  "Accept": "application/json",
-			  "Content-Type": "application/json"
-			},
-			success: function(data){
-				if(data){
-					console.log('get map data ' + JSON.stringify(data));
-						_.each(data, function(value, key, list){
-							surveyor.trigger('paint', JSON.parse(value));
-						});
-				}else{
-					console.log('Hello World Cafe has no location-sharing user');
+
+ 		_getMapsMetadata().then(function(data){
+ 			L.mapbox.accessToken = data[config.myPremise].mapbox.accessToken;
+			map = L.mapbox.map('map', data[config.myPremise].mapbox.id).setView([0, 50], 3);
+			$.ajax({
+				type: 'GET',
+				url: "http://{0}/rtls/hw".f(config.host),
+				headers: {
+				  "Accept": "application/json",
+				  "Content-Type": "application/json"
+				},
+				success: function(data){
+					if(data){
+						console.log('get map data ' + JSON.stringify(data));
+							_.each(data, function(value, key, list){
+								surveyor.trigger('paint', JSON.parse(value));
+							});
+					}else{
+						console.log('Hello World Cafe has no location-sharing user');
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				  console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+				  console.log("[error] Status: " + textStatus); 
+				  console.log("[error] Error: " + errorThrown); 
 				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) { 
-			  console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-			  console.log("[error] Status: " + textStatus); 
-			  console.log("[error] Error: " + errorThrown); 
-			}
-		});
+			});
+			deferred.resolve();
+ 		},function(err){
+ 			deferred.reject(err);
+ 		});
+		return deferred.promise();
   	}
 
 	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, picture){

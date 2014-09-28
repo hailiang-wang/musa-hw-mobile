@@ -185,20 +185,33 @@ define(['jqm', 'swiper', 'mapbox',
                         viewMgr.initIBMPushService();
                         viewMgr.respPushNotificationArrival();
                         viewMgr.createHomeSwiperHeader();
-                        viewMgr.createMap();
-                        sseclient.start();
                         // Fix Home Btn unactive issue
-                        $("#homeBtn").addClass('ui-btn-active');
                         // set default style for some btns
+                        $("#homeBtn").addClass('ui-btn-active');
                         $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
-                        viewMgr.bindQRbtn();
-                        $("#headerBtn2").hide();
-                        // TODO btn not bind for QR Code
                         // hide people page
                         $("#people").hide();
-                        setTimeout(function(){
-                            navigator.splashscreen.hide();
-                        },2000);
+                        $("#headerBtn2").hide();
+                        viewMgr.bindQRbtn();
+                        // need to retrieve the map data with ajax
+                        // so, deal with it in a callback
+                        viewMgr.createMap().then(function(){
+                            sseclient.start();
+                            setTimeout(function(){
+                                navigator.splashscreen.hide();
+                            },2000);
+                        }, function(err){
+                            sseclient.start();
+                            setTimeout(function(){
+                                navigator.splashscreen.hide();
+                                noty({
+                                    text: '无法获得地图服务',
+                                    timeout: 2000,
+                                    type: 'information',
+                                    layout:'center'
+                                });
+                            },2000);
+                        });
                     });
                 }, function(err){
                     // err callback
