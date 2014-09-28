@@ -1208,6 +1208,7 @@ define(function(require, exports, module) {
 
       $('#cancel').on('touchend', function () {
         $('.popSelect').slideUp(300);
+        return false;
       });
 
       $('.avatar').on('touchend', function () {
