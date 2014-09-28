@@ -13,7 +13,6 @@ define(function(require, exports, module) {
 	_.extend(surveyor, Backbone.Events);
 
 	surveyor.on('paint', function(data){
-		console.log('surveyor paint ' + JSON.stringify(data));
 		var userEmail = store.getUserId();
 		switch(data.type){
 			case 'visible':
