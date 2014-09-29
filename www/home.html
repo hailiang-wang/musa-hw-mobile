@@ -29,10 +29,10 @@
                 </button>
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
+                        <div class="map swiper-slide">
                             <p class="header-swiper-title">地图@HelloWor...</p>
                         </div> 
-                        <div class="swiper-slide">
+                        <div class="people swiper-slide">
                             <p class="header-swiper-title">圈子@HelloWor...</p>
                         </div>
                     </div>
@@ -63,7 +63,12 @@
                      <a href="#" id='submitStatusBtn' data-rel="back" data-theme="c" class="ui-btn ui-shadow ui-mini ui-corner-all"><i class="fa fa-map-marker">确定</i></a>
                 </div>
             </div>
+            <div data-role="panel" id="selectMapPanel" data-display="overlay" data-position="left">
+                <ul data-role="listview" data-theme='c' style="padding-top:30px;">
+                </ul>
+            </div>
         </div>
+
         <div data-role='footer' data-position='fixed' data-theme='a' data-tap-toggle='false'>
             <div data-role='navbar'>
                 <ul>

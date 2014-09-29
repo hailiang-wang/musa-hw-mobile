@@ -1501,7 +1501,38 @@ define(function(require, exports, module) {
           e.preventDefault()
           mySwiper.swipeNext()
       })
+
+
+      $("#home-index .swiper-slide.map").on('click', function(){
+        // TODO add an panel window to select map locations
+        // $("#selectMapPanel").panel().enhanceWithin();
+        $("#selectMapPanel").panel("open", { 
+          position: "left" 
+        });
+        return false;
+      });
+
+      $("#home-index .swiper-slide.people").on('click', function(){
+        alert('changepeople');
+        return false;
+      });
+
+      $( "#selectMapPanel" ).panel({
+        beforeopen: function( event, ui ) {
+          $('#selectMapPanel ul').empty();
+          $('#selectMapPanel ul').append('<li data-role="list-divider">地点</li>')
+          _.each(store.getMaps(), function(value, key, list){
+            $('#selectMapPanel ul').append('<li data-icon="arrow-circle-right"><a onclick="javascript:SnowResetMapAndPeopleByMapID(\'{0}\');return false;" href="#">{1}</a></li>'.f(key, value.name));
+          });
+          $( "#selectMapPanel ul" ).listview( "refresh" );
+        }
+      });
   }
+
+  function _resetMapAndPeopleByMapID(mapId){
+    $( "#selectMapPanel" ).panel("close");
+  }
+
 
   /**
   * Bind some events from UI
@@ -1564,5 +1595,6 @@ define(function(require, exports, module) {
 	window.SnowBackToNotificationsList = _backToNotificationsList;
   window.SnowOpenMyLKDProfile = _openMyLKDProfile;
   window.SnowOpenLKDProfileByLink = _openLKDProfileByLink;
+  window.SnowResetMapAndPeopleByMapID = _resetMapAndPeopleByMapID;
 
 })

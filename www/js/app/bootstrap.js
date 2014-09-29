@@ -18,11 +18,13 @@ define(['jqm', 'swiper', 'mapbox',
 
         agent.start();
         
+
         $(function() {
-            $( "[data-role='header'], [data-role='footer']" ).toolbar();
-            $( "[data-role='navbar']" ).navbar();
+            $( "[data-role='header'], [data-role='footer']" ).toolbar().enhanceWithin();
+            $( "[data-role='navbar']" ).navbar().enhanceWithin();
         });
-            // Update the contents of the toolbars
+
+        // Update the contents of the toolbars
         $( document ).on( "pagecontainershow", function() {
             // Each of the four pages in this demo has a data-title attribute
             // which value is equal to the text of the nav button
