@@ -17,7 +17,8 @@ requirejs.config({
         jqm: 'jqm/jquery.mobile-1.4.3.min',
         underscore: 'underscore-min',
         backbone : 'backbone-min',
-        geolib : 'geolib.min'
+        geolib : 'geolib.min',
+        q: 'q.min'
     },
     shim: {
         'jquery': {
@@ -42,6 +43,9 @@ requirejs.config({
             //Once loaded, use the global 'Backbone' as the
             //module value.
             exports: 'Backbone'
+        },
+        'q':{
+            exports:'Q'
         }
     }
 });
@@ -61,7 +65,7 @@ function handleApplePushNotificationArrival(msg){
 }
 
 requirejs(['jquery','cordova.js', 'app/config', 
-    'app/util', 'underscore', 'backbone'],
+    'app/util', 'underscore', 'backbone', 'q'],
     function   ($) {
 // start of require
 
@@ -101,6 +105,7 @@ var app = {
         });
     }
 };
+
 
 if(config.debug){
     require([config.weinre], function(){
