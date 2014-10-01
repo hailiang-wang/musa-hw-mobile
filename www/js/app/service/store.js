@@ -20,18 +20,26 @@ define(function(require, exports, module) {
 		_setUserProfile(profile);
 	}
 
-	function _setMaps(data){
-		window.localStorage.setItem('MUSA_MAPS', JSON.stringify(data));
-	}
+     function _setMaps(data){
+          window.localStorage.setItem('{0}-MUSA_MAPS'.f(_getUserId()), JSON.stringify(data));
+     }
 
-	function _getMaps(){
-		var value = window.localStorage.getItem('MUSA_MAPS');
-		if(value){
-			return JSON.parse(value);
-		}else{
-			return {};
-		}
-	}
+     function _getMaps(){
+          var value = window.localStorage.getItem('{0}-MUSA_MAPS'.f(_getUserId()));
+          if(value){
+               return JSON.parse(value);
+          }else{
+               return {};
+          }
+     }
+
+     function _setCurrentMapId(mapId){
+          window.localStorage.setItem('{0}-MUSA_CUR_MAP'.f(_getUserId()), mapId);
+     }
+
+     function _getCurrentMapId(){
+          return window.localStorage.getItem('{0}-MUSA_CUR_MAP'.f(_getUserId()));
+     }
 
 	// email address
 	function _setUserId(id){
@@ -138,4 +146,6 @@ define(function(require, exports, module) {
 	exports.saveUserAvatar = _saveUserAvatar;
 	exports.getMaps = _getMaps;
 	exports.setMaps = _setMaps;
+	exports.setCurrentMapId = _setCurrentMapId;
+	exports.getCurrentMapId = _getCurrentMapId;
 });
