@@ -1284,8 +1284,10 @@ define(function(require, exports, module) {
                 var data = JSON.parse(code);
                 if(data.lng && data.lat){
                   gps.getCurrentPosition().then(function(pos){
+                      var maps = store.getMaps();
+                      var currMapId = store.getCurrentMapId();
                       console.log('get position ...' + JSON.stringify(pos));
-                      if(gps.isPointInsideCircle(store.getMaps(), config.myPremise, pos.coords)){
+                      if(gps.isPointInsideCircle(maps, currMapId, pos.coords)){
                         
                         // change a page to get user status 
                         $('#popupStatus').popup( "open", {
@@ -1307,7 +1309,8 @@ define(function(require, exports, module) {
                             type: "POST",
                             url: "http://{0}/rtls/locin".f(config.host),
                             dataType: 'json',
-                            data: JSON.stringify({ 
+                            data: JSON.stringify({
+                              mapId: currMapId,
                               lat: data.lat, 
                               lng: data.lng,
                               status: $('#myStatus').val(),
@@ -1328,7 +1331,7 @@ define(function(require, exports, module) {
                           });
                         });
                       }else{
-                        noty({text: '您当前不在{0}.'.f(config.myPremise),
+                        noty({text: '您当前不在{0}.'.f(maps[currMapId].name),
                           layout: 'center',
                           type: 'warning',
                           timeout: 2000});
