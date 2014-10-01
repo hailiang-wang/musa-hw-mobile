@@ -1509,6 +1509,7 @@ define(function(require, exports, module) {
     var maps = store.getMaps();
     $('#home-index .map.swiper-slide p').text(util.trimByPixel('地图@{0}'.f(maps[mapId].name), 150));
     $('#home-index .people.swiper-slide p').text(util.trimByPixel('圈子@{0}'.f(maps[mapId].name), 150));
+    mapController.createMap();
   }
 
   function _createHomeSwiperHeader(){
