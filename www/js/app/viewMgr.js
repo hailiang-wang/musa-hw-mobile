@@ -1549,10 +1549,18 @@ define(function(require, exports, module) {
 
       $( "#selectMapPanel" ).panel({
         beforeopen: function( event, ui ) {
+          var currMapId = store.getCurrentMapId();
           $('#selectMapPanel ul').empty();
           $('#selectMapPanel ul').append('<li data-role="list-divider">地点</li>')
           _.each(store.getMaps(), function(value, key, list){
-            $('#selectMapPanel ul').append('<li data-icon="arrow-circle-right"><a onclick="javascript:SnowResetMapAndPeopleByMapID(\'{0}\');return false;" href="#">{1}</a></li>'.f(key, value.name));
+            $('#selectMapPanel ul').append(function(){
+              if(key != currMapId){
+                return '<li data-icon="arrow-circle-right"><a onclick="javascript:SnowResetMapAndPeopleByMapID(\'{0}\');return false;" href="#">{1}</a></li>'.f(key, value.name);
+              }else{
+                // do need to change map, cause the current map is it.
+                return '<li data-icon="arrow-circle-right"><a class="ui-state-disabled" href="#">{0}</a></li>'.f(value.name);
+              }
+            });
           });
           $( "#selectMapPanel ul" ).listview( "refresh" );
         }
