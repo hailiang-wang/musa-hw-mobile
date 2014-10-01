@@ -15,47 +15,52 @@ define(function(require, exports, module) {
 
 	surveyor.on('paint', function(data){
 		var userEmail = store.getUserId();
-		switch(data.type){
-			case 'visible':
-			    // show the visible btn if painting himself
-			    if(data.username === userEmail &&
-			    	($('#map').is(":visible"))){
-			    	$("#headerBtn2").show();
-			    }
-			    var index = _.indexOf(_getMarkerNames(), data.username);
-			    if(index == -1){
-			      // create new marker
-			      _addMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile),
-			      	data.picture);
-			    }else{
-			      // update marker
-			      _updateMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture),
-			      	data.picture);
-			    }
-				break;
-			case 'invisible':
-				if(data.username === userEmail){
-			    	$("#headerBtn2").hide();
-			    }
-		    	_deleteMarkerByName(data.username);
-				break;
-			default:
-				console.log('unknow sse event type.');
-				break;
-		}
+		if(data.mapId == store.getCurrentMapId()){
+			switch(data.type){
+				case 'visible':
+				    // show the visible btn if painting himself
+				    if(data.username === userEmail &&
+				    	($('#map').is(":visible"))){
+				    	$("#headerBtn2").show();
+				    }
+				    var index = _.indexOf(_getMarkerNames(), data.username);
+				    if(index == -1){
+				      // create new marker
+				      _addMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile),
+				      	data.picture);
+				    }else{
+				      // update marker
+				      _updateMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture),
+				      	data.picture);
+				    }
+					break;
+				case 'invisible':
+					if(data.username === userEmail){
+				    	$("#headerBtn2").hide();
+				    }
+			    	_deleteMarkerByName(data.username);
+					break;
+				default:
+					console.log('unknow sse event type.');
+					break;
+			}
 
-		if(util.getHomeSwiperPage() == 2){
-			$('#headerBtn1').buttonMarkup({icon:'bullseye'}, false);
-			$('#headerBtn1').show();
-		}
+			if(util.getHomeSwiperPage() == 2){
+				$('#headerBtn1').buttonMarkup({icon:'bullseye'}, false);
+				$('#headerBtn1').show();
+			}
 
-		try{
-			// add local notification
-			// TODO add settings for this option
-			// docs https://github.com/apache/cordova-plugin-vibration/blob/master/doc/index.md
-			navigator.vibrate(2000);
-		}catch(e){
-			console.error(e);
+			try{
+				// add local notification
+				// TODO add settings for this option
+				// docs https://github.com/apache/cordova-plugin-vibration/blob/master/doc/index.md
+				navigator.vibrate(2000);
+			}catch(e){
+				console.error(e);
+			}
+		}else{
+			// the event is for other location
+			console.debug('update data for other map.');
 		}
 	});
 
