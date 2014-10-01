@@ -59,28 +59,25 @@ define(function(require, exports, module) {
 	});
 
 	function _getMapsMetadata(){
-		var deferred = $.Deferred();
-		$.ajax({
+		return Q($.ajax({
 			url:'http://{0}/rtls/maps'.f(config.host),
 			dataType: 'json',
 			headers:{
 				'Content-Type': 'application/json',
 				'Accept': 'application/json'
-			},
-			success:function(resp){
+				}
+			})).then(function(data){
 				// save metadata into database
-				store.setMaps(resp);
-				deferred.resolve(resp);
-			},
-			error:function(xhr, textStatus, errorThrown){
-				deferred.reject(errorThrown);
-			}
-		});
-		return deferred.promise();
+				store.setMaps(data);
+				return data;
+			}, function(xhr){
+				console.error('XHR ERROR ' + xhr.status);
+				throw JSON.parse(xhr.responseText);
+			});
 	}
 
  	function _createMap(){
- 		var deferred = $.Deferred();
+ 		var defer = Q.defer();
 
  		if(map){
  			map.remove();
@@ -113,11 +110,11 @@ define(function(require, exports, module) {
 				  console.log("[error] Error: " + errorThrown); 
 				}
 			});
-			deferred.resolve();
+			defer.resolve();
  		},function(err){
- 			deferred.reject(err);
+ 			defer.reject(err);
  		});
-		return deferred.promise();
+		return defer.promise;
   	}
 
 	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, picture){

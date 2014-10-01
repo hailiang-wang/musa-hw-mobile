@@ -25,6 +25,18 @@ define(function(require, exports, module) {
     mbaas.push.init(store.getUserId());
   }
 
+  function _initializeMap(){
+    console.log('>> start to initialize map.')
+    var defer = Q.defer();
+    mapController.createMap().then(function(){
+      console.log('map is initialized.');
+      defer.resolve();
+    },function(err){
+      defer.reject(err);
+    });
+    return defer.promise;
+  }
+
   function showModal(containerDiv){
     $(containerDiv).append('<div class="modalWindow"/>');
     $.mobile.loading('show');
@@ -1572,7 +1584,7 @@ define(function(require, exports, module) {
   exports.renderForgetPwdPage = _renderForgetPwdPage;
   exports.getUserProfile = _getUserProfile;
   exports.respPushNotificationArrival = _respPushNotificationArrival;
-  exports.createMap = mapController.createMap;
+  exports.initializeMap = _initializeMap;
   exports.initIBMPushService = _initIBMPushService;
   exports.createHomeSwiperHeader = _createHomeSwiperHeader;
   exports.initNotificationSlides = _initNotificationSlides;

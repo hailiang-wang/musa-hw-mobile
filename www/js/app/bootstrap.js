@@ -197,22 +197,13 @@ define(['jqm', 'swiper', 'mapbox',
                         viewMgr.bindQRbtn();
                         // need to retrieve the map data with ajax
                         // so, deal with it in a callback
-                        viewMgr.createMap().then(function(){
-                            sseclient.start();
-                            setTimeout(function(){
-                                navigator.splashscreen.hide();
-                            },2000);
-                        }, function(err){
-                            sseclient.start();
-                            setTimeout(function(){
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text: '无法获得地图服务',
-                                    timeout: 2000,
-                                    type: 'information',
-                                    layout:'center'
-                                });
-                            },2000);
+                        viewMgr.initializeMap()
+                            .fin(function(){
+                                // finally, close the splashscreen and start sse
+                                sseclient.start();
+                                setTimeout(function(){
+                                    navigator.splashscreen.hide();
+                                }, 2000);
                         });
                     });
                 }, function(err){
