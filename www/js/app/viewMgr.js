@@ -1503,6 +1503,12 @@ define(function(require, exports, module) {
     }
   }
 
+  function _setHomeSwiperHeaderTitleByMapId(mapId){
+    var maps = store.getMaps();
+    $('#home-index .map.swiper-slide p').text('地图@{0}'.f(maps[mapId].name));
+    $('#home-index .people.swiper-slide p').text('圈子@{0}'.f(maps[mapId].name));
+  }
+
   function _createHomeSwiperHeader(){
       homeSwiper = new Swiper('#home-swiper-header .swiper-container',{
           pagination: '#home-swiper-header .pagination',
@@ -1569,6 +1575,8 @@ define(function(require, exports, module) {
 
   function _resetMapAndPeopleByMapID(mapId){
     $( "#selectMapPanel" ).panel("close");
+    store.setCurrentMapId(mapId);
+    _setHomeSwiperHeaderTitleByMapId(mapId);
   }
 
 
