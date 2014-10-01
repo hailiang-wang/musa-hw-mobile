@@ -26,7 +26,30 @@ define(function(require, exports, module) {
   }
 
   function _initializeMap(){
-    return mapController.createMap();
+    return mapController.getMapsMetadata()
+      .then(function(maps){
+        return mapController.resolveMap(maps);
+      }).then(function(){
+        return mapController.createMap();
+      }).fail(function(err){
+        console.error(err);
+        if((typeof err == 'object') && err.rc){
+          switch(err.rc){
+            case 1:
+              // can not resolve maps metadata with gps data
+              break;
+            case 2:
+              // can not get gps data
+              break;
+            case 3:
+              // localStorage has no maps related data
+              break;
+            default:
+              console.error('UNKNOWN ERROR.')
+              break;
+          }
+        }
+      });
   }
 
   function showModal(containerDiv){

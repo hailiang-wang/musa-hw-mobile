@@ -78,30 +78,38 @@ define(function(require, exports, module) {
 			});
 	}
 
-	function _resolveMap(){
-		var maps = store.getMaps();
-		var deferred = $.Deferred();
+	function _resolveMap(data){
+		var maps = data||store.getMaps();
+		var defer = Q.defer();
 		gps.getCurrentPosition().then(function(pos){
-		   var mapId;
-		   var mapValue = _.find(maps, function(value, key, list){
-		        if(_isPointInsideCircle(maps, key, pos)){
-		             mapId = key;
-		             return true;
-		        }else{
-		             return false;
-		        }
-		   });
-		   if(mapValue){
-		        store.setCurrentMapId(mapId);
-		        deferred.resolve(mapId, mapValue);
-		   }else{
-		        // can not resolve map
-		        deferred.reject({rc:1, msg:"user does not stay in any map."});
-		   }
+			try{
+				var mapId;
+				_.find(maps, function(value, key, list){
+				    if(gps.isPointInsideCircle(maps, key, pos.coords)){
+				        mapId = key;
+				        return true;
+				    }else{
+				        return false;
+				    }
+				});
+				if(mapId){
+				    store.setCurrentMapId(mapId);
+				    defer.resolve();
+				}else{
+				    console.log('>> can not resolve map, set a default one')
+				    store.setCurrentMapId('HelloWorldCafe');
+				    defer.resolve();
+				}
+			}catch(e){
+				console.error(e);
+				defer.reject({rc:1, msg:e});
+			}
+
 		}, function(err){
-		   deferred.reject({rc:2, msg:err});
+		   // can not get gps data  
+		   defer.reject({rc:2, msg:err});
 		});
-		return deferred.promise();
+		return defer.promise;
 	}
 
  	function _createMap(){
@@ -112,9 +120,10 @@ define(function(require, exports, module) {
  			map = null;
  		}
 
- 		_getMapsMetadata().then(function(data){
- 			L.mapbox.accessToken = data[config.myPremise].mapbox.accessToken;
-			map = L.mapbox.map('map', data[config.myPremise].mapbox.id).setView([0, 50], 3);
+ 		var maps = store.getMaps();
+ 		if(maps && maps[store.getCurrentMapId()]){
+ 			L.mapbox.accessToken = maps[store.getCurrentMapId()].mapbox.accessToken;
+			map = L.mapbox.map('map', maps[store.getCurrentMapId()].mapbox.id).setView([0, 50], 3);
 			$.ajax({
 				type: 'GET',
 				url: "http://{0}/rtls/hw".f(config.host),
@@ -124,10 +133,9 @@ define(function(require, exports, module) {
 				},
 				success: function(data){
 					if(data){
-						console.log('get map data ' + JSON.stringify(data));
-							_.each(data, function(value, key, list){
-								surveyor.trigger('paint', JSON.parse(value));
-							});
+						_.each(data, function(value, key, list){
+							surveyor.trigger('paint', JSON.parse(value));
+						});
 					}else{
 						console.log('Hello World Cafe has no location-sharing user');
 					}
@@ -139,9 +147,9 @@ define(function(require, exports, module) {
 				}
 			});
 			defer.resolve();
- 		},function(err){
- 			defer.reject(err);
- 		});
+ 		}else{
+ 			defer.reject({rc:3, msg:'NO MAPS DATA AVAILABLE IN LOCALSTORAGE.'});
+ 		}
 		return defer.promise;
   	}
 
@@ -188,6 +196,8 @@ define(function(require, exports, module) {
 		}
 	}
 
+	exports.getMapsMetadata = _getMapsMetadata;
+	exports.resolveMap = _resolveMap;
 	exports.createMap =  _createMap;
 	exports.addMarkerInMap = _addMarkerInMap;
 	exports.getMarkerNames  = _getMarkerNames;
