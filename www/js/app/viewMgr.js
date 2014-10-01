@@ -1578,7 +1578,8 @@ define(function(require, exports, module) {
           type: "POST",
           url: "http://{0}/rtls/locout".f(config.host),
           dataType: 'json',
-          data: JSON.stringify({ username : email}),
+          data: JSON.stringify({ mapId: store.getCurrentMapId(),
+            username : email}),
           headers: {
               "Accept": "application/json",
               "Content-Type": "application/json"
