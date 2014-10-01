@@ -5,6 +5,7 @@ define(function(require, exports, module) {
 	var config = require('app/config');
 	var util = require('app/util');
 	var store = require('app/service/store');
+	var gps = require('app/service/gps');
 	
  	var markers = {};
 	var map;
@@ -72,8 +73,35 @@ define(function(require, exports, module) {
 				return data;
 			}, function(xhr){
 				console.error('XHR ERROR ' + xhr.status);
+				console.error(xhr.responseText);
 				throw JSON.parse(xhr.responseText);
 			});
+	}
+
+	function _resolveMap(){
+		var maps = store.getMaps();
+		var deferred = $.Deferred();
+		gps.getCurrentPosition().then(function(pos){
+		   var mapId;
+		   var mapValue = _.find(maps, function(value, key, list){
+		        if(_isPointInsideCircle(maps, key, pos)){
+		             mapId = key;
+		             return true;
+		        }else{
+		             return false;
+		        }
+		   });
+		   if(mapValue){
+		        store.setCurrentMapId(mapId);
+		        deferred.resolve(mapId, mapValue);
+		   }else{
+		        // can not resolve map
+		        deferred.reject({rc:1, msg:"user does not stay in any map."});
+		   }
+		}, function(err){
+		   deferred.reject({rc:2, msg:err});
+		});
+		return deferred.promise();
 	}
 
  	function _createMap(){

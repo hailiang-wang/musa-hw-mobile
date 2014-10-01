@@ -26,15 +26,7 @@ define(function(require, exports, module) {
   }
 
   function _initializeMap(){
-    console.log('>> start to initialize map.')
-    var defer = Q.defer();
-    mapController.createMap().then(function(){
-      console.log('map is initialized.');
-      defer.resolve();
-    },function(err){
-      defer.reject(err);
-    });
-    return defer.promise;
+    return mapController.createMap();
   }
 
   function showModal(containerDiv){

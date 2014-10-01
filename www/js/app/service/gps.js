@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 	var geolib = require('geolib');
 
 	function _getCurrentPosition(){
-		var deferred = $.Deferred();
+		var defer = Q.defer();
 		navigator.geolocation.getCurrentPosition(function(position) {
 			// onSuccess Callback
 			// This method accepts a Position object, which contains the
@@ -20,16 +20,15 @@ define(function(require, exports, module) {
 		    //       'Heading: '           + position.coords.heading           + '\n' +
 		    //       'Speed: '             + position.coords.speed             + '\n' +
 		    //       'Timestamp: '         + position.timestamp                + '\n');
-		    deferred.resolve(position);
+		    defer.resolve(position);
 		}, 	
 		// onError Callback receives a PositionError object
 		//
-		function(error) {
-		    alert('code: '    + error.code    + '\n' +
-		          'message: ' + error.message + '\n');
-		    deferred.reject(error);
+		function(err) {
+		    console.error(err);
+		    defer.reject(err);
 		});
-		return deferred.promise();
+		return defer.promise;
 	}
 
 	function _isPointInsidePolygon(metadata, premise, point){
