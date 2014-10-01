@@ -31,6 +31,8 @@ define(function(require, exports, module) {
         return mapController.resolveMap(maps);
       }).then(function(){
         return mapController.createMap();
+      }).then(function(){
+        _setHomeSwiperHeaderTitleByMapId(store.getCurrentMapId());
       }).fail(function(err){
         console.error(err);
         if((typeof err == 'object') && err.rc){
@@ -1505,8 +1507,8 @@ define(function(require, exports, module) {
 
   function _setHomeSwiperHeaderTitleByMapId(mapId){
     var maps = store.getMaps();
-    $('#home-index .map.swiper-slide p').text('地图@{0}'.f(maps[mapId].name));
-    $('#home-index .people.swiper-slide p').text('圈子@{0}'.f(maps[mapId].name));
+    $('#home-index .map.swiper-slide p').text(util.trimByPixel('地图@{0}'.f(maps[mapId].name), 150));
+    $('#home-index .people.swiper-slide p').text(util.trimByPixel('圈子@{0}'.f(maps[mapId].name), 150));
   }
 
   function _createHomeSwiperHeader(){
@@ -1557,7 +1559,7 @@ define(function(require, exports, module) {
         beforeopen: function( event, ui ) {
           var currMapId = store.getCurrentMapId();
           $('#selectMapPanel ul').empty();
-          $('#selectMapPanel ul').append('<li data-role="list-divider">地点</li>')
+          $('#selectMapPanel ul').append('<li data-role="list-divider">服务号</li>')
           _.each(store.getMaps(), function(value, key, list){
             $('#selectMapPanel ul').append(function(){
               if(key != currMapId){
