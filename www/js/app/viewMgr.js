@@ -1580,6 +1580,8 @@ define(function(require, exports, module) {
   function _resetMapAndPeopleByMapID(mapId){
     $( "#selectMapPanel" ).panel("close");
     store.setCurrentMapId(mapId);
+    // hide eye btn
+    $('#headerBtn2').hide();
     _setHomeSwiperHeaderTitleByMapId(mapId,function(){
       mapController.createMap();
     });
