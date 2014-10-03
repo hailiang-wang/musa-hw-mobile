@@ -4,15 +4,12 @@
 
 * Parent
 
-> Project http://git.bizflowonline.com/stonda/musa-hw-doc
+> Project https://github.com/arrking/musa-hw-doc
 
 * Master repository
 
-> http://git.bizflowonline.com/stonda/musa-hw-mobile
+> https://github.com/arrking/musa-hw-mobile
 
-* Wiki
-
-> http://git.bizflowonline.com/stonda/musa-hw-mobile/wikis/index 
 
 ## Development Framework - Cordova and jQuery Mobile
 

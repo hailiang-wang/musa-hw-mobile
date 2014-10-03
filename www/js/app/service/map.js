@@ -6,8 +6,7 @@ define(function(require, exports, module) {
 	var util = require('app/util');
 	var store = require('app/service/store');
 	var gps = require('app/service/gps');
-	
- 	var markers = {};
+
 	var map;
 
 	var surveyor = {};
@@ -101,7 +100,7 @@ define(function(require, exports, module) {
 				    store.setCurrentMapId(mapId);
 				    defer.resolve();
 				}else{
-				    console.log('>> can not resolve map, set a default one')
+				    console.debug('can not resolve map, set a default one')
 				    store.setCurrentMapId('HelloWorldCafe');
 				    defer.resolve();
 				}
@@ -111,14 +110,30 @@ define(function(require, exports, module) {
 			}
 
 		}, function(err){
-		   // can not get gps data  
-		   defer.reject({rc:2, msg:err});
+			// can not get gps data
+			console.warn('CAN NOT GET GPS DATA.');
+			console.warn('If app is running in simulator, it is fine.');
+			console.warn('Otherwise, the user maybe reject the GPS permissions.');
+			console.warn('Finally, load the default map anyway.')
+		    store.setCurrentMapId('HelloWorldCafe');
+		    defer.resolve();
 		});
 		return defer.promise;
 	}
 
  	function _createMap(){
  		var defer = Q.defer();
+
+ 		/**
+ 		 * SnowMapMarkers
+ 		 */
+ 		// add a global namespace for markers management
+ 		// save user names/marker/status/avatar
+ 		// Why not export an object in a module varible ?
+ 		// requirejs' exports does not work well for this usage
+ 		// as it is exported previously, then update it in createMap
+ 		// the values in viewMgr does not updated. 
+	 	window.SnowMapMarkers = {};
 
  		if(map){
  			map.remove();
@@ -142,13 +157,13 @@ define(function(require, exports, module) {
 							surveyor.trigger('paint', JSON.parse(value));
 						});
 					}else{
-						console.log('Hello World Cafe has no location-sharing user');
+						console.log('{0} has no location-sharing user'.f(maps[store.getCurrentMapId()].name));
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) { 
-				  console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-				  console.log("[error] Status: " + textStatus); 
-				  console.log("[error] Error: " + errorThrown); 
+				  console.error("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+				  console.error("[error] Status: " + textStatus); 
+				  console.error("[error] Error: " + errorThrown); 
 				}
 			});
 			defer.resolve();
@@ -159,43 +174,46 @@ define(function(require, exports, module) {
   	}
 
 	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, picture){
-		if(markers[username]){
-			console.log('try to create a marker that does already exist for {0}'.f(username));
+		if(SnowMapMarkers[username]){
+			console.debug('try to create a marker that does already exist for {0}'.f(username));
 		} else {
+			console.debug('create marker for %s', username);
 			// add a marker in the given location, attach some popup content to it and open the popup
 			var marker = L.marker([lat, lng]).addTo(map)
 			    .bindPopup(popUpHtml)
 			    .openPopup();
-			markers[username] = {picture: picture||'sample/user-default.png',
+			SnowMapMarkers[username] = {picture: picture||'sample/user-default.png',
 								displayName: displayName,
 								status: status || 'TA 什么也没说',
 								marker: marker};
+			console.debug(_.keys(SnowMapMarkers));
 		}
 	}
 
 	function _getMarkerNames(){
-		return _.keys(markers);
+		return _.keys(SnowMapMarkers);
 	}
 
 	function _updateMarkerInMap(username, displayName, status, lat, lng, popUpHtml, picture){
-		if(markers[username]){
+		if(SnowMapMarkers[username]){
+			console.debug('update marker for %s', username)
 			// add a marker in the given location, attach some popup content to it and open the popup
-			markers[username].marker.setLatLng([lat, lng]);
-			markers[username].marker.update();
-			markers[username].marker.bindPopup(popUpHtml)
+			SnowMapMarkers[username].marker.setLatLng([lat, lng]);
+			SnowMapMarkers[username].marker.update();
+			SnowMapMarkers[username].marker.bindPopup(popUpHtml)
 			    .openPopup();
-			markers[username].picture = picture;
-			markers[username].status = status;
-			markers[username].displayName = displayName;
+			SnowMapMarkers[username].picture = picture;
+			SnowMapMarkers[username].status = status;
+			SnowMapMarkers[username].displayName = displayName;
 		} else {
-			console.log('try to update a marker that does not exist for {0}'.f(username));
+			console.debug('try to update a marker that does not exist for %s', username);
 		}
 	}
 
 	function _deleteMarkerByName(username){
-		if(markers[username]){
-			map.removeLayer(markers[username].marker);
-			delete markers[username];
+		if(SnowMapMarkers[username]){
+			map.removeLayer(SnowMapMarkers[username].marker);
+			delete SnowMapMarkers[username];
 		}else{
 			console.log('try to delete an not exist marker {0}'.f(username));
 		}
@@ -209,5 +227,4 @@ define(function(require, exports, module) {
 	exports.deleteMarkerByName = _deleteMarkerByName;
 	exports.updateMarkerInMap = _updateMarkerInMap;
 	exports.surveyor = surveyor;
-	exports.people = markers;
 })

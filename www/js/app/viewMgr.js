@@ -41,9 +41,6 @@ define(function(require, exports, module) {
               // can not resolve maps metadata with gps data
               break;
             case 2:
-              // can not get gps data
-              break;
-            case 3:
               // localStorage has no maps related data
               break;
             default:
@@ -1366,7 +1363,9 @@ define(function(require, exports, module) {
     $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
     $('#headerBtn1').show();
     bindQRbtn();
-    if(mapController.people[store.getUserId()]){
+    // SnowMapMarkers is defined in map.js for global accessing 
+    // markers
+    if(SnowMapMarkers[store.getUserId()]){
       $('#headerBtn2').show();
     }
   }
@@ -1383,7 +1382,6 @@ define(function(require, exports, module) {
       renderPeoplePage();
     });
 
-    var people = mapController.people;
     inPeopleSlideKeys = [];
     peopleSwiper = new Swiper('#people .swiper-container', {
         mode:'vertical',
@@ -1429,10 +1427,8 @@ define(function(require, exports, module) {
       }
     );
     function loadNewPeopleSlides(){
-      var people = mapController.people;
       // add the new online user
-      var currentPeopleKeys = _.keys(people).sort();
-
+      var currentPeopleKeys = _.keys(SnowMapMarkers).sort();
       var newComers = _.difference(currentPeopleKeys, inPeopleSlideKeys);
       var leftPeople = _.difference(inPeopleSlideKeys, currentPeopleKeys);
 
@@ -1451,7 +1447,7 @@ define(function(require, exports, module) {
       newComers.forEach(function(userId){
         var candidate;
         try{
-          candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+          candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, SnowMapMarkers[userId].displayName, SnowMapMarkers[userId].picture, SnowMapMarkers[userId].status), 
                     'swiper-slide ui-li-static ui-body-inherit');
           candidate.data('userid', userId);
           inPeopleSlideKeys.push(userId);
@@ -1486,11 +1482,13 @@ define(function(require, exports, module) {
     }
 
     // add the current online user
-    var candidates = _.keys(people).sort();
+    var candidates = _.keys(SnowMapMarkers).sort();
+    console.log('Get people : ' + JSON.stringify(candidates));
     if(candidates.length > 0){
       candidates.forEach(function(userId){
         try{
-          var candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, people[userId].displayName, people[userId].picture, people[userId].status), 
+          var candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, SnowMapMarkers[userId].displayName, 
+            SnowMapMarkers[userId].picture, SnowMapMarkers[userId].status), 
                     'swiper-slide ui-li-static ui-body-inherit');
           candidate.data('userid', userId);
           inPeopleSlideKeys.push(userId);
@@ -1505,11 +1503,13 @@ define(function(require, exports, module) {
     }
   }
 
-  function _setHomeSwiperHeaderTitleByMapId(mapId){
+  function _setHomeSwiperHeaderTitleByMapId(mapId,callback){
     var maps = store.getMaps();
     $('#home-index .map.swiper-slide p').text(util.trimByPixel('地图@{0}'.f(maps[mapId].name), 150));
     $('#home-index .people.swiper-slide p').text(util.trimByPixel('圈子@{0}'.f(maps[mapId].name), 150));
-    mapController.createMap();
+    if(callback){
+      callback();
+    }
   }
 
   function _createHomeSwiperHeader(){
@@ -1576,10 +1576,13 @@ define(function(require, exports, module) {
       });
   }
 
+  // Global API for Panel
   function _resetMapAndPeopleByMapID(mapId){
     $( "#selectMapPanel" ).panel("close");
     store.setCurrentMapId(mapId);
-    _setHomeSwiperHeaderTitleByMapId(mapId);
+    _setHomeSwiperHeaderTitleByMapId(mapId,function(){
+      mapController.createMap();
+    });
   }
 
 
