@@ -335,8 +335,9 @@
 
 /*http://www.w3schools.com/cssref/playit.asp?filename=playcss_border-style&preval=dashed*/
 #user-index .content.ui-content ul li{
-    border-style: none;
+    border-style: dashed;
     line-height: 48px;
+    width: 100%;
 }
 
 #user-index .content.ui-content li i{
@@ -350,8 +351,12 @@
   color:purple;  
 }
 
-#user-index .more-linkedin-profile{
-  padding-top: 20px;
+#user-index .content.ui-content li .fa.fa-edit{
+  width: 40px;
+  position: absolute;
+  right: 40px;
+  vertical-align: middle;
+  line-height: 48px;
 }
 
 #profile-editor .header{

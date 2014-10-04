@@ -916,11 +916,6 @@ define(function(require, exports, module) {
 		return msgJson;
 	}
 
-  function _openMyLKDProfile(){
-    cordova.exec(null, null, "InAppBrowser", "open",
-     [store.getUserProfile()._json.publicProfileUrl, 
-     "_system"]);
-  }
 
   function _openLKDProfileByLink(link){
     cordova.exec(null, null, "InAppBrowser", "open",
@@ -1068,7 +1063,8 @@ define(function(require, exports, module) {
       // if local passport, show the eidt btn
       switch(user.provider){
         case 'local':
-          $('.more-linkedin-profile').hide();
+          $('#user-index .content .avatar i.btn').addClass('fa-camera-retro');
+          $('#user-index .content .avatar i.btn').removeClass('fa-external-link');
           // take picure as avatar
           $('.avatar').on('touchend', function () {
             $('.popSelect').slideDown(300);
@@ -1077,7 +1073,13 @@ define(function(require, exports, module) {
         case 'linkedin':
           $('#eidtProfileBtn').hide();
           // hide the camera icon
-          $('#user-index .content .avatar i').hide();
+          $('#user-index .content .avatar i.btn').removeClass('fa-camera-retro');
+          $('#user-index .content .avatar i.btn').addClass('fa-external-link');
+          $('#user-index .content ul .fa.fa-edit').hide();
+          $('.avatar').on('touchend', function (){
+            cordova.exec(null, null, "InAppBrowser", "open",
+               [store.getUserProfile()._json.publicProfileUrl, "_system"]);
+          });
           defaultAvatar = 'img/linkedin-default-avatar.png'
           break;
         default:
@@ -1654,7 +1656,6 @@ define(function(require, exports, module) {
 	*/
 	window.SnowOpenMsg = _openMsg;
 	window.SnowBackToNotificationsList = _backToNotificationsList;
-  window.SnowOpenMyLKDProfile = _openMyLKDProfile;
   window.SnowOpenLKDProfileByLink = _openLKDProfileByLink;
   window.SnowResetMapAndPeopleByMapID = _resetMapAndPeopleByMapID;
 
