@@ -237,6 +237,20 @@
   opacity: 1;
 }
 
+#notifications .messages .swiper-wrapper li{
+    border-style:dotted;
+    border-color:#75F23D;
+}
+#notifications .messages .swiper-wrapper li:first-of-type{
+    border-style:solid ;
+    border-color:#75F23D;
+}
+
+#notifications .messages .swiper-wrapper li:last-of-type{
+    border-bottom-style:solid ;
+    border-bottom-color:#75F23D;
+}
+
 #notifications .messages .swiper-wrapper li h2{
     display: inline-block;
     list-style-type: none;
