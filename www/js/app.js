@@ -1,6 +1,4 @@
 
-
-
 requirejs.config({
     //By default load any module IDs from js/lib
     baseUrl: 'js/lib',
@@ -18,7 +16,8 @@ requirejs.config({
         underscore: 'underscore-min',
         backbone : 'backbone-min',
         geolib : 'geolib.min',
-        q: 'q.min'
+        q: 'q.min',
+        console: 'console.min'
     },
     shim: {
         'jquery': {
@@ -46,7 +45,8 @@ requirejs.config({
         },
         'q':{
             exports:'Q'
-        }
+        },
+        'console':{}
     }
 });
 
@@ -73,6 +73,8 @@ requirejs(['jquery','cordova.js', 'app/config',
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
 
+DEBUG = config.console;
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -94,7 +96,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        console.log('Received Event: ' + id);
+        console.debug('Received Event: ' + id);
         var pathname = window.location.pathname;
         requirejs(['app/bootstrap'], function(bootstrap){
             if(pathname.endsWith('home.html')){
@@ -107,8 +109,8 @@ var app = {
 };
 
 
-if(config.debug){
-    require([config.weinre], function(){
+if(config.weinreDebug){
+    require([config.weinreServer], function(){
         app.initialize();
     });
 } else {

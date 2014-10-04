@@ -157,7 +157,7 @@ define(function(require, exports, module) {
 							surveyor.trigger('paint', JSON.parse(value));
 						});
 					}else{
-						console.log('{0} has no location-sharing user'.f(maps[store.getCurrentMapId()].name));
+						console.debug('{0} has no location-sharing user'.f(maps[store.getCurrentMapId()].name));
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) { 

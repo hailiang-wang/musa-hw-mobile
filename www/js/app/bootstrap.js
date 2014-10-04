@@ -6,7 +6,7 @@ define(['jqm', 'swiper', 'mapbox',
     'app/config', 'app/service/mbaas', 'app/viewMgr',
     'app/service/map','app/service/sseclient',
     'app/service/store','noty', 'app/service/agent',
-    'app/service/gps'], function() {
+    'app/service/gps', 'console'], function() {
         
         var config = require('app/config');
         var mbaas = require('app/service/mbaas');

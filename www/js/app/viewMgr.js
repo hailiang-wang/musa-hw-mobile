@@ -575,7 +575,7 @@ define(function(require, exports, module) {
       $(candidate.el).change(function(){
         try{
           if($(candidate.el).val() == 'off'){
-            // 不接收
+            // not subscribe tag
               console.log('unsubscribeTag {0}'.f(candidate.tagName));
               mbaas.push.unsubTag(candidate.tagName).then(function(response){
                 currSubTags = store.removeSubTag(candidate.tagName);
@@ -587,8 +587,8 @@ define(function(require, exports, module) {
                 $(candidate.el).slider("refresh");
               });
           }else{
-            // 接收
-            console.log('subscribeTag {0}'.f(candidate.tagName));
+            // subscribe tag
+            console.debug('subscribeTag {0}'.f(candidate.tagName));
             mbaas.push.subTag(candidate.tagName).then(function(response){
               currSubTags.push(candidate.tagName);
               store.setSubTags(currSubTags);

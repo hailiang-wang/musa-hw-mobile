@@ -10,7 +10,7 @@ define(function(require, exports, module) {
                     applicationSecret: config.pushAppSecret}).then(function(){
             IBMPush.hybrid.initializeService().then(
                 function(pushService){
-                    console.log("Initialized push successfully");
+                    console.debug("Initialized push successfully");
                     // set _push
                     _push = pushService;
                     _registerDevice(username);
@@ -25,16 +25,16 @@ define(function(require, exports, module) {
     	// handleApplePushNotificationArrival is defined as globally in app.js
         _push.registerDevice(device.uuid, username, '(function(msg){setTimeout(handleApplePushNotificationArrival(msg),5000);})').then(
             function(response) {
-                console.log('bluemix push registered device ' + JSON.stringify(response));
+                console.debug('bluemix push registered device ' + JSON.stringify(response));
                 _push.getSubscriptions().done(function(response){
-                    console.log('get subscriptions in mbaas '+ JSON.stringify(response.subscriptions));
+                    console.debug('get subscriptions in mbaas '+ JSON.stringify(response.subscriptions));
                     store.setSubTags(response.subscriptions);
                 }, function(err){
                     console.error(err)
                 });
             }, 
             function(error) {    
-                console.log('bluemix push error registering device ' + error);
+                console.error('bluemix push error registering device ' + error);
             }
         );
     }
