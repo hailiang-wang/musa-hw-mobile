@@ -798,14 +798,13 @@ define(function(require, exports, module) {
 
   function getNotificationSilde(id, title, link, date, category){
       if( link && (link !== "#")){
-        return '<div class="card">'
-                + '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link)
-                  + '<img src="{0}" style="vertical-align:middle;">'.f(notificationsPng[category])
-                  + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:#18260E;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(title, 160), util.getDate(date))
-                + '</a>'
-              + '</div>';
+        return  '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link)
+              +     '<img src="{0}">'.f(notificationsPng[category])
+              +     '<h2>{0}</h2>'.f(util.trimByPixel(title, 140))
+              +     '<p class="ui-li-aside"><strong>{0}</strong></p>'.f(util.getDate(date))
+              + '</a>';
       } else{
-        return '<div class="card">{0}</div>'.f(title);
+        return '{0}'.f(title);
       }
   }
 
