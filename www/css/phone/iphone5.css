@@ -333,6 +333,11 @@
     color:black;
 }
 
+/*http://www.w3schools.com/cssref/playit.asp?filename=playcss_border-style&preval=dashed*/
+#user-index .content.ui-content ul li{
+    border-style: none;
+    line-height: 48px;
+}
 
 #user-index .content.ui-content li i{
   padding-left: 12px;
