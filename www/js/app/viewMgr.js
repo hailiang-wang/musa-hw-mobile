@@ -1069,9 +1069,15 @@ define(function(require, exports, module) {
       switch(user.provider){
         case 'local':
           $('.more-linkedin-profile').hide();
+          // take picure as avatar
+          $('.avatar').on('touchend', function () {
+            $('.popSelect').slideDown(300);
+          });
           break;
         case 'linkedin':
           $('#eidtProfileBtn').hide();
+          // hide the camera icon
+          $('#user-index .content .avatar i').hide();
           defaultAvatar = 'img/linkedin-default-avatar.png'
           break;
         default:
@@ -1236,10 +1242,6 @@ define(function(require, exports, module) {
       $('#cancel').on('touchend', function () {
         $('.popSelect').slideUp(300);
         return false;
-      });
-
-      $('.avatar').on('touchend', function () {
-        $('.popSelect').slideDown(300);
       });
 
       $('.popSelect').on('touchmove', function () {
