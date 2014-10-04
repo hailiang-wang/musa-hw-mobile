@@ -1552,7 +1552,9 @@ define(function(require, exports, module) {
       });
 
       $("#home-index .swiper-slide.people").on('click', function(){
-        alert('changepeople');
+        // people header is clicked !
+        // TODO show a panel in the people page
+        // this is panel can be used for searching people, filter people
         return false;
       });
 
