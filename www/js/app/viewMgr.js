@@ -1099,7 +1099,8 @@ define(function(require, exports, module) {
           // how to render it Master?Bachelor, now just show up a school
           $.each(user._json.educations.values, function(index, education){
               if( index < 1){
-                  $('#user-index i .edu').append('{0} {1} <br> '.f(education.schoolName, education.degree||''));
+                  $('#user-index i .edu').append(
+                    util.trimByPixel('{0} {1} <br> '.f(education.schoolName, education.degree||''), 200));
               }
           })
       }else{
@@ -1110,7 +1111,8 @@ define(function(require, exports, module) {
       if(user._json.positions._total > 0){
           $.each(user._json.positions.values,function(index, position){
               if(position.isCurrent){
-                  $('#user-index i .company').text(position.company.name);
+                  $('#user-index i .company').text(
+                    util.trimByPixel(position.company.name, 200));
               }
           })
       }else{
@@ -1120,7 +1122,8 @@ define(function(require, exports, module) {
 
       // interests
       if(user._json.interests){
-          $('#user-index i .interest').append('{0} <br> '.f(user._json.interests));
+          $('#user-index i .interest').append(
+            util.trimByPixel('{0} <br> '.f(user._json.interests), 200));
       }else{
           // no interest
           $('#user-index i .interest').append('{0} <br> '.f("您什么也没有写。"));
