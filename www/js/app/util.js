@@ -26,7 +26,7 @@ define(function(require, exports, module) {
     * @function check Network Connections, only support ETHERNET,WIFI, CELL 3|4 G
     */
     function _getNetwork(){
-        var connDeferred = $.Deferred();
+        var defer = Q.defer();
         var states = {};
         states[Connection.UNKNOWN]  = 'Unknown connection';
         states[Connection.ETHERNET] = 'Ethernet connection';
@@ -43,9 +43,9 @@ define(function(require, exports, module) {
         if(device.platform == 'iOS'){
             if($.inArray(navigator.connection.type, 
                          [Connection.CELL,Connection.WIFI]) !== -1){
-                connDeferred.resolve(navigator.connection.type);
+                defer.resolve(navigator.connection.type);
             }else{
-                connDeferred.reject("unknown");
+                defer.reject("unknown");
             }
         }else if (device.platform == 'Android'){
             // check for android
@@ -53,14 +53,14 @@ define(function(require, exports, module) {
                                 Connection.CELL_3G,
                                 Connection.CELL_4G];
             if($.inArray(navigator.connection.type, androidServeNetwork) !== -1){
-                connDeferred.resolve(navigator.connection.type);
+                defer.resolve(navigator.connection.type);
             }else{
-                connDeferred.reject("unknown");
+                defer.reject("unknown");
             }
         }else{
-            connDeferred.reject({error: "unsupported platform"});
+            defer.reject({error: "unsupported platform"});
         }
-        return connDeferred.promise();
+        return defer.promise;
     }
 
     function _getDate(dateString){

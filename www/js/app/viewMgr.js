@@ -925,7 +925,8 @@ define(function(require, exports, module) {
   // render user profile editor page
   function _renderProfileEditor(){
     var profile = store.getUserProfile();
-    switch(store.getProfileEditorProperty()){
+    var propertyName = store.getProfileEditorProperty();
+    switch(propertyName){
       case 'edu':
         // insert values into profile fields
         if(profile._json.educations._total > 0){
@@ -973,27 +974,43 @@ define(function(require, exports, module) {
      * modify local user profile
      */
     $('#saveProfileBtn').on('click', function(){
-        var interests = $('#interestText').val();
-        var education = $('#eduText').val();
-        var positions = $('#posText').val();
-        // set profile 
-        if(interests){
-          profile._json.interests = interests;
-        }
-        if(education){
-          profile._json.educations._total = 1;
-          profile._json.educations.values[0] = { schoolName : education};
-        }
-        if(positions){
-          profile._json.positions._total = 1;
-          profile._json.positions.values[0] = { isCurrent : true,
-             company: {
-              name : positions 
+        var propertyValue = $('#profile-editor .property-value').val();
+        switch(propertyName){
+          case 'edu':
+            if(propertyValue){
+              profile._json.educations._total = 1;
+              profile._json.educations.values[0] = { schoolName : propertyValue};
+            }else{
+              profile._json.educations._total = 0;
+              profile._json.educations.values = [];
             }
-          }
+            break;
+          case 'company':
+            if(propertyValue){
+              profile._json.positions._total = 1;
+              profile._json.positions.values[0] = { isCurrent : true,
+                 company: {
+                  name : propertyValue 
+                }
+              }
+            }else{
+              profile._json.positions._total = 0;
+              profile._json.positions.values = {};
+            }
+            break;
+          case 'interest':
+            if(propertyValue){
+              profile._json.interests = propertyValue;
+            }
+            break;
+          default:
+            break;
         }
 
-        console.debug('update profile by ' + JSON.stringify(profile));
+        // because the user would upload the avatar again, the 
+        // ajax request is slow.
+        $.mobile.loading('show');
+        console.debug('update profile with {0} = {1}'.f(propertyName, propertyValue) );
         util.getNetwork().then(function(){
           _updateUserProfile(profile).then(function(response){
             // refresh user profile page
@@ -1002,6 +1019,7 @@ define(function(require, exports, module) {
               /*
                * add the card value and set input box values
                */
+              $.mobile.loading('hide');
               $.mobile.changePage( "user.html", {
                   transition: "none",
                   reloadPage: false,
@@ -1010,6 +1028,7 @@ define(function(require, exports, module) {
               });
             });
           }, function(err){
+            $.mobile.loading('hide');
             noty({
               type: 'warning',
               text: '发生错误，请更新应用或者重新登录。',
@@ -1018,6 +1037,7 @@ define(function(require, exports, module) {
             });
         });
       }, function(err){
+        $.mobile.loading('hide');
         noty({
               type: 'warning',
               text: '无网络服务.',
@@ -1025,7 +1045,6 @@ define(function(require, exports, module) {
               timeout: 2000
         });
       });
-
     });
 
     // cancel editing user profile
