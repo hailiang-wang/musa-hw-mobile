@@ -117,32 +117,32 @@ define(['jqm', 'swiper', 'mapbox',
                         case 'home-index':
                             break;
                         case 'notifications':
-                            console.log('beforehide this page to notifications page ...');
+                            console.debug('beforehide this page to notifications page ...');
                             break;
                         case 'user-index':
-                            console.log('beforehide next page - user-index');
+                            console.debug('beforehide next page - user-index');
                             viewMgr.renderUserProfilePage();
                             break;
                         case 'notification':
-                            console.log('beforehide this page to notification page ...');
+                            console.debug('beforehide this page to notification page ...');
                             break;
                         case 'settings-index':
-                            console.log('beforehide this page to settings page ...');
+                            console.debug('beforehide this page to settings page ...');
                             viewMgr.renderSettingsPage();
                             break;
                         case 'reset-pwd':
-                            console.log('beforehide this page to reset-pwd page ...');
+                            console.debug('beforehide this page to reset-pwd page ...');
                             viewMgr.renderResetPwdPage();
                             break;
                         case 'reset-pwd-verify':
-                            console.log('beforehide this page to reset-pwd-verify page ...');
+                            console.debug('beforehide this page to reset-pwd-verify page ...');
                             viewMgr.renderResetPwdVerifyPage();
                             break;
                         case 'about-app':
                             viewMgr.renderAboutAppPage();
                             break;
                         default:
-                            console.log('you can never find me.');
+                            console.debug('you can never find me.');
                             break;
                     }
                 },
@@ -157,20 +157,20 @@ define(['jqm', 'swiper', 'mapbox',
                                 viewMgr.initNotificationPage();
                                 break;
                             case 'user-index':
-                                console.log('show user-index');
+                                console.debug('show user-index');
                                 break;
                             case 'settings-index':
-                                console.log('show settings');
+                                console.debug('show settings');
                                 break;
                              case 'profile-editor':
-                                console.log('show editor');
+                                console.debug('show editor');
                                 viewMgr.renderProfileEditor();
                                 break;
                             default:
                                 break;
                         }
                     }catch(err){
-                        console.log(err);
+                        console.error(err);
                     }
                 }
             });

@@ -128,6 +128,14 @@ define(function(require, exports, module) {
 		_saveNotifications(json);
 	}
 
+	function _setProfileEditorProperty(property){
+		window.sessionStorage.setItem('MUSA_USER_PROFILE_EDITOR_PROPERTY', property);
+	}
+
+	function _getProfileEditorProperty(){
+		return window.sessionStorage.getItem('MUSA_USER_PROFILE_EDITOR_PROPERTY');
+	}
+
 	exports.saveNotifications = _saveNotifications;
 	exports.getNotifications = _getNotifications;
 	exports.setUserProfile = _setUserProfile;
@@ -148,4 +156,6 @@ define(function(require, exports, module) {
 	exports.setMaps = _setMaps;
 	exports.setCurrentMapId = _setCurrentMapId;
 	exports.getCurrentMapId = _getCurrentMapId;
+	exports.setProfileEditorProperty = _setProfileEditorProperty;
+	exports.getProfileEditorProperty = _getProfileEditorProperty;
 });

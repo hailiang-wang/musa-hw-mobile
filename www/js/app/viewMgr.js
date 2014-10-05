@@ -286,9 +286,9 @@ define(function(require, exports, module) {
                             }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown){
-                            console.log('Login throw an error');
-                            console.log(textStatus);
-                            console.log(errorThrown);
+                            console.debug('Login throw an error');
+                            console.debug(textStatus);
+                            console.debug(errorThrown);
                             navigator.splashscreen.hide();
                             noty({
                                 text:'服务器通信错误！',
@@ -419,7 +419,7 @@ define(function(require, exports, module) {
             'Accept': 'application/json'
           },
           success: function(resp){
-            console.log(JSON.stringify(resp));
+            console.debug(JSON.stringify(resp));
             if(resp && resp.rc){
               switch(resp.rc){
                 case 1:
@@ -483,11 +483,11 @@ define(function(require, exports, module) {
               // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
               timeout: 20000,
               success: function(data){
-                  //console.log('[debug] user profile got from remote server : ' + JSON.stringify(data));
+                  //console.debug('[debug] user profile got from remote server : ' + JSON.stringify(data));
                   callback(data);
               },
               error:function(XMLHttpRequest, textStatus, errorThrown){
-                  console.log(errorThrown);
+                  console.debug(errorThrown);
                   window.location = 'login.html';
               }
           });
@@ -560,7 +560,7 @@ define(function(require, exports, module) {
           $("#subPromotion").slider("refresh");
           break;
         default:
-          console.log('tag {0} is not supported.'.f(tagName));
+          console.debug('tag {0} is not supported.'.f(tagName));
           break;
       }
     });
@@ -576,12 +576,12 @@ define(function(require, exports, module) {
         try{
           if($(candidate.el).val() == 'off'){
             // not subscribe tag
-              console.log('unsubscribeTag {0}'.f(candidate.tagName));
+              console.debug('unsubscribeTag {0}'.f(candidate.tagName));
               mbaas.push.unsubTag(candidate.tagName).then(function(response){
                 currSubTags = store.removeSubTag(candidate.tagName);
               },function(err){
-                console.log('unsubscribeTag {0} failed.'.f(candidate.tagName));
-                console.log(err);
+                console.debug('unsubscribeTag {0} failed.'.f(candidate.tagName));
+                console.debug(err);
                 // notify user and reset the slider
                 $(candidate.el).val('on'); 
                 $(candidate.el).slider("refresh");
@@ -593,13 +593,13 @@ define(function(require, exports, module) {
               currSubTags.push(candidate.tagName);
               store.setSubTags(currSubTags);
             },function(err){
-              console.log(err);
+              console.debug(err);
               $(candidate.el).val('off'); 
               $(candidate.el).slider("refresh");
             });
           }
         }catch(err){
-          console.log(err);
+          console.debug(err);
         }
       });   
     });
@@ -865,7 +865,7 @@ define(function(require, exports, module) {
               'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
         inViewSlideKeys.push(key);
       });
-      console.log(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+      console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
       function loadNewNotificationSlides() {
           /* 
           Probably you should do some Ajax Request here
@@ -882,7 +882,7 @@ define(function(require, exports, module) {
                 notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date, sld.category), 
                       'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
                 inViewSlideKeys.push(key);
-                console.log(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+                console.debug(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
               }
             });
 
@@ -924,17 +924,50 @@ define(function(require, exports, module) {
 
   // render user profile editor page
   function _renderProfileEditor(){
-    $("#userBtn").addClass('ui-btn-active');
     var profile = store.getUserProfile();
-    // insert values into profile fields
-    if(profile._json.educations._total > 0)
-      $('#eduText').val(profile._json.educations.values[0].schoolName);
+    switch(store.getProfileEditorProperty()){
+      case 'edu':
+        // insert values into profile fields
+        if(profile._json.educations._total > 0){
+          $('#profile-editor .property-value').val(profile._json.educations.values[0].schoolName);
+        }else{
+          // add placeholder
+          $('#profile-editor .property-value').attr('placeholder', '曾经就读于 ...');
+        }
 
-    if(profile._json.positions._total > 0)
-      $('#posText').val(profile._json.positions.values[0].company.name);
+        $('#profile-editor .property-icon').removeClass('fa-briefcase');
+        $('#profile-editor .property-icon').removeClass('fa-dribbble');
+        $('#profile-editor .property-icon').addClass('fa-graduation-cap');
+        break;
+      case 'company':
+        if(profile._json.positions._total > 0){
+          $('#profile-editor .property-value').val(profile._json.positions.values[0].company.name);
+        }else{
+          // add placeholder
+          $('#profile-editor .property-value').attr('placeholder', '曾经就职于 ...');
+        }
 
-    if(profile._json.interests)
-      $('#interestText').val(profile._json.interests);
+        $('#profile-editor .property-icon').removeClass('fa-dribbble');
+        $('#profile-editor .property-icon').removeClass('fa-graduation-cap');
+        $('#profile-editor .property-icon').addClass('fa-briefcase');
+        break;
+      case 'interest':
+        if(profile._json.interests){
+          $('#profile-editor .property-value').val(profile._json.interests);
+        }else{
+          // add placeholder
+          $('#profile-editor .property-value').attr('placeholder', '兴趣 ...');
+        }
+
+        $('#profile-editor .property-icon').removeClass('fa-graduation-cap');
+        $('#profile-editor .property-icon').removeClass('fa-briefcase');
+        $('#profile-editor .property-icon').addClass('fa-dribbble');
+        break;
+      default:
+        break;
+    }
+
+    $('#profile-editor .property-value').focus();
 
     /**
      * modify local user profile
@@ -960,7 +993,7 @@ define(function(require, exports, module) {
           }
         }
 
-        console.log('update profile by ' + JSON.stringify(profile));
+        console.debug('update profile by ' + JSON.stringify(profile));
         util.getNetwork().then(function(){
           _updateUserProfile(profile).then(function(response){
             // refresh user profile page
@@ -1021,9 +1054,9 @@ define(function(require, exports, module) {
         deferred.resolve(response);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown){
-        console.log("[error] PUT http://{0}/user/me throw an error.".f(config.host));
-        console.log("[error] Status: " + textStatus); 
-        console.log("[error] Error: " + errorThrown); 
+        console.debug("[error] PUT http://{0}/user/me throw an error.".f(config.host));
+        console.debug("[error] Status: " + textStatus); 
+        console.debug("[error] Error: " + errorThrown); 
         deferred.reject({textStatus: textStatus, error: errorThrown });
       }
     });        
@@ -1035,7 +1068,7 @@ define(function(require, exports, module) {
         type: "GET",
         url: "http://{0}/logout".f(config.host),
         success: function(data){
-            console.log("LOGOUT user's session is cleaned in server.")
+            console.debug("LOGOUT user's session is cleaned in server.")
             store.deleteUserSID();
             cordova.plugins.musa.removeCookieByDomain(
               'http://{0}/,http://{1}/'.f(config.host, config.ssehost),
@@ -1048,13 +1081,29 @@ define(function(require, exports, module) {
             );
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            console.log("[error] Post http://{0}/logout throw an error.".f(config.host));
-            console.log("[error] Status: " + textStatus); 
-            console.log("[error] Error: " + errorThrown); 
+            console.debug("[error] Post http://{0}/logout throw an error.".f(config.host));
+            console.debug("[error] Status: " + textStatus); 
+            console.debug("[error] Error: " + errorThrown); 
             store.deleteUserSID();
             window.location = 'login.html';
         }
       });
+  }
+
+  function bindProfileEditorBtns(){
+    $('#user-index .content ul .fa.fa-edit').each(function(){
+      var $el = $( this );
+      $el.unbind();
+      $el.on('click',function(){
+        store.setProfileEditorProperty($el.data("property"));
+        $.mobile.changePage( "profile-editor.html", {
+          transition: "none",
+          reloadPage: false,
+          reverse: true,
+          changeHash: false
+        });
+      });
+    });
   }
 
   function _renderUserProfilePage(){
@@ -1069,9 +1118,9 @@ define(function(require, exports, module) {
           $('.avatar').on('touchend', function () {
             $('.popSelect').slideDown(300);
           });
+          bindProfileEditorBtns();
           break;
         case 'linkedin':
-          $('#eidtProfileBtn').hide();
           // hide the camera icon
           $('#user-index .content .avatar i.btn').removeClass('fa-camera-retro');
           $('#user-index .content .avatar i.btn').addClass('fa-external-link');
@@ -1083,7 +1132,7 @@ define(function(require, exports, module) {
           defaultAvatar = 'img/linkedin-default-avatar.png'
           break;
         default:
-          console.log('You can find me.')
+          console.debug('You can find me.')
         break;
       }
 
@@ -1139,17 +1188,6 @@ define(function(require, exports, module) {
         logoutHandler();
       });
 
-      /**
-       * open user profile editor
-       */      
-      $('#eidtProfileBtn').on('click', function(){
-        $.mobile.changePage( "profile-editor.html", {
-            transition: "none",
-            reloadPage: false,
-            reverse: true,
-            changeHash: false
-        });
-      });
       /**
        * change user avatar
        */
@@ -1256,7 +1294,7 @@ define(function(require, exports, module) {
 
 	function _respPushNotificationArrival(){
 		util.getNotification().then(function(data){
-      console.log(JSON.stringify(data));
+      console.debug(JSON.stringify(data));
       if(_.isObject(data.notifications)){
         var tags = store.getSubTags();
         var keys = _.keys(data.notifications);
@@ -1268,12 +1306,12 @@ define(function(require, exports, module) {
               store.saveNotifications(notification);
             }
           }catch(e){
-            console.log(e);
+            console.debug(e);
           }
         });
       }
     },function(err){
-      console.log(err);
+      console.debug(err);
     });
 	}
 
@@ -1291,7 +1329,7 @@ define(function(require, exports, module) {
                   gps.getCurrentPosition().then(function(pos){
                       var maps = store.getMaps();
                       var currMapId = store.getCurrentMapId();
-                      console.log('get position ...' + JSON.stringify(pos));
+                      console.debug('get position ...' + JSON.stringify(pos));
                       if(gps.isPointInsideCircle(maps, currMapId, pos.coords)){
                         
                         // change a page to get user status 
@@ -1326,12 +1364,12 @@ define(function(require, exports, module) {
                                 "Content-Type": "application/json"
                             },
                             success: function(data){
-                                console.log(JSON.stringify(data));
+                                console.debug(JSON.stringify(data));
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-                                console.log("[error] Status: " + textStatus); 
-                                console.log("[error] Error: " + errorThrown); 
+                                console.debug("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+                                console.debug("[error] Status: " + textStatus); 
+                                console.debug("[error] Error: " + errorThrown); 
                             }
                           });
                         });
@@ -1348,16 +1386,16 @@ define(function(require, exports, module) {
                           timeout: 2000})
                   });
                 }else{
-                  console.log('do not have position data !');
+                  console.debug('do not have position data !');
                 }
               }
           },
           function (error) {
-            console.log(error);
+            console.debug(error);
           }
         );
       }catch(e){
-        console.log(e);
+        console.debug(e);
       }
       return false;
     });
@@ -1446,7 +1484,7 @@ define(function(require, exports, module) {
           }
         });
       }catch(err){
-        console.log(err);          
+        console.debug(err);          
       }
 
       // add new comer into slide
@@ -1459,7 +1497,7 @@ define(function(require, exports, module) {
           inPeopleSlideKeys.push(userId);
         }catch(err){
           candidate = null;
-          console.log(err);
+          console.debug(err);
         }
       });
 
@@ -1489,7 +1527,7 @@ define(function(require, exports, module) {
 
     // add the current online user
     var candidates = _.keys(SnowMapMarkers).sort();
-    console.log('Get people : ' + JSON.stringify(candidates));
+    console.debug('Get people : ' + JSON.stringify(candidates));
     if(candidates.length > 0){
       candidates.forEach(function(userId){
         try{
@@ -1499,7 +1537,7 @@ define(function(require, exports, module) {
           candidate.data('userid', userId);
           inPeopleSlideKeys.push(userId);
         }catch(err){
-          console.log(err);
+          console.debug(err);
         }
       });
     }else{
@@ -1533,7 +1571,7 @@ define(function(require, exports, module) {
                     renderHomeMap();
                     break;
                   default :
-                    console.log('fine me if you can.');
+                    console.debug('fine me if you can.');
                     break;
               }
           }
@@ -1617,12 +1655,12 @@ define(function(require, exports, module) {
               "Content-Type": "application/json"
           },
           success: function(data){
-              console.log(JSON.stringify(data));
+              console.debug(JSON.stringify(data));
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) { 
-              console.log("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-              console.log("[error] Status: " + textStatus); 
-              console.log("[error] Error: " + errorThrown); 
+              console.debug("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+              console.debug("[error] Status: " + textStatus); 
+              console.debug("[error] Error: " + errorThrown); 
           }
       });
     }); 
