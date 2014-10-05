@@ -238,7 +238,7 @@
 }
 
 #notifications .messages .swiper-wrapper li{
-    border-style:dotted;
+    border-style:solid;
     border-color:#75F23D;
 }
 #notifications .messages .swiper-wrapper li:first-of-type{
@@ -277,6 +277,7 @@
   top : 20px;
   font-size: 15px;
   text-align: left;
+  text-shadow: none;
   border: none !important;
 }
 

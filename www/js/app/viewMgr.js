@@ -505,7 +505,7 @@ define(function(require, exports, module) {
       
     $('#notification .header .title').append('<a href="#" onclick="SnowBackToNotificationsList()" data-shadow="false"' 
     + 'class="musa-nostate-btn ui-btn ui-icon-back ui-btn-icon-left">'
-    + '{0}</a>'.f(SnowNotificationObject.title));
+    + '{0}</a>'.f(util.trimByPixel(SnowNotificationObject.title, 230)));
     $('#notification .content').append(function(){
       var msgWindow = '<iframe id="article" src="{0}" scrolling="yes"></iframe>'.f(SnowNotificationObject.link);
       return msgWindow;
