@@ -10,7 +10,6 @@ define(function(require, exports, module) {
   var mbaas = require('app/service/mbaas');
   var homeSwiper;
 	var notiSwiper;
-  var peopleSwiper;
   var inViewSlideKeys;
   var userEmail;
 
@@ -1474,7 +1473,7 @@ define(function(require, exports, module) {
     });
 
     if(window.SnowMapMarkers && 
-      (_.keys(window.SnowMapMarkers) > 0)) {
+      (_.keys(window.SnowMapMarkers).length > 0)) {
       var people = window.SnowMapMarkers;
       $('#people ul').empty();
       _.each(people, function(person, userId){
@@ -1490,7 +1489,6 @@ define(function(require, exports, module) {
       $('#people ul').listview( "refresh" );
     }else{
       console.debug('no body in {0}'.f(store.getCurrentMapId()));
-      
     }
   }
 
