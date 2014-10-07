@@ -43,7 +43,7 @@ http://rensanning.iteye.com/category/305123
 
 ### Get the project 
 
-		git clone git@115.28.162.221:stonda/musa-hw-mobile.git
+		git clone git@github.com:arrking/musa-hw-mobile.git
 
 ### Install node modules 
 
