@@ -18,6 +18,10 @@
   width:100%;
 }
 
+#home-swiper-header {
+  position:fixed;
+}
+
 #home-swiper-header .swiper-container {
   height: 70px;
   width: 640px;
