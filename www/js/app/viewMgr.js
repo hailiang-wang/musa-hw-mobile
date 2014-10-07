@@ -12,7 +12,6 @@ define(function(require, exports, module) {
 	var notiSwiper;
   var peopleSwiper;
   var inViewSlideKeys;
-  var inPeopleSlideKeys;
   var userEmail;
 
   var notificationsPng = {
@@ -1474,124 +1473,24 @@ define(function(require, exports, module) {
       renderPeoplePage();
     });
 
-    inPeopleSlideKeys = [];
-    peopleSwiper = new Swiper('#people .swiper-container', {
-        mode:'vertical',
-        watchActiveIndex: true,
-        slidesPerView: 'auto',
-        freeMode: false,
-        slideElement: 'li',
-        grabCursor: true,
-        onTouchStart: function() {
-          holdPosition = 0;
-        },
-        onResistanceBefore: function(s, pos){
-          holdPosition = pos;
-          if( holdPosition > 100){
-              $('#people .pull-to-refresh').hide();
-              $('#people .release-to-refresh').show();
-          }else if(holdPosition > 30){
-              $('#people .release-to-refresh').hide();
-              $('#people .pull-to-refresh').show();
-          }else{
-              $('#people .release-to-refresh').hide();
-              $('#people .pull-to-refresh').hide();
-          }
-        },
-        onTouchEnd: function(){
-          if (holdPosition > 100) {
-              // Hold Swiper in required position
-              peopleSwiper.setWrapperTranslate(0,100,0)
-
-              //Dissalow futher interactions
-              peopleSwiper.params.onlyExternal=true
-
-              //Show loader
-              $('#people .release-to-refresh').hide();
-              $('#people .pull-to-refresh').hide();
-              $('#people .refreshing').show();
-              loadNewPeopleSlides();
-            }else{
-              $('#people .release-to-refresh').hide();
-              $('#people .pull-to-refresh').hide();
-            }
-          }
-      }
-    );
-    function loadNewPeopleSlides(){
-      // add the new online user
-      var currentPeopleKeys = _.keys(SnowMapMarkers).sort();
-      var newComers = _.difference(currentPeopleKeys, inPeopleSlideKeys);
-      var leftPeople = _.difference(inPeopleSlideKeys, currentPeopleKeys);
-
-      // remove left people
-      try{
-        peopleSwiper.slides.forEach(function(sld){
-          if(_.indexOf(leftPeople, sld.data('userid')) != -1){
-              sld.remove();
-          }
+    if(window.SnowMapMarkers && 
+      (_.keys(window.SnowMapMarkers) > 0)) {
+      var people = window.SnowMapMarkers;
+      $('#people ul').empty();
+      _.each(people, function(person, userId){
+        console.debug('add {0} into people.'.f(userId));
+        $('#people ul').append(function(){
+          return    '<li><a href="#">'
+                  +    '<img src="{0}">'.f(person.picture)
+                  +    '<h2>{0}</h2>'.f(person.displayName)
+                  +    '<p>{0}</p></a>'.f(person.status)
+                  + '</li>';
         });
-      }catch(err){
-        console.debug(err);          
-      }
-
-      // add new comer into slide
-      newComers.forEach(function(userId){
-        var candidate;
-        try{
-          candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, SnowMapMarkers[userId].displayName, SnowMapMarkers[userId].picture, SnowMapMarkers[userId].status), 
-                    'swiper-slide ui-li-static ui-body-inherit');
-          candidate.data('userid', userId);
-          inPeopleSlideKeys.push(userId);
-        }catch(err){
-          candidate = null;
-          console.debug(err);
-        }
       });
-
-      //Release interactions and set wrapper
-      peopleSwiper.setWrapperTranslate(0,0,0)
-      peopleSwiper.params.onlyExternal=false;
-
-      //Update active slide
-      peopleSwiper.updateActiveSlide(0)
-      $('#people .refreshing').hide();
-
-      if(peopleSwiper.slides.length == 0){
-        peopleSwiper.destroy();
-        peopleSwiper = null;
-        $('#people').css('background','url("img/nobody-in-circle.png") no-repeat');
-      }
-    }
-
-    function getPeopleSilde(userId, displayName, userPic, userStatus){
-        return '<div class="card">'
-          + '<a href="#" onclick="SnowOpenPeopleCard(\'{0}\')">'.f(userId)
-            + '<img src="{0}" style="">'.f(userPic)
-            + '<span style="display: inline-block;vertical-align:top;top:0px;">{0}<br/><br/><div style="color:#18260E;text-align:right;padding-left:50px">{1}</div></span>'.f(util.trimByPixel(userStatus, 200), displayName)
-          + '</a>'
-        + '</div>';
-    }
-
-    // add the current online user
-    var candidates = _.keys(SnowMapMarkers).sort();
-    console.debug('Get people : ' + JSON.stringify(candidates));
-    if(candidates.length > 0){
-      candidates.forEach(function(userId){
-        try{
-          var candidate = peopleSwiper.prependSlide(getPeopleSilde(userId, SnowMapMarkers[userId].displayName, 
-            SnowMapMarkers[userId].picture, SnowMapMarkers[userId].status), 
-                    'swiper-slide ui-li-static ui-body-inherit');
-          candidate.data('userid', userId);
-          inPeopleSlideKeys.push(userId);
-        }catch(err){
-          console.debug(err);
-        }
-      });
+      $('#people ul').listview( "refresh" );
     }else{
-      peopleSwiper.destroy();
-      peopleSwiper = null;
-      $('#people').css('background','url("img/nobody-in-circle.png") no-repeat');
+      console.debug('no body in {0}'.f(store.getCurrentMapId()));
+      
     }
   }
 
