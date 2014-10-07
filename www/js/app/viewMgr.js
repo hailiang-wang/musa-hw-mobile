@@ -460,7 +460,7 @@ define(function(require, exports, module) {
     });
   }
 
-  function _renderAboutAppPage(){
+  function _bindBackToSettingsPage(){
     $('#backToSettingsBtn').unbind();
     $('#backToSettingsBtn').on('click', function(){
       $.mobile.changePage('settings.html', {
@@ -470,6 +470,10 @@ define(function(require, exports, module) {
           changeHash: false
       });
     });
+  }
+
+  function _renderAboutAppPage(){
+    _bindBackToSettingsPage();
   }
   
   function _getUserProfile(callback){
@@ -526,6 +530,21 @@ define(function(require, exports, module) {
       });
   }
 
+  function _renderAgreementsPage(){
+    _bindBackToSettingsPage();
+    try{
+      console.debug('render agreements in markdown format.');
+      var converter = new Showdown.converter();
+      $.get('user-service-agreements.md', function(data) {
+        var html = converter.makeHtml(data);
+        $('#agreements .agreements-text').html(html);
+      });
+
+    }catch(e){
+      console.error(e)
+    }
+  }
+
   function _renderSettingsPage(){
     // add appVersion
     cordova.getAppVersion().then(function (version) {
@@ -535,6 +554,16 @@ define(function(require, exports, module) {
     // open about page
     $('#aboutAppBtn').on('click', function(){
       $.mobile.changePage('about.html',{
+          transition: "none",
+          reloadPage: false,
+          reverse: false,
+          changeHash: false
+      });
+    });
+
+    // user service level agreements
+    $('#agreementsBtn').on('click', function(){
+      $.mobile.changePage('agreements.html',{
           transition: "none",
           reloadPage: false,
           reverse: false,
@@ -1704,6 +1733,7 @@ define(function(require, exports, module) {
   exports.renderResetPwdPage = _renderResetPwdPage;
   exports.renderResetPwdVerifyPage = _renderResetPwdVerifyPage;
   exports.renderAboutAppPage = _renderAboutAppPage;
+  exports.renderAgreementsPage = _renderAgreementsPage;
 
 
 	/**

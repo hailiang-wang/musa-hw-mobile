@@ -166,6 +166,9 @@ define(['jqm', 'swiper', 'mapbox',
                                 console.debug('show editor');
                                 viewMgr.renderProfileEditor();
                                 break;
+                            case 'agreements':
+                                viewMgr.renderAgreementsPage();
+                                break;
                             default:
                                 break;
                         }

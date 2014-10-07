@@ -17,7 +17,8 @@ requirejs.config({
         backbone : 'backbone-min',
         geolib : 'geolib.min',
         q: 'q.min',
-        console: 'console.min'
+        console: 'console.min',
+        showdown: 'showdown'
     },
     shim: {
         'jquery': {
@@ -46,7 +47,8 @@ requirejs.config({
         'q':{
             exports:'Q'
         },
-        'console':{}
+        'console':{},
+        'showdown':{}
     }
 });
 
@@ -65,7 +67,7 @@ function handleApplePushNotificationArrival(msg){
 }
 
 requirejs(['jquery','cordova.js', 'app/config', 
-    'app/util', 'underscore', 'backbone', 'q'],
+    'app/util', 'underscore', 'backbone', 'q', 'showdown'],
     function   ($) {
 // start of require
 
