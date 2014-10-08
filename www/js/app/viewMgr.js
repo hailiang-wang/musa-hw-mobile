@@ -823,11 +823,12 @@ define(function(require, exports, module) {
       });
     }
 
-  function getNotificationSilde(id, title, link, date, category){
+  function getNotificationSilde(id, title, link, date, category, description){
       if( link && (link !== "#")){
         return  '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link)
               +     '<img src="{0}">'.f(notificationsPng[category])
-              +     '<h2>{0}</h2>'.f(util.trimByPixel(title, 140))
+              +     '<div><h2>{0}</h2>'.f(util.trimByPixel(title, 140))
+              +     '<p>{0}</p></div>'.f(description)
               +     '<p class="ui-li-aside"><strong>{0}</strong></p>'.f(util.getDate(date))
               + '</a>';
       } else{
@@ -888,7 +889,8 @@ define(function(require, exports, module) {
       var slideKeys = _.keys(slides);  
       slideKeys.sort().forEach(function(key){
         var sld = slides[key];
-        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key), sld.date, sld.category), 
+        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key), 
+          sld.date, sld.category, sld.description), 
               'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
         inViewSlideKeys.push(key);
       });
@@ -906,7 +908,8 @@ define(function(require, exports, module) {
             slideKeys.sort().forEach(function(key){
               var sld = slides[key];
               if( _.indexOf(inViewSlideKeys, key) == -1){
-                notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), sld.date, sld.category), 
+                notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), 
+                  sld.date, sld.category, sld.description), 
                       'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
                 inViewSlideKeys.push(key);
                 console.debug(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
@@ -1340,7 +1343,6 @@ define(function(require, exports, module) {
 
 	function _respPushNotificationArrival(){
 		util.getNotification().then(function(data){
-      console.debug(JSON.stringify(data));
       if(_.isObject(data.notifications)){
         var tags = store.getSubTags();
         var keys = _.keys(data.notifications);
@@ -1349,6 +1351,7 @@ define(function(require, exports, module) {
             var notification = JSON.parse(data.notifications[key]);
             // check if the notification is subscribed by this user
             if(_.indexOf(tags, notification.category) != -1){
+              console.debug('save notification into localStorage - ' + JSON.stringify(notification));
               store.saveNotifications(notification);
             }
           }catch(e){

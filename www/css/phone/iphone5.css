@@ -187,7 +187,13 @@
     border-bottom-color:#75F23D;
 }
 
-#notifications .messages .swiper-wrapper li h2{
+#notifications .messages .swiper-slide img {
+  height: 48px;
+  width: 48px;
+  padding: 0px;
+}
+
+#notifications .messages .swiper-wrapper li div{
     display: inline-block;
     list-style-type: none;
     padding-left: 20px;
@@ -195,11 +201,13 @@
     line-height: 18px;
 }
 
-#notifications .messages .swiper-slide img {
-  height: 48px;
-  width: 48px;
-  padding: 0px;
-}
+/*#notifications .messages .swiper-wrapper li p{
+    display: inline-block;
+    list-style-type: none;
+    padding-left: 10px;
+    vertical-align: top;
+    line-height: 8px;
+}*/
 
 /* notification */
 #notification .header{
