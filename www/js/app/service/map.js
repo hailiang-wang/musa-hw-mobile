@@ -25,12 +25,14 @@ define(function(require, exports, module) {
 				    var index = _.indexOf(_getMarkerNames(), data.username);
 				    if(index == -1){
 				      // create new marker
-				      _addMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, "<img onclick='javascript:SnowOpenLKDProfileByLink(\"{1}\")' src='{0}'></img>".f(data.picture, data.profile),
-				      	data.picture);
+				      _addMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, 
+				      	"<img width='50px' height='50px' src='{0}' onclick='javascript:SnowOpenUserInMap(\"{1}\")'></img>".f(data.profile.pictureUrl, data.username),
+				      	data.profile);
 				    }else{
 				      // update marker
-				      _updateMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, "<img src='{0}'></img>".f(data.picture),
-				      	data.picture);
+				      _updateMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, 
+				      	"<img width='50px' height='50px' src='{0}' onclick='javascript:SnowOpenUserInMap(\"{1}\")'></img>".f(data.profile.pictureUrl, data.username),
+				      	data.profile);
 				    }
 					break;
 				case 'invisible':
@@ -173,7 +175,7 @@ define(function(require, exports, module) {
 		return defer.promise;
   	}
 
-	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, picture){
+	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, profile){
 		if(SnowMapMarkers[username]){
 			console.debug('try to create a marker that does already exist for {0}'.f(username));
 		} else {
@@ -182,10 +184,11 @@ define(function(require, exports, module) {
 			var marker = L.marker([lat, lng]).addTo(map)
 			    .bindPopup(popUpHtml)
 			    .openPopup();
-			SnowMapMarkers[username] = {picture: picture||'sample/user-default.png',
+			SnowMapMarkers[username] = {picture: profile.pictureUrl||'sample/user-default.png',
 								displayName: displayName,
 								status: status || 'TA 什么也没说',
-								marker: marker};
+								marker: marker,
+								profile:profile};
 			console.debug(_.keys(SnowMapMarkers));
 		}
 	}
@@ -194,7 +197,7 @@ define(function(require, exports, module) {
 		return _.keys(SnowMapMarkers);
 	}
 
-	function _updateMarkerInMap(username, displayName, status, lat, lng, popUpHtml, picture){
+	function _updateMarkerInMap(username, displayName, status, lat, lng, popUpHtml, profile){
 		if(SnowMapMarkers[username]){
 			console.debug('update marker for %s', username)
 			// add a marker in the given location, attach some popup content to it and open the popup
@@ -202,9 +205,10 @@ define(function(require, exports, module) {
 			SnowMapMarkers[username].marker.update();
 			SnowMapMarkers[username].marker.bindPopup(popUpHtml)
 			    .openPopup();
-			SnowMapMarkers[username].picture = picture;
+			SnowMapMarkers[username].picture = profile.pictureUrl;
 			SnowMapMarkers[username].status = status;
 			SnowMapMarkers[username].displayName = displayName;
+			SnowMapMarkers[username].profile = profile;
 		} else {
 			console.debug('try to update a marker that does not exist for %s', username);
 		}

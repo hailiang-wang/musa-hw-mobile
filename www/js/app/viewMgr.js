@@ -809,6 +809,7 @@ define(function(require, exports, module) {
   }
 
   function _openMsg(id, title, link){
+      console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
       window.SnowNotificationObject = {
         title : title,
         link : link,
@@ -946,10 +947,35 @@ define(function(require, exports, module) {
 		return msgJson;
 	}
 
+  function _openPopupUserInMap(userId){
+    console.debug('_openPopupUserInMap ... ' + userId);
+    var person = SnowMapMarkers[userId];
+    if(person){
+      $('#popupUserInMap div').empty();
+      // append user name, pic, status, interest, edu, company
+      $('#popupUserInMap div').append(function(){
+        var rs = '<div style="vertical-align: middle;">'
+            + '<h2 style="text-align: center;">{0}</h2>'.f(person.displayName)
+            + '<img align="middle" src="{0}" width="180px" height="180px"></img><br/>'.f(person.picture)
+            + '<ul data-role="listview" data-inset="true">'
+            + '<li>{0}</li>'.f(person.status);
 
-  function _openLKDProfileByLink(link){
-    cordova.exec(null, null, "InAppBrowser", "open",
-     [link, "_system"]);
+        // append edu
+        if(person.profile.educations._total > 0){
+          rs += '<li>{0}</li>'.f(person.profile.educations.values[0].schoolName);
+        }
+
+        // append company
+        if(person.profile.positions._total > 0){
+          rs += '<li>{0}</li>'.f(person.profile.positions.values[0].company.name)
+        }
+
+        return rs += '</ul></div>';    
+      });
+      $('#popupUserInMap').popup('open');
+    }else{
+      // user disappears at the meantime
+    }
   }
 
   // render user profile editor page
@@ -1643,7 +1669,7 @@ define(function(require, exports, module) {
 	*/
 	window.SnowOpenMsg = _openMsg;
 	window.SnowBackToNotificationsList = _backToNotificationsList;
-  window.SnowOpenLKDProfileByLink = _openLKDProfileByLink;
+  window.SnowOpenUserInMap = _openPopupUserInMap;
   window.SnowResetMapAndPeopleByMapID = _resetMapAndPeopleByMapID;
 
 })
