@@ -27,12 +27,14 @@ define(function(require, exports, module) {
 				      // create new marker
 				      _addMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, 
 				      	"<img width='50px' height='50px' src='{0}' onclick='javascript:SnowOpenUserInMap(\"{1}\")'></img>".f(data.profile.pictureUrl, data.username),
-				      	data.profile);
+				      	data.profile,
+				      	data.passport);
 				    }else{
 				      // update marker
 				      _updateMarkerInMap(data.username, data.displayName, data.status, data.lat, data.lng, 
 				      	"<img width='50px' height='50px' src='{0}' onclick='javascript:SnowOpenUserInMap(\"{1}\")'></img>".f(data.profile.pictureUrl, data.username),
-				      	data.profile);
+				      	data.profile,
+				      	data.passport);
 				    }
 					break;
 				case 'invisible':
@@ -175,7 +177,7 @@ define(function(require, exports, module) {
 		return defer.promise;
   	}
 
-	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, profile){
+	function _addMarkerInMap(username, displayName, status, lat, lng, popUpHtml, profile, passport){
 		if(SnowMapMarkers[username]){
 			console.debug('try to create a marker that does already exist for {0}'.f(username));
 		} else {
@@ -188,7 +190,8 @@ define(function(require, exports, module) {
 								displayName: displayName,
 								status: status || 'TA 什么也没说',
 								marker: marker,
-								profile:profile};
+								profile: profile,
+								passport: passport};
 			console.debug(_.keys(SnowMapMarkers));
 		}
 	}
@@ -197,7 +200,7 @@ define(function(require, exports, module) {
 		return _.keys(SnowMapMarkers);
 	}
 
-	function _updateMarkerInMap(username, displayName, status, lat, lng, popUpHtml, profile){
+	function _updateMarkerInMap(username, displayName, status, lat, lng, popUpHtml, profile, passport){
 		if(SnowMapMarkers[username]){
 			console.debug('update marker for %s', username)
 			// add a marker in the given location, attach some popup content to it and open the popup
@@ -209,6 +212,7 @@ define(function(require, exports, module) {
 			SnowMapMarkers[username].status = status;
 			SnowMapMarkers[username].displayName = displayName;
 			SnowMapMarkers[username].profile = profile;
+			SnowMapMarkers[username].passport = passport;
 		} else {
 			console.debug('try to update a marker that does not exist for %s', username);
 		}

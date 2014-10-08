@@ -947,6 +947,12 @@ define(function(require, exports, module) {
 		return msgJson;
 	}
 
+  function _openLinkInSystemBrowser(link){
+    console.debug('open link in external browser ' + link);
+    cordova.exec(null, null, "InAppBrowser", "open",
+      [link, "_system"]);
+   }
+
   function _openPopupUserInMap(userId){
     console.debug('_openPopupUserInMap ... ' + userId);
     var person = SnowMapMarkers[userId];
@@ -955,10 +961,15 @@ define(function(require, exports, module) {
       // append user name, pic, status, interest, edu, company
       $('#popupUserInMap div').append(function(){
         var rs = '<div style="vertical-align: middle;">'
-            + '<h2 style="text-align: center;">{0}</h2>'.f(person.displayName)
-            + '<img align="middle" src="{0}" width="180px" height="180px"></img><br/>'.f(person.picture)
-            + '<ul data-role="listview" data-inset="true">'
-            + '<li>{0}</li>'.f(person.status);
+            + '<h2 style="text-align: center;">{0}</h2>'.f(person.displayName);
+        if(person.passport == 'linkedin'){
+          rs += '<img align="middle" src="{0}" width="180px" height="180px" onclick="javascript:SnowOpenLinkInSystemBrowser(\'{1}\')"></img><br/>'.f(person.picture, person.profile.publicProfileUrl);
+        }else{
+          rs += '<img align="middle" src="{0}" width="180px" height="180px"></img><br/>'.f(person.picture);
+        }
+
+        rs += '<ul data-role="listview" data-inset="true">';
+        rs += '<li>{0}</li>'.f(person.status);
 
         // append edu
         if(person.profile.educations._total > 0){
@@ -1671,5 +1682,6 @@ define(function(require, exports, module) {
 	window.SnowBackToNotificationsList = _backToNotificationsList;
   window.SnowOpenUserInMap = _openPopupUserInMap;
   window.SnowResetMapAndPeopleByMapID = _resetMapAndPeopleByMapID;
+  window.SnowOpenLinkInSystemBrowser = _openLinkInSystemBrowser;
 
 })
