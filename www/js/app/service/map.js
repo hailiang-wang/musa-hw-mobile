@@ -227,6 +227,15 @@ define(function(require, exports, module) {
 		}
 	}
 
+	function _panTo(latlng, callback){
+		if(map){
+			map.panTo(latlng);
+			callback();
+		}else{
+			console.error('panTo: map object does not exist.');
+		}
+	}
+
 	exports.getMapsMetadata = _getMapsMetadata;
 	exports.resolveMap = _resolveMap;
 	exports.createMap =  _createMap;
@@ -235,4 +244,5 @@ define(function(require, exports, module) {
 	exports.deleteMarkerByName = _deleteMarkerByName;
 	exports.updateMarkerInMap = _updateMarkerInMap;
 	exports.surveyor = surveyor;
+	exports.panTo = _panTo;
 })

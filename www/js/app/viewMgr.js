@@ -1500,6 +1500,19 @@ define(function(require, exports, module) {
     }
   }
 
+  function _centerPersonByUserIdInMapPage(userId){
+    console.debug('map: center {0} in map page'.f(userId));
+    if(util.getHomeSwiperPage() != 1 ){
+      // My Swiper API - http://www.idangero.us/sliders/swiper/api.php
+      homeSwiper.swipeTo(0, 300);
+    }
+    setTimeout(function(){
+      mapController.panTo(SnowMapMarkers[userId].marker.getLatLng(), function(){
+        SnowMapMarkers[userId].marker.closePopup().openPopup();
+      });
+    }, 1000);
+  }
+
   function renderPeoplePage(){
     $('#people').css('background','');
     $('#people .list').empty();
@@ -1517,9 +1530,10 @@ define(function(require, exports, module) {
       var people = window.SnowMapMarkers;
       $('#people ul').empty();
       _.each(people, function(person, userId){
-        console.debug('add {0} into people.'.f(userId));
+        console.debug('people: add {0} into page.'.f(userId));
         $('#people ul').append(function(){
-          return    '<li><a href="#">'
+          return    '<li>'
+                  +    '<a href="#" onclick="javascript:SnowCenterPersonByUserIdInMapPage(\'{0}\');return false;">'.f(userId)
                   +    '<img src="{0}">'.f(person.picture)
                   +    '<h2>{0}</h2>'.f(person.displayName)
                   +    '<p>{0}</p></a>'.f(person.status)
@@ -1683,5 +1697,6 @@ define(function(require, exports, module) {
   window.SnowOpenUserInMap = _openPopupUserInMap;
   window.SnowResetMapAndPeopleByMapID = _resetMapAndPeopleByMapID;
   window.SnowOpenLinkInSystemBrowser = _openLinkInSystemBrowser;
+  window.SnowCenterPersonByUserIdInMapPage = _centerPersonByUserIdInMapPage;
 
 })
