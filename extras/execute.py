@@ -36,6 +36,8 @@ def build_www(platform='ios'):
             p = subprocess.Popen('r.js -o www/js/app.build.js', shell = True)
             p.wait()
             os.remove(dest)
+            # remove the copy in build dir
+            os.remove(os.path.join(os.getcwd(), 'www-build/cordova.js'))
             print 'Done, replace www with www-build now.'
         except:
             print 'fail to copy cordova.js into www'
