@@ -85,7 +85,7 @@ define(function(require, exports, module) {
 				tags : data.tags,
 				isRead : data.isRead||false,
 				category : data.category,
-				description: data.description
+				description: data.description||''
 		};
 		console.log('[DEBUG] save notifications ... ' + JSON.stringify(json));
 		window.localStorage.setItem(key, JSON.stringify(json));
