@@ -9,5 +9,5 @@ define({
     // https://code.google.com/p/console-js 
     console : 'debug',
     weinreDebug: true,
-    weinreServer: 'http://192.168.2.101:9088/target/target-script-min.js#musa'
+    weinreServer: 'http://192.168.2.102:9088/target/target-script-min.js#musa'
 });

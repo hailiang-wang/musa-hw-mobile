@@ -15,6 +15,7 @@ define(['jqm', 'swiper', 'mapbox',
         var store = require('app/service/store');
         var util = require('app/util');
         var agent = require('app/service/agent');
+        var i18n = require('i18next');
 
         agent.start();
         

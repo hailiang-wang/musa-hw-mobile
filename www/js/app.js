@@ -18,7 +18,8 @@ requirejs.config({
         geolib : 'geolib.min',
         q: 'q.min',
         console: 'console.min',
-        showdown: 'showdown'
+        showdown: 'showdown',
+        i18next: 'i18next.amd.min'
     },
     shim: {
         'jquery': {
@@ -67,13 +68,14 @@ function handleApplePushNotificationArrival(msg){
 }
 
 requirejs(['jquery','cordova.js', 'app/config', 
-    'app/util', 'underscore', 'backbone', 'q', 'showdown'],
+    'app/util', 'underscore', 'backbone', 'q', 'showdown', 'i18next'],
     function   ($) {
 // start of require
 
 // cordova is now available globally
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
+var i18n = require('i18next');
 
 DEBUG = config.console;
 
@@ -98,15 +100,47 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        console.debug('Received Event: ' + id);
+        console.log('Received Event: ' + id);
         var pathname = window.location.pathname;
-        requirejs(['app/bootstrap'], function(bootstrap){
-            if(pathname.endsWith('home.html')){
-                bootstrap.home();
-            }else if(pathname.endsWith('login.html')){
-                bootstrap.login();
-            }
-        });
+        try{
+            // resolve locale and language 
+            navigator.globalization.getPreferredLanguage(function(properties){
+                // This plugin obtains information and performs operations 
+                // specific to the user's locale, language, and timezone. 
+                // Note the difference between locale and language: locale 
+                // controls how numbers, dates, and times are displayed for a 
+                // region, while language determines what language text appears 
+                // as, independently of locale settings. Often developers use 
+                // locale to set both settings, but there is no reason a user 
+                // couldn't set her language to "English" but locale to "French", 
+                // so that text is displayed in English but dates, times, etc., are
+                //  displayed as they are in France. Unfortunately, most mobile 
+                // platforms currently do not make a distinction between these 
+                // settings.
+                // properties = {'value':'en-US'}
+                // TODO set locale and lang
+                var option = { 
+                                resGetPath: 'locales/__lng__/__ns__.json', 
+                                lng: properties.value,
+                                preload: ['en-US', 'en']
+                            };
+                // If language is set to 'en-US' following resource 
+                // files will be loaded one-by-one: en-US en dev (default fallback language)
+                i18n.init(option);
+                requirejs(['app/bootstrap'], function(bootstrap){
+                    if(pathname.endsWith('home.html')){
+                        bootstrap.home();
+                    }else if(pathname.endsWith('login.html')){
+                        bootstrap.login();
+                    }
+                });
+            }, function(err){
+                console.error('can not resolve locale with cordova globalization plugin.')
+                console.error(err);
+            });
+        }catch(e){
+            console.error(e)
+        }
     }
 };
 
