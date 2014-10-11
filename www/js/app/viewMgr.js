@@ -508,14 +508,44 @@ define(function(require, exports, module) {
     $('#notification .header .title').append('<a href="#" onclick="SnowBackToNotificationsList()" data-shadow="false"' 
     + 'class="musa-nostate-btn ui-btn ui-icon-back ui-btn-icon-left">'
     + '{0}</a>'.f(util.trimByPixel(SnowNotificationObject.title, 230)));
-    $('#notification .content').append(function(){
-      var msgWindow = '<iframe id="article" src="{0}" scrolling="yes"></iframe>'.f(SnowNotificationObject.link);
-      return msgWindow;
-    });
-    $('#article').load(function(){
-      hideModal();
-      // mark message as read
-      store.setNotificationAsRead(SnowNotificationObject.id);
+
+    $.ajax({
+      url: SnowNotificationObject.link,
+      type:'GET',
+      dataType:'json',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      success:function(response){
+        console.debug(JSON.stringify(response));
+        $('#notification .content').empty();
+        if(response.post && response.post.body){
+          $('#notification .content').append(function(){
+            var converter = new Showdown.converter();
+            return converter.makeHtml(response.post.body);
+          });
+        }else{
+          // no post content
+          noty({
+            type:'information',
+            timeout: 2000,
+            text:'该文章无内容'
+          });
+          $.mobile.changePage('notifications.html',{
+              transition: "none",
+              reloadPage: false,
+              reverse: false,
+              changeHash: false
+          });
+        }
+        hideModal();
+      },
+      error: function(xhr, textStatus, errorThrown){
+        hideModal();
+        console.error(textStatus);
+        console.error(errorThrown);
+      }
     });
   }
 
