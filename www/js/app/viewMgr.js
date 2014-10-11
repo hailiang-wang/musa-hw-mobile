@@ -526,6 +526,7 @@ define(function(require, exports, module) {
             return converter.makeHtml(response.post.body);
           });
         }else{
+          hideModal();
           // no post content
           noty({
             type:'information',
@@ -539,7 +540,6 @@ define(function(require, exports, module) {
               changeHash: false
           });
         }
-        hideModal();
       },
       error: function(xhr, textStatus, errorThrown){
         hideModal();

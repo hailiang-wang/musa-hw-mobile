@@ -146,8 +146,34 @@ define(function(require, exports, module) {
 
  		var maps = store.getMaps();
  		if(maps && maps[store.getCurrentMapId()]){
- 			L.mapbox.accessToken = maps[store.getCurrentMapId()].mapbox.accessToken;
-			map = L.mapbox.map('map', maps[store.getCurrentMapId()].mapbox.id).setView([0, 50], 3);
+ 			var currentMapId = store.getCurrentMapId();
+ 			var mapMetadata = maps[currentMapId];
+ 			L.mapbox.accessToken = maps[currentMapId].mapbox.accessToken;
+			// http://leafletjs.com/reference.html#latlngbounds
+			var southWest = L.latLng(mapMetadata.mapbox.southWest.lat, 
+					mapMetadata.mapbox.southWest.lng),
+			    northEast = L.latLng(mapMetadata.mapbox.northEast.lat, 
+					mapMetadata.mapbox.northEast.lng),
+			    bounds = L.latLngBounds(southWest, northEast);
+
+			// 
+			// setView : Sets the view of the map 
+			// (geographical center and zoom) with the given animation options.
+			map = L.mapbox.map('map', 
+				maps[store.getCurrentMapId()].mapbox.id,
+				{
+					minZoom: mapMetadata.mapbox.minZoom,
+					maxZoom: mapMetadata.mapbox.maxZoom,
+					maxBounds: bounds
+				}).setView([mapMetadata.mapbox.centerLat, 
+					mapMetadata.mapbox.centerLng], 
+					mapMetadata.mapbox.defaultZoom
+				);
+
+			// Represents a rectangular geographical area on a map.
+			// map.fitBounds(bounds);
+
+
 			$.ajax({
 				type: 'GET',
 				url: "http://{0}/rtls/hw".f(config.host),
