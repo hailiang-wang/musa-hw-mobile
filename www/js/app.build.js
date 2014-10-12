@@ -13,7 +13,8 @@
         geolib : 'lib/geolib.min',
         q: 'lib/q.min',
         console: 'lib/console.min',
-        showdown: 'lib/showdown'
+        showdown: 'lib/showdown',
+        i18next: 'lib/i18next.amd.min'
     },
     modules: [
         {
