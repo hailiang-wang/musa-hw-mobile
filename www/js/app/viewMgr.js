@@ -525,6 +525,7 @@ define(function(require, exports, module) {
             var converter = new Showdown.converter();
             return converter.makeHtml(response.post.body);
           });
+          hideModal();
         }else{
           hideModal();
           // no post content
