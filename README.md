@@ -48,6 +48,7 @@ http://rensanning.iteye.com/category/305123
 ### Install node modules 
 
 		cd musa-hw-mobile
+        mkdir {platforms,plugins}
 		npm install
 
 ### Install cordova plugins
