@@ -14,6 +14,7 @@ define(function(require, exports, module) {
 
 	surveyor.on('paint', function(data){
 		var userEmail = store.getUserId();
+		console.log('paint ... ' + JSON.stringify(data));
 		if(data.mapId == store.getCurrentMapId()){
 			switch(data.type){
 				case 'visible':

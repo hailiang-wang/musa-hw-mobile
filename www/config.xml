@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.musa.snowball" version="0.0.20141013_1502" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.musa.snowball" version="0.0.20141013_1740" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Snowball</name>
     <description>
       Project to show real time matrix in Hello World Cafe.
@@ -26,7 +26,7 @@
     <lotuslamp name="pushAppSecret" value="049180170bdc55b6428f65f96f80518b37296000" />
     <!-- console log level -->
     <lotuslamp name="console" value="debug" />
-    <!-- enable/disable weinre debugging-->
+    <!-- enable/disable weinre debugging [true|false]-->
     <lotuslamp name="weinreDebug" value="false" />
     <!-- weinre server url -->
     <lotuslamp name="weinreServer" value="http://192.168.1.100:9088/target/target-script-min.js#musa" />
