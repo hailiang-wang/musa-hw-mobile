@@ -1,13 +1,38 @@
-define({
-    host: "hwcafe.mybluemix.net",
-    ssehost: "hwcafesse.mybluemix.net",
-    path: '/mobile/auth/linkedin',
-    pushAppId : 'a87432fd-2d2e-43d4-91c9-0832af4d4aec',
-    pushAppRoute: 'hwcafe.mybluemix.net',
-    pushAppSecret : '049180170bdc55b6428f65f96f80518b37296000',
-    // set output for console log 
-    // https://code.google.com/p/console-js 
-    console : 'debug',
-    weinreDebug: true,
-    weinreServer: 'http://192.168.2.100:9088/target/target-script-min.js#musa'
-});
+define(['jquery'], function($) {
+    var configJson = {};
+    var d1 = new Date().getTime();
+    $.ajax({
+        type: 'GET',
+        url: 'config.xml',
+        async: false,
+        success:function(data){
+            var xmlDoc = $.parseXML(data);
+            var $xml = $(xmlDoc);
+            $xml.find('lotuslamp').each(function(index) {
+                var v = {};
+                $.each(this.attributes, function(i, attrib){
+                    switch(attrib.name){
+                        case 'name':
+                            v['name'] = attrib.value;
+                            break;
+                        case 'value':
+                            v['value'] = attrib.value;
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                configJson[v.name] = v.value;
+            });
+        },
+        error:function(xhr, statusCode, errorThrown){
+            console.error(errorThrown);
+        }
+    });
+    // TODO in this way, everytime require(config) takes 0.017 second, a bit slow.
+    // also export the config into session storage for speed up access
+    // config parameters
+    // window.sessionStorage.setItem('lotuslamp-config', JSON.stringify(configJson));
+
+    return configJson;
+})

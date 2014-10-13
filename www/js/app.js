@@ -76,6 +76,8 @@ requirejs(['jquery','cordova.js', 'app/config',
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
 var i18n = require('i18next');
+var util = require('app/util');
+
 
 DEBUG = config.console;
 
@@ -128,6 +130,7 @@ var app = {
                 // files will be loaded one-by-one: en-US en dev (default fallback language)
                 i18n.init(option);
                 requirejs(['app/bootstrap'], function(bootstrap){
+
                     if(pathname.endsWith('home.html')){
                         bootstrap.home();
                     }else if(pathname.endsWith('login.html')){
@@ -148,6 +151,7 @@ var app = {
 if(config.weinreDebug){
     require([config.weinreServer], function(){
         app.initialize();
+
     });
 } else {
     app.initialize();
