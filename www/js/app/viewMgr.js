@@ -1332,7 +1332,8 @@ define(function(require, exports, module) {
             url: 'http://{0}/user/avatar'.f(config.host),
             dataType: 'json',
             data: JSON.stringify({
-              base64: 'data:image/png;base64,' + imageData
+              // data:image/png;base64
+              base64: imageData
             }),
             headers:{
               'Content-Type': 'application/json',
