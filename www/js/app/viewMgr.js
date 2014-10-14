@@ -575,6 +575,42 @@ define(function(require, exports, module) {
   }
 
   function _renderSettingsPage(){
+
+    // bind post feedback btn
+
+    $('#postFeedback').unbind();
+    $('#postFeedback').on('click', function(){
+        cordova.plugins.email.isAvailable(
+            function (isAvailable) {
+                // alert('Service is not available') unless isAvailable;
+                if(isAvailable){
+                  // get appVersion
+                  cordova.getAppVersion().then(function (version) {
+                    cordova.plugins.email.open({
+                        to:          ['arrking_fn@163.com'], // email addresses for TO field
+                        //cc:          ['iwhl.ste@gmail.com'], // email addresses for CC field
+                        bcc:         ['hain_wang@foxmail.com'], // email addresses for BCC field
+                         // attachments: Array, // file paths or base64 data streams
+                        subject:    '[宝莲灯用户反馈] 版本 v{0}'.f(version), // subject of the email
+                        body:       '你好，宝莲灯团队 <br/>', // email body (for HTML, set isHtml to true)
+                        isHtml:    true, // indicats if the body is HTML or plain text
+                    }, function(){
+                      console.debug('email view dismissed');
+                    });
+                  });
+                }else{
+                  noty({
+                    text:'邮箱服务不可用',
+                    layout: 'center',
+                    timeout: 2000,
+                    type: 'information' 
+                  });
+                }
+            }
+        );
+    });
+
+
     // add appVersion
     cordova.getAppVersion().then(function (version) {
       $('#settings-index .appVersion').text('v'+version);

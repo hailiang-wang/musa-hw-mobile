@@ -18,6 +18,7 @@ plugins = ['com.ibm.mobile.cordova.ibmbluemix',
         'org.apache.cordova.camera',
         'org.apache.cordova.vibration',
         'org.apache.cordova.globalization',
+        'https://git.oschina.net/ubiware/cordova-ios-emailcomposer.git',
         'extras/musa-mobile-driver'
         ]
 
