@@ -564,7 +564,7 @@ define(function(require, exports, module) {
     try{
       console.debug('render agreements in markdown format.');
       var converter = new Showdown.converter();
-      $.get('user-service-agreements.md', function(data) {
+      $.get('http://{0}/md/user-service-agreements.md'.f(config.host), function(data) {
         var html = converter.makeHtml(data);
         $('#agreements .agreements-text').html(html);
       });
