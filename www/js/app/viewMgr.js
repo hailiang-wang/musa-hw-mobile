@@ -1574,6 +1574,8 @@ define(function(require, exports, module) {
       $('#people ul').listview( "refresh" );
     }else{
       console.debug('no body in {0}'.f(store.getCurrentMapId()));
+      $('#people ul').empty();
+      $('#people ul').listview( "refresh" );
     }
   }
 
