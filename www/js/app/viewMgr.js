@@ -1346,18 +1346,17 @@ define(function(require, exports, module) {
               if(xhr.status == '200') {
                 rst = xhr.responseJSON;
 
-                if(rst.rc == '4') {
+                if(rst.rc == '3') {
+                  $('.avatar img').attr('src', rst.url);
+                  store.saveUserAvatar(rst.url);
+                }else{
                   noty({
                     text: '上传失败，请稍后重试！',
                     layout:'center',
                     timeout: 2000,
                     type: 'warning'
                   });
-                }else{
-                  $('.avatar img').attr('src', "data:image/jpeg;base64," + imageData);
-                  store.saveUserAvatar("data:image/jpeg;base64," + imageData);
                 }
-
               } else {
                 noty({
                   text: '上传失败，请稍后重试！',

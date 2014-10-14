@@ -75,7 +75,6 @@ requirejs(['jquery','cordova.js', 'app/config',
 // cordova is now available globally
 var exec = cordova.require('cordova/exec');
 var config = require('app/config');
-alert(JSON.stringify(config))
 var i18n = require('i18next');
 var util = require('app/util');
 
