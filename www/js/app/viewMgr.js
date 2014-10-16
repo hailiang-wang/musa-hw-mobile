@@ -472,6 +472,16 @@ define(function(require, exports, module) {
 
   function _renderAboutAppPage(){
     _bindBackToSettingsPage();
+    var guideSwiper = new Swiper('#about-app .swiper-container',{
+      createPagination: true,
+      pagination: '#about-app .pagination',
+      loop:false,
+      grabCursor: true,
+      onSwiperCreated: function(swiper){
+        $('#about-app .pagination span:eq(0)').addClass('swiper-visible-switch swiper-active-switch')
+      }
+    });
+    // $('#about-app .pagination span')[0].addClass('swiper-visible-switch swiper-active-switch');
   }
   
   function _getUserProfile(callback){
@@ -1643,16 +1653,7 @@ define(function(require, exports, module) {
                     break;
               }
           }
-      })
-      $('.arrow-left').on('click', function(e){
-          e.preventDefault()
-          mySwiper.swipePrev()
-      })
-      $('.arrow-right').on('click', function(e){
-          e.preventDefault()
-          mySwiper.swipeNext()
-      })
-
+      });
 
       $("#home-index .swiper-slide.map").on('click', function(){
         // TODO add an panel window to select map locations
