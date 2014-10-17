@@ -535,9 +535,9 @@ define(function(require, exports, module) {
             var converter = new Showdown.converter();
             return converter.makeHtml(response.post.body);
           });
+          // set message as read
           store.setNotificationAsRead(SnowNotificationObject.id);
           hideModal();
-          // set message as read
         }else{
           hideModal();
           // no post content
@@ -921,6 +921,7 @@ define(function(require, exports, module) {
       var slideNumber = 0;
 
       inViewSlideKeys = [];
+
       notiSwiper = new Swiper('#notifications .swiper-container',{
         mode:'vertical',
         watchActiveIndex: true,
@@ -975,6 +976,7 @@ define(function(require, exports, module) {
         inViewSlideKeys.push(key);
       });
       console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+      
       function loadNewNotificationSlides() {
           /* 
           Probably you should do some Ajax Request here
@@ -1006,7 +1008,6 @@ define(function(require, exports, module) {
             //Hide loader
             $('#notifications .messages .refreshing').hide();
           },1000)
-
           slideNumber++;
       }
   }
