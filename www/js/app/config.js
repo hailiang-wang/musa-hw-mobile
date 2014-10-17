@@ -1,6 +1,6 @@
 define(['jquery'], function($) {
     var configJson = {};
-    var configSessionKey = 'lotuslamp-config';
+    var configSessionKey = 'snowball-config';
     var configSessionValue = window.sessionStorage.getItem(configSessionKey);
     
     if(configSessionValue){
@@ -16,7 +16,7 @@ define(['jquery'], function($) {
             success:function(data){
                 var xmlDoc = $.parseXML(data);
                 var $xml = $(xmlDoc);
-                $xml.find('lotuslamp').each(function(index) {
+                $xml.find('snowball').each(function(index) {
                     var v = {};
                     $.each(this.attributes, function(i, attrib){
                         switch(attrib.name){
