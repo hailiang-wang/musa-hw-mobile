@@ -201,33 +201,11 @@
     line-height: 18px;
 }
 
-
-/* notification */
-#notification .header{
-  height: 70px;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-#notification .header .title a.ui-btn{
-  left: 30px;
-  top : 20px;
-  font-size: 15px;
-  text-align: left;
-  text-shadow: none;
-  border: none !important;
-}
-
-#notification .content.ui-content{
-  /* .ui-content makes a padding 1em in the view, fix it by marking !important */
-  top: 70px;
-  padding: 0px!important;
-  margin: 0px!important;
-} 
-
-#notification iframe {
-  width: 100%!important;
-  height: 100%!important;
+#notifications .ui-popup-container {
+  top: 70px!important;
+  width: 320px!important;
+  left: 0px!important;
+  max-width: 320px!important;
 }
 
 /*  user profile, status, settings */

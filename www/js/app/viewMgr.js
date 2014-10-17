@@ -509,58 +509,6 @@ define(function(require, exports, module) {
       });
   }
 
-  function _initNotificationPage(){
-
-    $("#notificationsBtn").addClass('ui-btn-active');
-
-    showModal("#notification .content");
-      
-    $('#notification .header .title').append('<a href="#" onclick="SnowBackToNotificationsList()" data-shadow="false"' 
-    + 'class="musa-nostate-btn ui-btn ui-icon-back ui-btn-icon-left">'
-    + '{0}</a>'.f(util.trimByPixel(SnowNotificationObject.title, 230)));
-
-    $.ajax({
-      url: SnowNotificationObject.link,
-      type:'GET',
-      dataType:'json',
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      success:function(response){
-        console.debug(JSON.stringify(response));
-        $('#notification .content').empty();
-        if(response.post && response.post.body){
-          $('#notification .content').append(function(){
-            var converter = new Showdown.converter();
-            return converter.makeHtml(response.post.body);
-          });
-          // set message as read
-          store.setNotificationAsRead(SnowNotificationObject.id);
-          hideModal();
-        }else{
-          hideModal();
-          // no post content
-          noty({
-            type:'information',
-            timeout: 2000,
-            text:'该文章无内容'
-          });
-          $.mobile.changePage('notifications.html',{
-              transition: "none",
-              reloadPage: false,
-              reverse: false,
-              changeHash: false
-          });
-        }
-      },
-      error: function(xhr, textStatus, errorThrown){
-        hideModal();
-        console.error(textStatus);
-        console.error(errorThrown);
-      }
-    });
-  }
 
   function _backToNotificationsList(){
       $.mobile.changePage('notifications.html',{
@@ -889,17 +837,50 @@ define(function(require, exports, module) {
 
   function _openMsg(id, title, link){
       console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
-      window.SnowNotificationObject = {
-        title : title,
-        link : link,
-        id: id
-      };
 
-      $.mobile.changePage('notification.html',{
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+      $.mobile.loading('show');
+      $.ajax({
+        url: link,
+        type:'GET',
+        dataType:'json',
+        headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        success:function(response){
+          if(response.post && response.post.body){
+            $('#notificationPopup .title').append(title);
+            try{
+              $('#notificationPopup .ui-content').empty();
+              $('#notificationPopup .ui-content').append(function(){
+                var converter = new Showdown.converter();
+                $.mobile.loading('hide');
+                var html = converter.makeHtml(response.post.body);
+                return html;
+              });
+            }catch(e){
+              console.error(e);
+              $.mobile.loading('hide');
+            }
+
+            // set message as read
+            store.setNotificationAsRead(id);
+            $('#notificationPopup').popup( "open");
+          }else{
+            $.mobile.loading('hide');
+            // no post content
+            noty({
+              type:'information',
+              timeout: 2000,
+              text:'该文章无内容'
+            });
+          }
+        },
+        error: function(xhr, textStatus, errorThrown){
+          $.mobile.loading('hide');
+          console.error(textStatus);
+          console.error(errorThrown);
+        }
       });
     }
 
@@ -1750,7 +1731,6 @@ define(function(require, exports, module) {
   exports.initIBMPushService = _initIBMPushService;
   exports.createHomeSwiperHeader = _createHomeSwiperHeader;
   exports.initNotificationSlides = _initNotificationSlides;
-  exports.initNotificationPage = _initNotificationPage;
   exports.renderUserProfilePage = _renderUserProfilePage;
   exports.renderProfileEditor = _renderProfileEditor;
   exports.bindQRbtn = bindQRbtn;
