@@ -535,7 +535,9 @@ define(function(require, exports, module) {
             var converter = new Showdown.converter();
             return converter.makeHtml(response.post.body);
           });
+          store.setNotificationAsRead(SnowNotificationObject.id);
           hideModal();
+          // set message as read
         }else{
           hideModal();
           // no post content
