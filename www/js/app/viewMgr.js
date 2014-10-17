@@ -1520,7 +1520,8 @@ define(function(require, exports, module) {
                               lat: data.lat, 
                               lng: data.lng,
                               status: $('#myStatus').val(),
-                              duration : $('#sharingDuration').val() * 60000
+                              duration : $('#sharingDuration').val() * 60000,
+                              timestamp: new Date().getTime()
                             }),
                             headers: {
                                 "Accept": "application/json",
