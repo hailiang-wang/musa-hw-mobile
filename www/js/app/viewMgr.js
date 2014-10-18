@@ -838,7 +838,8 @@ define(function(require, exports, module) {
   function _openMsg(id, title, link){
       console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
 
-      $.mobile.loading('show');
+
+      // $.mobile.loading('show');
       $.ajax({
         url: link,
         type:'GET',
@@ -849,23 +850,24 @@ define(function(require, exports, module) {
         },
         success:function(response){
           if(response.post && response.post.body){
-            $('#notificationPopup .title').append(title);
+            $('#notificationPopup .header a').html(title);
             try{
-              $('#notificationPopup .ui-content').empty();
-              $('#notificationPopup .ui-content').append(function(){
+              $('#notificationPopup .content.ui-content').html(function(){
                 var converter = new Showdown.converter();
                 $.mobile.loading('hide');
                 var html = converter.makeHtml(response.post.body);
                 return html;
               });
+              // set message as read
+              store.setNotificationAsRead(id);
+              // add scroll bar for content
+              // http://stackoverflow.com/questions/18859084/how-do-i-properly-add-a-scrollbar-to-a-jquery-mobile-popup-using-iscrollview
+              $('#notificationPopup .content.ui-content').css('overflow-y', 'scroll'); 
+              $('#notificationPopup').popup( "open");
             }catch(e){
               console.error(e);
               $.mobile.loading('hide');
             }
-
-            // set message as read
-            store.setNotificationAsRead(id);
-            $('#notificationPopup').popup( "open");
           }else{
             $.mobile.loading('hide');
             // no post content

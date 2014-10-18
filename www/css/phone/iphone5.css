@@ -202,10 +202,35 @@
 }
 
 #notifications .ui-popup-container {
-  top: 70px!important;
+  top: 0px!important;
   width: 320px!important;
   left: 0px!important;
   max-width: 320px!important;
+}
+
+#notificationPopup .header {
+    height: 70px!important;
+    text-align:center;
+}
+
+#notificationPopup .header a {
+  background: -webkit-linear-gradient(#85e0ff, #85e0ff) repeat scroll 0 0 #FFFFFF !important;
+  border: none !important;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+#notificationPopup .ui-content {
+    padding: 0 !important;
+}
+
+#notificationPopup div.iscroll-scroller {
+    width: 100% !important;
+}
+
+/* read article with full screen for iPhone 5s */
+#notificationPopup .content.ui-content {
+    height: 483px !important;
 }
 
 /*  user profile, status, settings */
