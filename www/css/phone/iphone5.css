@@ -213,11 +213,16 @@
     text-align:center;
 }
 
-#notificationPopup .header a {
-  background: -webkit-linear-gradient(#85e0ff, #85e0ff) repeat scroll 0 0 #FFFFFF !important;
+#notificationPopup .header a,
+#notificationPopup .header a:hover,
+#notificationPopup .header a:visited 
+{
+  background: -webkit-linear-gradient(#85e0ff, #85e0ff) repeat scroll 0 0 #85e0ff !important;
   border: none !important;
   text-decoration: none;
   text-shadow: none;
+  color: white!important;
+  font-size: 17px;
 }
 
 #notificationPopup .ui-content {
