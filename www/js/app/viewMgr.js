@@ -850,7 +850,7 @@ define(function(require, exports, module) {
         },
         success:function(response){
           if(response.post && response.post.body){
-            $('#notificationPopup .header a').html(title);
+            $('#notificationPopup .header a').html('<i class="fa fa-arrow-circle-left">{0}<i>'.f(title));
             try{
               $('#notificationPopup .content.ui-content').html(function(){
                 var converter = new Showdown.converter();
