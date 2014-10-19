@@ -124,9 +124,6 @@ define(['jqm', 'swiper', 'mapbox',
                             console.debug('beforehide next page - user-index');
                             viewMgr.renderUserProfilePage();
                             break;
-                        case 'notification':
-                            console.debug('beforehide this page to notification page ...');
-                            break;
                         case 'settings-index':
                             console.debug('beforehide this page to settings page ...');
                             viewMgr.renderSettingsPage();
@@ -153,9 +150,6 @@ define(['jqm', 'swiper', 'mapbox',
                         switch(page.attr('id')){
                             case 'notifications':
                                 viewMgr.initNotificationSlides();
-                                break;
-                            case 'notification':
-                                viewMgr.initNotificationPage();
                                 break;
                             case 'user-index':
                                 console.debug('show user-index');

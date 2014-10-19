@@ -485,6 +485,16 @@ define(function(require, exports, module) {
 
   function _renderAboutAppPage(){
     _bindBackToSettingsPage();
+    var guideSwiper = new Swiper('#about-app .swiper-container',{
+      createPagination: true,
+      pagination: '#about-app .pagination',
+      loop:false,
+      grabCursor: true,
+      onSwiperCreated: function(swiper){
+        $('#about-app .pagination span:eq(0)').addClass('swiper-visible-switch swiper-active-switch')
+      }
+    });
+    // $('#about-app .pagination span')[0].addClass('swiper-visible-switch swiper-active-switch');
   }
   
   function _getUserProfile(callback){
@@ -512,56 +522,6 @@ define(function(require, exports, module) {
       });
   }
 
-  function _initNotificationPage(){
-
-    $("#notificationsBtn").addClass('ui-btn-active');
-
-    showModal("#notification .content");
-      
-    $('#notification .header .title').append('<a href="#" onclick="SnowBackToNotificationsList()" data-shadow="false"' 
-    + 'class="musa-nostate-btn ui-btn ui-icon-back ui-btn-icon-left">'
-    + '{0}</a>'.f(util.trimByPixel(SnowNotificationObject.title, 230)));
-
-    $.ajax({
-      url: SnowNotificationObject.link,
-      type:'GET',
-      dataType:'json',
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      success:function(response){
-        console.debug(JSON.stringify(response));
-        $('#notification .content').empty();
-        if(response.post && response.post.body){
-          $('#notification .content').append(function(){
-            var converter = new Showdown.converter();
-            return converter.makeHtml(response.post.body);
-          });
-          hideModal();
-        }else{
-          hideModal();
-          // no post content
-          noty({
-            type:'information',
-            timeout: 2000,
-            text:'该文章无内容'
-          });
-          $.mobile.changePage('notifications.html',{
-              transition: "none",
-              reloadPage: false,
-              reverse: false,
-              changeHash: false
-          });
-        }
-      },
-      error: function(xhr, textStatus, errorThrown){
-        hideModal();
-        console.error(textStatus);
-        console.error(errorThrown);
-      }
-    });
-  }
 
   function _backToNotificationsList(){
       $.mobile.changePage('notifications.html',{
@@ -890,17 +850,52 @@ define(function(require, exports, module) {
 
   function _openMsg(id, title, link){
       console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
-      window.SnowNotificationObject = {
-        title : title,
-        link : link,
-        id: id
-      };
 
-      $.mobile.changePage('notification.html',{
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+
+      // $.mobile.loading('show');
+      $.ajax({
+        url: link,
+        type:'GET',
+        dataType:'json',
+        headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        success:function(response){
+          if(response.post && response.post.body){
+            $('#notificationPopup .header a').html('<i class="fa fa-arrow-circle-left">{0}<i>'.f(title));
+            try{
+              $('#notificationPopup .content.ui-content').html(function(){
+                var converter = new Showdown.converter();
+                $.mobile.loading('hide');
+                var html = converter.makeHtml(response.post.body);
+                return html;
+              });
+              // set message as read
+              store.setNotificationAsRead(id);
+              // add scroll bar for content
+              // http://stackoverflow.com/questions/18859084/how-do-i-properly-add-a-scrollbar-to-a-jquery-mobile-popup-using-iscrollview
+              $('#notificationPopup .content.ui-content').css('overflow-y', 'scroll'); 
+              $('#notificationPopup').popup( "open");
+            }catch(e){
+              console.error(e);
+              $.mobile.loading('hide');
+            }
+          }else{
+            $.mobile.loading('hide');
+            // no post content
+            noty({
+              type:'information',
+              timeout: 2000,
+              text:'该文章无内容'
+            });
+          }
+        },
+        error: function(xhr, textStatus, errorThrown){
+          $.mobile.loading('hide');
+          console.error(textStatus);
+          console.error(errorThrown);
+        }
       });
     }
 
@@ -922,6 +917,7 @@ define(function(require, exports, module) {
       var slideNumber = 0;
 
       inViewSlideKeys = [];
+
       notiSwiper = new Swiper('#notifications .swiper-container',{
         mode:'vertical',
         watchActiveIndex: true,
@@ -976,6 +972,7 @@ define(function(require, exports, module) {
         inViewSlideKeys.push(key);
       });
       console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+      
       function loadNewNotificationSlides() {
           /* 
           Probably you should do some Ajax Request here
@@ -1007,7 +1004,6 @@ define(function(require, exports, module) {
             //Hide loader
             $('#notifications .messages .refreshing').hide();
           },1000)
-
           slideNumber++;
       }
   }
@@ -1523,7 +1519,8 @@ define(function(require, exports, module) {
                               lat: data.lat, 
                               lng: data.lng,
                               status: $('#myStatus').val(),
-                              duration : $('#sharingDuration').val() * 60000
+                              duration : $('#sharingDuration').val() * 60000,
+                              timestamp: new Date().getTime()
                             }),
                             headers: {
                                 "Accept": "application/json",
@@ -1656,16 +1653,7 @@ define(function(require, exports, module) {
                     break;
               }
           }
-      })
-      $('.arrow-left').on('click', function(e){
-          e.preventDefault()
-          mySwiper.swipePrev()
-      })
-      $('.arrow-right').on('click', function(e){
-          e.preventDefault()
-          mySwiper.swipeNext()
-      })
-
+      });
 
       $("#home-index .swiper-slide.map").on('click', function(){
         // TODO add an panel window to select map locations
@@ -1758,7 +1746,6 @@ define(function(require, exports, module) {
   exports.initIBMPushService = _initIBMPushService;
   exports.createHomeSwiperHeader = _createHomeSwiperHeader;
   exports.initNotificationSlides = _initNotificationSlides;
-  exports.initNotificationPage = _initNotificationPage;
   exports.renderUserProfilePage = _renderUserProfilePage;
   exports.renderProfileEditor = _renderProfileEditor;
   exports.bindQRbtn = bindQRbtn;

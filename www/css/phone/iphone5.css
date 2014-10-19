@@ -201,33 +201,41 @@
     line-height: 18px;
 }
 
-
-/* notification */
-#notification .header{
-  height: 70px;
-  width: 100%;
-  margin-bottom: 10px;
+#notifications .ui-popup-container {
+  top: 0px!important;
+  width: 320px!important;
+  left: 0px!important;
+  max-width: 320px!important;
 }
 
-#notification .header .title a.ui-btn{
-  left: 30px;
-  top : 20px;
-  font-size: 15px;
-  text-align: left;
-  text-shadow: none;
+#notificationPopup .header {
+    height: 70px!important;
+    text-align:center;
+}
+
+#notificationPopup .header a,
+#notificationPopup .header a:hover,
+#notificationPopup .header a:visited 
+{
+  background: -webkit-linear-gradient(#85e0ff, #85e0ff) repeat scroll 0 0 #85e0ff !important;
   border: none !important;
+  text-decoration: none;
+  text-shadow: none;
+  color: white!important;
+  font-size: 17px;
 }
 
-#notification .content.ui-content{
-  /* .ui-content makes a padding 1em in the view, fix it by marking !important */
-  top: 70px;
-  padding: 0px!important;
-  margin: 0px!important;
-} 
+#notificationPopup .ui-content {
+    padding: 0 !important;
+}
 
-#notification iframe {
-  width: 100%!important;
-  height: 100%!important;
+#notificationPopup div.iscroll-scroller {
+    width: 100% !important;
+}
+
+/* read article with full screen for iPhone 5s */
+#notificationPopup .content.ui-content {
+    height: 483px !important;
 }
 
 /*  user profile, status, settings */
@@ -384,6 +392,54 @@
 
 #settings-index .resetPwdBtn {
   background: -webkit-linear-gradient(#FFF, #FFF) repeat scroll 0 0 #FFFFFF !important;
+}
+
+#about-app .ui-content{
+  height: 456px;
+  padding: 0px!important;
+  margin: 0px!important;
+  background-color:#3ECB9F;
+}
+
+#about-app .guide {
+  width: 200px;
+  height: 360px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: #111;
+  border: 3px solid white;
+  margin: 5px auto;
+  position: relative;
+  box-shadow: 0px 0px 5px #000;
+}
+
+#about-app .guide .swiper-container .swiper-slide img{
+  width: 200px;
+  height: 360px;
+}
+
+#about-app .ui-content .pagination {
+  padding-top: 10px;
+  position: relative;
+  left: 0;
+  text-align: center;
+  bottom:5px;
+  width: 100%;
+}
+
+#about-app .ui-content .swiper-pagination-switch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #999;
+  box-shadow: 0px 1px 2px #555 inset;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+#about-app .ui-content .swiper-active-switch {
+  background: #fff;
 }
 
 #reset-pwd .header{

@@ -17,23 +17,23 @@
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="DisallowOverscroll" value="true" />
     <!-- ******************************************************* -->
-    <!--                  lotuslamp config start                 -->
+    <!--                  snowball config start                 -->
     <!-- ******************************************************* -->
-    <lotuslamp name="host" value="hwcafe.mybluemix.net" />
-    <lotuslamp name="ssehost" value="hwcafesse.mybluemix.net" />
-    <lotuslamp name="path" value="/mobile/auth/linkedin" />
-    <lotuslamp name="pushAppId" value="a87432fd-2d2e-43d4-91c9-0832af4d4aec" />
-    <lotuslamp name="pushAppRoute" value="hwcafe.mybluemix.net" />
-    <lotuslamp name="pushAppSecret" value="049180170bdc55b6428f65f96f80518b37296000" />
+    <snowball name="host" value="hwcafe.mybluemix.net" />
+    <snowball name="ssehost" value="hwcafesse.mybluemix.net" />
+    <snowball name="path" value="/mobile/auth/linkedin" />
+    <snowball name="pushAppId" value="a87432fd-2d2e-43d4-91c9-0832af4d4aec" />
+    <snowball name="pushAppRoute" value="hwcafe.mybluemix.net" />
+    <snowball name="pushAppSecret" value="049180170bdc55b6428f65f96f80518b37296000" />
     <!-- console log level [debug|]-->
     <!-- https://code.google.com/p/console-js/ -->
-    <lotuslamp name="console" value="debug" />
+    <snowball name="console" value="debug" />
     <!-- enable/disable weinre debugging <"log"|"debug"|"info"|"warn"|"error"> <"on"|"off">-->
-    <lotuslamp name="weinreDebug" value="false" />
+    <snowball name="weinreDebug" value="true" />
     <!-- weinre server url -->
-    <lotuslamp name="weinreServer" value="http://192.168.1.101:9088/target/target-script-min.js#musa" />
+    <snowball name="weinreServer" value="http://192.168.2.100:9088/target/target-script-min.js#musa" />
     <!-- ******************************************************* -->
-    <!--                  lotuslamp config end                   -->
+    <!--                  snowball config end                   -->
     <!-- ******************************************************* -->
 
 </widget>
