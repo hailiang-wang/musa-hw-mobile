@@ -255,3 +255,8 @@
     height: 400px;
     font-size: 12px;
 }
+
+#agreementsPopup .footer a
+{
+    text-shadow: none;
+}
