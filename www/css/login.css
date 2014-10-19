@@ -242,14 +242,14 @@
     text-align: center;
 }
 
-#agreementPopup .ui-footer .close
+#agreementsPopup .ui-footer .close
 {
     display: block;
     margin: 0;
     padding: 15px;
 }
 
-#agreementPopup .agreementText
+#agreementsPopup .agreementText
 {
     overflow: scroll;
     height: 400px;
