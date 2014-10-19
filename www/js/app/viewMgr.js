@@ -484,12 +484,14 @@ define(function(require, exports, module) {
   }
 
   function _renderAboutAppPage(){
+    // disable the scroll event in about app page
+    $(document).delegate("#about-app .ui-content", "touchmove", false);
     _bindBackToSettingsPage();
     var guideSwiper = new Swiper('#about-app .swiper-container',{
       createPagination: true,
       pagination: '#about-app .pagination',
-      loop:false,
-      grabCursor: true,
+      loop: false,
+      grabCursor: false,
       onSwiperCreated: function(swiper){
         $('#about-app .pagination span:eq(0)').addClass('swiper-visible-switch swiper-active-switch')
       }
