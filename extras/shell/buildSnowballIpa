@@ -1,0 +1,31 @@
+#! /bin/bash 
+###########################################
+# build snowball ipa
+###########################################
+
+# run as debug mode
+set -x
+# constants
+baseDir=$(cd `dirname "$0"`;pwd)
+rootDir=~/git/startup/musa-hw-mobile
+buildDir=~/tmp
+xcodeprj=$rootDir/platforms/ios
+
+# functions
+
+# main 
+[ -z "${BASH_SOURCE[0]}" -o "${BASH_SOURCE[0]}" = "$0" ] || return
+rm -rf $exportArchive $archivePath
+cd $rootDir
+echo ">>BUILD IPA build"
+cordova prepare ios && cordova build ios
+version=`head www/config.xml|grep version|awk -F"=" '{ if(NR==2){ print $3 } }'|cut -c2-18`
+archivePath=$buildDir/snowball.$version.xcarchive
+exportPath=$buildDir/Snowball.$version.ipa
+cd $xcodeprj
+echo ">>BUILD IPA clean"
+xcodebuild -project Snowball.xcodeproj -scheme "Snowball" -configuration "Release" clean
+echo ">>BUILD IPA archive"
+xcodebuild  -project Snowball.xcodeproj -sdk iphoneos -scheme "Snowball" -configuration "Release" -archivePath "$archivePath" archive
+echo ">>BUILD IPA export"
+xcodebuild -exportArchive -exportFormat IPA -exportProvisioningProfile "snowballadhoc" -archivePath "sn.xcarchive" -exportPath "$exportPath"
