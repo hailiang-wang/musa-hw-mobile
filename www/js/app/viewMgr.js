@@ -305,6 +305,19 @@ define(function(require, exports, module) {
                   type: 'warning'});
         }
     });
+    /*
+     * user service level agreements
+     */
+    $('#agreementsPopup').popup('option', 'tolerance', '0,0');
+
+    $('#agreementsPopup').on('popupbeforeposition', function( event, ui ) {
+      $.get('http://{0}/public/md/user-service-agreements.md'.f(config.host), function(data) {
+        var converter = new Showdown.converter();
+        var html = converter.makeHtml(data);
+        $('#agreementsPopup .agreementText').html(html);
+      });
+    });
+
     navigator.splashscreen.hide();
   }
 
@@ -564,7 +577,7 @@ define(function(require, exports, module) {
     try{
       console.debug('render agreements in markdown format.');
       var converter = new Showdown.converter();
-      $.get('http://{0}/md/user-service-agreements.md'.f(config.host), function(data) {
+      $.get('http://{0}/public/md/user-service-agreements.md'.f(config.host), function(data) {
         var html = converter.makeHtml(data);
         $('#agreements .agreements-text').html(html);
       });

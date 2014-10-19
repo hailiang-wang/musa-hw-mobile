@@ -60,7 +60,22 @@
                         <input id="signupPassword" type="password" placeholder="密码" data-corners="false" data-enhanced="true" maxlength="30" />
                     </div>
                     <input type="button" id="signupBtn" value="注册 宝莲灯 账号" data-corners="false" />
+                    <p class="agreementTip">
+                        <span>点击「注册」按钮，代表你已阅读并同意</span>
+                        <br>
+                        <a id="agreementsPopupBtn" href="#agreementsPopup" data-rel="popup" data-trasition="pop">服务协议</a>
+                    </p>
                 </div>
+                <div data-role="popup" id="agreementsPopup" data-corners="false" data-position-to="window" data-overlay-theme="b">
+                    <div class="header" data-role="header">
+                        <h1>服务协议</h1>
+                    </div>
+                    <div class="content agreementText" data-role="content" data-iscroll>
+                    </div>
+                    <div class="footer" data-role="footer">
+                        <a class="close" href="#" data-rel="back" data-role="button">关闭</a>
+                    </div>
+                </div>                
             </div>
         </div>
         <div id="activation" data-role="page" >
