@@ -885,6 +885,7 @@ define(function(require, exports, module) {
             });
             // set message as read
             store.setNotificationAsRead(id);
+            $('.slideId{0}'.f(id)).removeClass('unread');
             // add scroll bar for content
             // http://stackoverflow.com/questions/18859084/how-do-i-properly-add-a-scrollbar-to-a-jquery-mobile-popup-using-iscrollview
             $('#notificationPopup .content.ui-content').css('overflow-y', 'scroll');
@@ -975,7 +976,7 @@ define(function(require, exports, module) {
       var sld = slides[key];
       notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key),
           sld.date, sld.category, sld.description),
-        'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '' : 'unread'));
+        'swiper-slide ui-li-static ui-body-inherit {0} slideId{1}'.f(sld.isRead ? '' : 'unread', key));
       inViewSlideKeys.push(key);
     });
     console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
