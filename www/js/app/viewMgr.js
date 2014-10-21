@@ -1117,11 +1117,19 @@ define(function(require, exports, module) {
     }
 
     $('#profile-editor .property-value').focus();
-
     /**
      * modify local user profile
      */
     $('#saveProfileBtn').on('click', function() {
+      $('header, footer').css('position', 'fixed');
+         /************************************************************************************************* 
+         * FIX: to avoid the buggy header and footer to jump and stick not
+         * to the top/bottom of the page after an input or textfield lost focus and the keyboard dissapear                          *
+         *************************************************************************************************/ 
+        setTimeout( function() {
+          window.scrollTo( $.mobile.window.scrollLeft(), $.mobile.window.scrollTop() );
+        }, 20 );
+
       var propertyValue = $('#profile-editor .property-value').val();
       switch (propertyName) {
         case 'edu':
@@ -1750,7 +1758,6 @@ define(function(require, exports, module) {
     });
 
   })();
-
 
   exports.renderLoginPage = _renderLoginPage;
   exports.renderActivationPage = _renderActivationPage;

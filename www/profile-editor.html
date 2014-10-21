@@ -11,19 +11,24 @@
                 <div class='title'>
                     更新我的信息
                 </div>
-                <button id="saveProfileBtn" class="musa-nostate-btn ui-btn ui-icon-save ui-btn-icon-notext ui-corner-all">
-                <button id="cancelEditProfileBtn" class="musa-nostate-btn ui-btn ui-icon-undo ui-btn-icon-notext ui-corner-all">
-                </button>           
             </div>
             <div class='content' data-role='content'>
                 <form>
                     <div class="panel">
-                        <div class="ui-input-text ui-body-inherit ui-shadow-inset ui-input-group">
-                            <label for=""><i class="property-icon fa"></i></label>
-                            <input type="text" class="property-value" data-corners="false" data-enhanced="true" data-clear-btn="true" autocapitalize="off" maxlength="100">
+                        <div class="ui-grid-solo">
+                            <div class="ui-input-text ui-body-inherit ui-shadow-inset ui-input-group">
+                                <label for=""><i class="property-icon fa"></i></label>
+                                <input type="text" class="property-value" data-corners="false" data-enhanced="true" data-clear-btn="true" autocapitalize="off" maxlength="100">
+                            </div>
                         </div>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a"><a id="saveProfileBtn" href="#user-index" class="ui-btn ui-btn-b ui-corner-all ui-mini">保存</a></div>
+                            <div class="ui-block-b"><a id="cancelEditProfileBtn" href="#user-index" class="ui-btn ui-btn-b ui-corner-all ui-mini">取消</a></div>
+                        </div>     
                     </div>
                 </form>
+<!--                 <button id="saveProfileBtn" class="musa-nostate-btn ui-btn ui-icon-save ui-corner-all"> 保存 </button>
+                <button id="cancelEditProfileBtn" class="musa-nostate-btn ui-btn ui-icon-undo ui-corner-all"> 取消 </button> -->
             </div>
         </div>
 </body>

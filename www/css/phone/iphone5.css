@@ -519,7 +519,7 @@
   font-size:16px;
 }
 
-#saveProfileBtn {
+/*#saveProfileBtn {
   border: none !important; 
   padding-top:40px; 
   width:50px; 
@@ -533,7 +533,7 @@
   width:50px; 
   height:25px; 
   left:270px
-}
+}*/
 
 /* http://stackoverflow.com/questions/12200444/remove-hover-click-states-of-buttons */
 .musa-nostate-btn {
