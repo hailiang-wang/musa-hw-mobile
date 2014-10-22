@@ -19,7 +19,8 @@ plugins = ['com.ibm.mobile.cordova.ibmbluemix',
         'org.apache.cordova.vibration',
         'org.apache.cordova.globalization',
         'https://git.oschina.net/ubiware/cordova-ios-emailcomposer.git',
-        'extras/musa-mobile-driver'
+        'extras/musa-mobile-driver',
+        'extras/keyboard'
         ]
 
 def install_plugins():
