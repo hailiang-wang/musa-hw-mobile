@@ -880,8 +880,6 @@ define(function(require, exports, module) {
   function _openMsg(id, title, link) {
     console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
 
-
-    // $.mobile.loading('show');
     $.ajax({
       url: link,
       type: 'GET',
@@ -896,7 +894,6 @@ define(function(require, exports, module) {
           try {
             $('#notificationPopup .content.ui-content').html(function() {
               var converter = new Showdown.converter();
-              $.mobile.loading('hide');
               var html = converter.makeHtml(response.post.body);
               return html;
             });
@@ -909,10 +906,8 @@ define(function(require, exports, module) {
             $('#notificationPopup').popup("open");
           } catch (e) {
             console.error(e);
-            $.mobile.loading('hide');
           }
         } else {
-          $.mobile.loading('hide');
           // no post content
           noty({
             type: 'information',
@@ -922,7 +917,6 @@ define(function(require, exports, module) {
         }
       },
       error: function(xhr, textStatus, errorThrown) {
-        $.mobile.loading('hide');
         console.error(textStatus);
         console.error(errorThrown);
       }
@@ -938,9 +932,8 @@ define(function(require, exports, module) {
   }
 
   function _initNotificationSlides() {
-    var holdPosition = 0;
-    var slideNumber = 0;
 
+    var holdPosition = 0;
     inViewSlideKeys = [];
 
     notiSwiper = new Swiper('#notifications .swiper-container', {
@@ -1013,7 +1006,7 @@ define(function(require, exports, module) {
           if (_.indexOf(inViewSlideKeys, key) == -1) {
             notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key),
                 sld.date, sld.category, sld.description),
-              'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '' : 'unread'));
+              'swiper-slide ui-li-static ui-body-inherit {0} slideId{1}'.f(sld.isRead ? '' : 'unread', key));
             inViewSlideKeys.push(key);
             console.debug(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
           }
@@ -1028,8 +1021,7 @@ define(function(require, exports, module) {
 
         //Hide loader
         $('#notifications .messages .refreshing').hide();
-      }, 1000)
-      slideNumber++;
+      }, 1000);
     }
   }
 
