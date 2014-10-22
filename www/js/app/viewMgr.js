@@ -477,8 +477,9 @@ define(function(require, exports, module) {
   }
 
   function _bindBackToSettingsPage() {
-    $('#backToSettingsBtn').unbind();
+    // $('#backToSettingsBtn').unbind();
     $('#backToSettingsBtn').on('click', function() {
+      console.debug('get _bindBackToSettingsPage ...');
       $.mobile.changePage('settings.html', {
         transition: "none",
         reloadPage: false,
@@ -486,12 +487,20 @@ define(function(require, exports, module) {
         changeHash: false
       });
     });
-  }
+  } 
 
   function _renderAboutAppPage() {
+    // go back to setting page
+    $('#about-app .header .title').on('click', function() {
+      $.mobile.changePage('settings.html', {
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
+      });
+    });
     // disable the scroll event in about app page
     $(document).delegate("#about-app .ui-content", "touchmove", false);
-    _bindBackToSettingsPage();
     var guideSwiper = new Swiper('#about-app .swiper-container', {
       createPagination: true,
       pagination: '#about-app .pagination',
@@ -540,7 +549,15 @@ define(function(require, exports, module) {
   }
 
   function _renderAgreementsPage() {
-    _bindBackToSettingsPage();
+    // go back to setting page
+    $('#agreements .header .title').on('click', function() {
+      $.mobile.changePage('settings.html', {
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
+      });
+    });
     try {
       console.debug('render agreements in markdown format.');
       var converter = new Showdown.converter();
