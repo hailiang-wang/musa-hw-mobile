@@ -13,14 +13,14 @@ plugins = ['com.ibm.mobile.cordova.ibmbluemix',
         'org.apache.cordova.statusbar',
         'uk.co.whiteoctober.cordova.appversion',
         'com.phonegap.plugins.barcodescanner',
+        'com.ben2.cordova.keyboard',
         'org.apache.cordova.network-information',
         'org.apache.cordova.geolocation',
         'org.apache.cordova.camera',
         'org.apache.cordova.vibration',
         'org.apache.cordova.globalization',
         'https://git.oschina.net/ubiware/cordova-ios-emailcomposer.git',
-        'extras/musa-mobile-driver',
-        'extras/keyboard'
+        'extras/musa-mobile-driver'
         ]
 
 def install_plugins():
