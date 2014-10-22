@@ -563,3 +563,8 @@
   height:25px; 
   left:270px
 }
+/*removes tap delay on all clicks/taps*/
+.in, .out {
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 350ms !important;
+}

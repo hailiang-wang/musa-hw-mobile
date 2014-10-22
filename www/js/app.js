@@ -18,7 +18,8 @@ requirejs.config({
         q: 'q.min',
         console: 'console.min',
         showdown: 'showdown',
-        i18next: 'i18next.amd.min'
+        i18next: 'i18next.amd.min',
+        energize: 'energize.min'
     },
     shim: {
         'jquery': {
@@ -48,7 +49,10 @@ requirejs.config({
             exports: 'Q'
         },
         'console': {},
-        'showdown': {}
+        'showdown': {},
+        'energize':{
+            deps: ['jquery']
+        }
     }
 });
 
@@ -67,7 +71,8 @@ function handleApplePushNotificationArrival(msg) {
 }
 
 requirejs(['jquery', 'cordova.js', 'app/config',
-        'app/util', 'underscore', 'backbone', 'q', 'showdown', 'i18next'
+        'app/util', 'underscore', 'backbone', 
+        'q', 'showdown', 'i18next', 'energize'
     ],
     function($) {
         // start of require
@@ -104,6 +109,21 @@ requirejs(['jquery', 'cordova.js', 'app/config',
             receivedEvent: function(id) {
                 console.log('Received Event: ' + id);
                 var pathname = window.location.pathname;
+
+                /**
+                 * mobileinit
+                 */
+                // This event is triggered after jQuery Mobile has 
+                // finished loading, but before it has started enhancing 
+                // the start page. Thus, handlers of this event have the 
+                // opportunity to modify jQuery Mobile's global configuration 
+                // options and all the widgets' default option values before 
+                // they influence the library's behavior.
+                $(document).bind("mobileinit", function(){
+                    // add these options for acceleration
+                    $.mobile.defaultDialogTransition = "none";
+                    $.mobile.defaultPageTransition = "none";
+                });
                 try {
                     // resolve locale and language 
                     navigator.globalization.getPreferredLanguage(function(properties) {

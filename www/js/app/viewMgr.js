@@ -1290,6 +1290,7 @@ define(function(require, exports, module) {
     });
   }
 
+
   function _renderUserProfilePage() {
     var user = store.getUserProfile();
     var defaultAvatar = 'img/user-default-avatar.png';
@@ -1333,13 +1334,13 @@ define(function(require, exports, module) {
       // how to render it Master?Bachelor, now just show up a school
       $.each(user._json.educations.values, function(index, education) {
         if (index < 1) {
-          $('#user-index i .edu').append(
-            util.trimByPixel('{0} {1} <br> '.f(education.schoolName, education.degree || ''), 200));
+          $('#user-index i .edu').text(
+            util.trimByPixel('{0} {1}'.f(education.schoolName, education.degree || ''), 200));
         }
       })
     } else {
       // no school
-      $('#user-index i .edu').append('{0} <br> '.f("您什么也没有写。"));
+      $('#user-index i .edu').text('{0}'.f("您什么也没有写。"));
     }
     // positions
     if (user._json.positions._total > 0) {
@@ -1350,17 +1351,17 @@ define(function(require, exports, module) {
         }
       })
     } else {
-      $('#user-index i .company').append('{0} '.f("您什么也没有写。"));
+      $('#user-index i .company').text('{0} '.f("您什么也没有写。"));
       // no positions available
     }
 
     // interests
     if (user._json.interests) {
-      $('#user-index i .interest').append(
-        util.trimByPixel('{0} <br> '.f(user._json.interests), 200));
+      $('#user-index i .interest').text(
+        util.trimByPixel('{0}'.f(user._json.interests), 200));
     } else {
       // no interest
-      $('#user-index i .interest').append('{0} <br> '.f("您什么也没有写。"));
+      $('#user-index i .interest').text('{0}'.f("您什么也没有写。"));
     }
 
     /**

@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/phone/iphone2-4.css" media="only screen and (min-device-width : 320px) and (max-device-height : 480px) and (orientation : portrait)"/>
     </head>
     <body>
-        <div id='home-index' data-role='page' data-theme='a' data-title='home' >
+        <div id='home-index' data-role='page' data-theme='a' data-title='home' data-dom-cache='true'>
             <div id='home-swiper-header' data-role='header' data-position='fixed' data-tap-toggle="false">
                 <button id="headerBtn2" class="musa-nostate-btn ui-btn ui-icon-eye ui-btn-icon-notext ui-corner-all">
                 </button>
@@ -73,16 +73,16 @@
             <div data-role='navbar'>
                 <ul>
                     <li>
-                        <a id='homeBtn' class='ui-state-persist' data-transition="fade" data-icon='home'></a>
+                        <a id='homeBtn' data-transition="none" data-icon='home'></a>
                     </li>
                     <li>
-                        <a id='notificationsBtn' class='ui-state-persist' data-transition="fade" data-icon='mail'></a>
+                        <a id='notificationsBtn' data-transition="none" data-icon='mail'></a>
                     </li>
                     <li>
-                        <a id='userBtn' class='ui-state-persist' data-transition="fade" data-icon='user'></a>
+                        <a id='userBtn' data-transition="none" data-icon='user'></a>
                     </li>
                     <li>
-                        <a id='settingsBtn' class='ui-state-persist' data-transition="fade" data-icon='sun-o'></a>
+                        <a id='settingsBtn' data-transition="none" data-icon='sun-o'></a>
                     </li>
                 </ul>
             </div>
