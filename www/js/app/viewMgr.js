@@ -572,9 +572,11 @@ define(function(require, exports, module) {
   }
 
   function _renderSettingsPage() {
+    // disable the scroll event in settings page
+    // TODO this will impact iPhone4s-2 need to test on them 
+    $(document).delegate("#settings-index .ui-content", "touchmove", false);
 
     // bind post feedback btn
-
     $('#postFeedback').unbind();
     $('#postFeedback').on('click', function() {
       cordova.plugins.email.isAvailable(
