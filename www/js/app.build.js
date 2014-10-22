@@ -14,7 +14,8 @@
         q: 'lib/q.min',
         console: 'lib/console.min',
         showdown: 'lib/showdown',
-        i18next: 'lib/i18next.amd.min'
+        i18next: 'lib/i18next.amd.min',
+        energize: 'lib/energize.min'
     },
     modules: [{
         name: "app"
