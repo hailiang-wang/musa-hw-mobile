@@ -1704,6 +1704,11 @@ define(function(require, exports, module) {
             renderPeoplePage();
             break;
           case 1:
+            // If tap in searching box in people page, 
+            // go to map page following, one can get the keyboard sticky in screen.
+            if (Keyboard.isVisible) {
+              $("input").blur();
+            }
             renderHomeMap();
             break;
           default:
