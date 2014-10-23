@@ -1088,12 +1088,14 @@ define(function(require, exports, module) {
     var propertyName = store.getProfileEditorProperty();
     switch (propertyName) {
       case 'edu':
+        // update title 
+        $('#profile-editor .header .title').html('<i class="fa fa-hand-o-left">&nbsp; 取消 &nbsp; &nbsp; &nbsp;{0}</i>'.f('毕业或就读学校'));
         // insert values into profile fields
         if (profile._json.educations._total > 0) {
           $('#profile-editor .property-value').val(profile._json.educations.values[0].schoolName);
         } else {
           // add placeholder
-          $('#profile-editor .property-value').attr('placeholder', '曾经就读于 ...');
+          $('#profile-editor .property-value').attr('placeholder', '大学 ...');
         }
 
         $('#profile-editor .property-icon').removeClass('fa-briefcase');
@@ -1101,6 +1103,7 @@ define(function(require, exports, module) {
         $('#profile-editor .property-icon').addClass('fa-graduation-cap');
         break;
       case 'company':
+        $('#profile-editor .header .title').html('<i class="fa fa-hand-o-left">&nbsp; 取消 &nbsp; &nbsp; &nbsp;{0}</i>'.f('工作公司或单位'));
         if (profile._json.positions._total > 0) {
           $('#profile-editor .property-value').val(profile._json.positions.values[0].company.name);
         } else {
@@ -1113,6 +1116,7 @@ define(function(require, exports, module) {
         $('#profile-editor .property-icon').addClass('fa-briefcase');
         break;
       case 'interest':
+        $('#profile-editor .header .title').html('<i class="fa fa-hand-o-left">&nbsp; 取消 &nbsp; &nbsp; &nbsp;{0}</i>'.f('有哪些兴趣爱好'));
         if (profile._json.interests) {
           $('#profile-editor .property-value').val(profile._json.interests);
         } else {
@@ -1146,10 +1150,11 @@ define(function(require, exports, module) {
      setTimeout(function(){
       $('#profile-editor .property-value').focus();
      }, 1000)
+
     /**
-     * modify local user profile
+     * save profile property
      */
-    $('#saveProfileBtn').on('click', function() {
+    function saveProfileProperty(){
       var propertyValue = $('#profile-editor .property-value').val();
       switch (propertyName) {
         case 'edu':
@@ -1224,6 +1229,18 @@ define(function(require, exports, module) {
           timeout: 2000
         });
       });
+    }
+
+    /**
+     * modify local user profile
+     */
+    $('#saveProfileBtn').on('click', function() {
+      saveProfileProperty();
+    });
+
+    $('#profileEditorForm').submit(function( event ) {
+      saveProfileProperty();
+      return false;
     });
 
     // cancel editing user profile
@@ -1308,7 +1325,6 @@ define(function(require, exports, module) {
       });
     });
   }
-
 
   function _renderUserProfilePage() {
     var user = store.getUserProfile();
