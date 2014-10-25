@@ -149,3 +149,6 @@
   size: 15px;
 }
 
+#user-index .content.ui-content ul li {
+  line-height: 36px;
+}

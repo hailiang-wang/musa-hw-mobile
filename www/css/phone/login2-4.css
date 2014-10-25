@@ -1,0 +1,18 @@
+/*  login profile, status, settings */
+.form-login
+{
+    height: 35%;
+}
+
+.form-signup
+{
+    box-sizing: border-box;
+    height: 60%;
+}
+
+
+#agreementsPopup .agreementText
+{
+    height: 320px;
+    font-size: 12px;
+}

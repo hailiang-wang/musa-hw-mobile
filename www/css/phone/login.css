@@ -1,5 +1,4 @@
 /*  login profile, status, settings */
-
 .ui-loader-background
 {
     position: fixed;
@@ -23,7 +22,7 @@
 #login-index
 {
     width: 100%;
-    background-image: url('../img/login-background.png');
+    background-image: url('../../img/login-background.png');
     background-repeat: repeat;
     background-size: 100%;
 }
@@ -190,14 +189,14 @@
 
 #agreemnets {
     width: 100%;
-    background-image: url('../img/login-background.png');
+    background-image: url('../../img/login-background.png');
     background-repeat: repeat;
     background-size: 100%;
 }
 
 #activation {
     width: 100%;
-    background-image: url('../img/login-background.png');
+    background-image: url('../../img/login-background.png');
     background-repeat: repeat;
     background-size: 100%;
 }
@@ -210,7 +209,7 @@
 #forget-pwd
 {
     width: 100%;
-    background-image: url('../img/login-background.png');
+    background-image: url('../../img/login-background.png');
     background-repeat: repeat;
     background-size: 100%;
 }
@@ -244,7 +243,7 @@
 
 #agreementsPopup .ui-footer .close
 {
-    display: block;
+  display: block;
     margin: 0;
     padding: 15px;
 }
