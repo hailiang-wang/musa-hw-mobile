@@ -2,25 +2,24 @@
     appDir: "../",
     baseUrl: "./js",
     dir: "../../www-build",
-    paths:{
-    	jquery: 'lib/jquery',
-    	swiper: 'lib/idangerous.swiper.min',
+    paths: {
+        jquery: 'lib/jquery',
+        swiper: 'lib/idangerous.swiper.min',
         mapbox: 'lib/mapbox/mapbox',
-        noty : 'lib/jquery.noty.packaged.min',
+        noty: 'lib/jquery.noty.packaged.min',
         jqm: 'lib/jqm/jquery.mobile-1.4.3.min',
         underscore: 'lib/underscore-min',
-        backbone : 'lib/backbone-min',
-        geolib : 'lib/geolib.min',
+        backbone: 'lib/backbone-min',
+        geolib: 'lib/geolib.min',
         q: 'lib/q.min',
         console: 'lib/console.min',
         showdown: 'lib/showdown',
-        i18next: 'lib/i18next.amd.min'
+        i18next: 'lib/i18next.amd.min',
+        energize: 'lib/energize.min'
     },
-    modules: [
-        {
-            name: "app"
-        }
-    ],
+    modules: [{
+        name: "app"
+    }],
     //Allow CSS optimizations. Allowed values:
     //- "standard": @import inlining and removal of comments, unnecessary
     //whitespace and line returns.

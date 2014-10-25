@@ -11,11 +11,16 @@
     <content src="home.html" />
     <access origin="*" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="StatusBarOverlaysWebView" value="true" /> 
     <preference name="StatusBarBackgroundColor" value="#000000" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="DisallowOverscroll" value="true" />
+    <!-- http://stackoverflow.com/questions/21896014/phonegap-3-3-hidekeyboardformaccessorybar-not-working -->
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+    <feature name="Keyboard">
+        <param name="ios-package" value="CDVKeyboard" onload="true" />
+    </feature>
     <!-- ******************************************************* -->
     <!--                  snowball config start                 -->
     <!-- ******************************************************* -->
@@ -29,9 +34,9 @@
     <!-- https://code.google.com/p/console-js/ -->
     <snowball name="console" value="debug" />
     <!-- enable/disable weinre debugging <"log"|"debug"|"info"|"warn"|"error"> <"on"|"off">-->
-    <snowball name="weinreDebug" value="false" />
+    <snowball name="weinreDebug" value="true" />
     <!-- weinre server url -->
-    <snowball name="weinreServer" value="http://192.168.2.100:9088/target/target-script-min.js#musa" />
+    <snowball name="weinreServer" value="http://192.168.1.101:9088/target/target-script-min.js#musa" />
     <!-- ******************************************************* -->
     <!--                  snowball config end                   -->
     <!-- ******************************************************* -->

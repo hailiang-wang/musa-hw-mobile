@@ -2,10 +2,10 @@ define(['jquery'], function($) {
     var configJson = {};
     var configSessionKey = 'snowball-config';
     var configSessionValue = window.sessionStorage.getItem(configSessionKey);
-    
-    if(configSessionValue){
+
+    if (configSessionValue) {
         configJson = JSON.parse(configSessionValue);
-    }else{
+    } else {
         // everytime require(config) from config.xml, it takes 0.017 second, a bit slow.
         // also export the config into session storage for speed up access
         // config parameters
@@ -13,13 +13,13 @@ define(['jquery'], function($) {
             type: 'GET',
             url: 'config.xml',
             async: false,
-            success:function(data){
+            success: function(data) {
                 var xmlDoc = $.parseXML(data);
                 var $xml = $(xmlDoc);
                 $xml.find('snowball').each(function(index) {
                     var v = {};
-                    $.each(this.attributes, function(i, attrib){
-                        switch(attrib.name){
+                    $.each(this.attributes, function(i, attrib) {
+                        switch (attrib.name) {
                             case 'name':
                                 v['name'] = attrib.value;
                                 break;
@@ -33,7 +33,7 @@ define(['jquery'], function($) {
                     configJson[v.name] = v.value;
                 });
             },
-            error:function(xhr, statusCode, errorThrown){
+            error: function(xhr, statusCode, errorThrown) {
                 console.error(errorThrown);
             }
         });

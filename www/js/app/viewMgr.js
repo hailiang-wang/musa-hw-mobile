@@ -1,40 +1,40 @@
 /**
-* Handle views navigations
-*/
+ * Handle views navigations
+ */
 define(function(require, exports, module) {
-	var config = require('app/config');
-	var store = require('app/service/store');
+  var config = require('app/config');
+  var store = require('app/service/store');
   var mapController = require('app/service/map');
   var gps = require('app/service/gps');
   var util = require('app/util');
   var mbaas = require('app/service/mbaas');
   var homeSwiper;
-	var notiSwiper;
+  var notiSwiper;
   var inViewSlideKeys;
   var userEmail;
 
   var notificationsPng = {
-    itnews:"sample/noty-itnews.png",
-    activity:"sample/noty-activity.png",
-    promotion:"sample/noty-promotion.png"
+    itnews: "sample/noty-itnews.png",
+    activity: "sample/noty-activity.png",
+    promotion: "sample/noty-promotion.png"
   };
 
-  function _initIBMPushService(){
+  function _initIBMPushService() {
     mbaas.push.init(store.getUserId());
   }
 
-  function _initializeMap(){
+  function _initializeMap() {
     return mapController.getMapsMetadata()
-      .then(function(maps){
+      .then(function(maps) {
         return mapController.resolveMap(maps);
-      }).then(function(){
+      }).then(function() {
         return mapController.createMap();
-      }).then(function(){
+      }).then(function() {
         _setHomeSwiperHeaderTitleByMapId(store.getCurrentMapId());
-      }).fail(function(err){
+      }).fail(function(err) {
         console.error(err);
-        if((typeof err == 'object') && err.rc){
-          switch(err.rc){
+        if ((typeof err == 'object') && err.rc) {
+          switch (err.rc) {
             case 1:
               // can not resolve maps metadata with gps data
               break;
@@ -49,268 +49,273 @@ define(function(require, exports, module) {
       });
   }
 
-  function showModal(containerDiv){
+  function showModal(containerDiv) {
     $(containerDiv).append('<div class="modalWindow"/>');
     $.mobile.loading('show');
   }
 
-  function hideModal(){
+  function hideModal() {
     $(".modalWindow").remove();
     $.mobile.loading('hide');
   }
 
-  function _renderLoginPage(){
+  function _renderLoginPage() {
     var $loginInputs = $('#loginEmail,#loginPassword'),
-    $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
-    rules = {
+      $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
+      rules = {
         username: /^\w+$/i,
         email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
         password: /^.+$/i
-    },
-    inSubmit = false;
+      },
+      inSubmit = false;
 
     /**
      * login input events
      */
-    $loginInputs.on('focus', function (e) {
-        $('#loginContent').addClass('login-focus');
-    }).on('blur', function (e) {
-        if(inSubmit) return false;
-        $('#loginContent').removeClass('login-focus');
+    $loginInputs.on('focus', function(e) {
+      $('#loginContent').addClass('login-focus');
+    }).on('blur', function(e) {
+      if (inSubmit) return false;
+      $('#loginContent').removeClass('login-focus');
     });
     /**
      * signup input events
      */
-    $signupInputs.on('focus', function (e) {
-        $('#loginContent').addClass('signup-focus');
-    }).on('blur', function (e) {
-        $('#loginContent').removeClass('signup-focus');
-    }).on('input', function (e) {
-        var $el;
+    $signupInputs.on('focus', function(e) {
+      $('#loginContent').addClass('signup-focus');
+    }).on('blur', function(e) {
+      $('#loginContent').removeClass('signup-focus');
+    }).on('input', function(e) {
+      var $el;
 
-        for(var id in rules) {
-            $el = $('#' + $.camelCase('signup-' + id));
+      for (var id in rules) {
+        $el = $('#' + $.camelCase('signup-' + id));
 
-            if(!rules[id].test($el.val())) {
-                $('#signupBtn').button('option', 'disabled', true);
-                return false;
-            }
-
+        if (!rules[id].test($el.val())) {
+          $('#signupBtn').button('option', 'disabled', true);
+          return false;
         }
 
-        $('#signupBtn').button('option','disabled', false);
+      }
 
-    }).on('change', function (e) {
-        var $t = $(this),
-            id = '';
+      $('#signupBtn').button('option', 'disabled', false);
 
-        try {
-            id = /^signup(\w+)$/i.exec($t.attr('id'))[1].toLowerCase();
-        } catch (error) {
-            id = '';
-        }
+    }).on('change', function(e) {
+      var $t = $(this),
+        id = '';
 
-        if(!rules[id].test($t.val())) {
-            $t.closest('.ui-input-text').addClass('ui-input-error');
-        } else {
-            $t.closest('.ui-input-text').removeClass('ui-input-error');
-        }
+      try {
+        id = /^signup(\w+)$/i.exec($t.attr('id'))[1].toLowerCase();
+      } catch (error) {
+        id = '';
+      }
+
+      if (!rules[id].test($t.val())) {
+        $t.closest('.ui-input-text').addClass('ui-input-error');
+      } else {
+        $t.closest('.ui-input-text').removeClass('ui-input-error');
+      }
 
     });
 
     $('#signupBtn').button('option', 'disabled', true);
-    $('#signupBtn').on('touchend', function (e) {
+    $('#signupBtn').on('touchend', function(e) {
 
-        var params = {
-            username: $('#signupUsername').val(),
-            password: $('#signupPassword').val(),
-            email: $('#signupEmail').val()
-        };
+      var params = {
+        username: $('#signupUsername').val(),
+        password: $('#signupPassword').val(),
+        email: $('#signupEmail').val()
+      };
 
-        inSubmit = true;
-        window.navigator.splashscreen.show();
+      inSubmit = true;
+      window.navigator.splashscreen.show();
 
-        $.ajax({
-            url: 'http://{0}/auth/local/signup'.f(config.host),
-            type: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                'Accept': 'application/json'
-            },
-            data: JSON.stringify(params),
-            dataType: 'json',
-            timeout: 20000,
-            complete: function (xhr, status) {
-                var rst;
+      $.ajax({
+        url: 'http://{0}/auth/local/signup'.f(config.host),
+        type: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        data: JSON.stringify(params),
+        dataType: 'json',
+        timeout: 20000,
+        complete: function(xhr, status) {
+          var rst;
 
-                inSubmit = false;
+          inSubmit = false;
 
-                // $.mobile.loading("hide");
-                userEmail = params.email;
+          // $.mobile.loading("hide");
+          userEmail = params.email;
 
-                if(xhr.status === 200) {
-                    rst = xhr.responseJSON;
+          if (xhr.status === 200) {
+            rst = xhr.responseJSON;
 
-                    if(rst.rc == '1') {
-                        $.mobile.changePage('#activation', {
-                            transition: 'fade'
-                        });
-                    } else if(rst.rc == '3') {
-                        $('#signup').find('.errorTip').text('邮箱已经被注册！');
-                    } else if(rst.rc == '4') {
-                        $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
-                    } else if(rst.rc == '5') {
-                        $('#signup').find('.errorTip').text('非法请求！');
-                    } else {
-                        $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
-                    }
-                } else if (xhr.status === 404) {
-                    $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
-                } else {
-                    $('#signup').find('.errorTip').text('服务器通信错误！');
-                }
+            if (rst.rc == '1') {
+              $.mobile.changePage('#activation', {
+                transition: 'fade'
+              });
+            } else if (rst.rc == '3') {
+              $('#signup').find('.errorTip').text('邮箱已经被注册！');
+            } else if (rst.rc == '4') {
+              $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+            } else if (rst.rc == '5') {
+              $('#signup').find('.errorTip').text('非法请求！');
+            } else {
+              $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
             }
-        });
-        return false;
+          } else if (xhr.status === 404) {
+            $('#signup').find('.errorTip').text('网络错误，请稍后重试！');
+          } else {
+            $('#signup').find('.errorTip').text('服务器通信错误！');
+          }
+        }
+      });
+      return false;
     });
     /**
      * Log-In via LinkedIn Passport
      * ======================================
      */
 
-    $('#lkdLoginBtn').on('click', function(){
-        $('#lkdLoginBtn').addClass('ui-state-disabled');
-        $.mobile.loading( "show", {
-            textVisible: false,
-            theme: "a",
-            textonly: false
-        });
-        // window.open () will open a new window, 
-        // whereas window.location.href will open the new URL in your current window.
-        var ref = window.open(encodeURI("http://{0}{1}".f(config.host, config.path)), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
-        ref.addEventListener('loadstart', function(event) {
-            if(event.url.indexOf("http://localhost/?") == 0) {
-                navigator.splashscreen.show();
-                // login succ
-                var succUrl = event.url;
-                var sid = succUrl.replace('http://localhost/?','');
-                store.setUserSID(sid);
-                window.location = 'home.html';
-            }else if(event.url == 'http://localhost/'){
-                // login fail 
-                noty({
-                    text:'登入失败，请稍后重试。',
-                    timeout: 2000,
-                    type : 'warning',
-                    layout: 'center'
-                });
-                ref.close();
-                $.mobile.loading('hide');
-                $('#lkdLoginBtn').removeClass('ui-state-disabled');
-            }
-        });
+    $('#lkdLoginBtn').on('click', function() {
+      $('#lkdLoginBtn').addClass('ui-state-disabled');
+      $.mobile.loading("show", {
+        textVisible: false,
+        theme: "a",
+        textonly: false
+      });
+      // window.open () will open a new window, 
+      // whereas window.location.href will open the new URL in your current window.
+      var ref = window.open(encodeURI("http://{0}{1}".f(config.host, config.path)), '_blank', 'location=no,toolbar=no,clearcache=yes,clearsessioncache=yes');
+      ref.addEventListener('loadstart', function(event) {
+        if (event.url.indexOf("http://localhost/?") == 0) {
+          navigator.splashscreen.show();
+          // login succ
+          var succUrl = event.url;
+          var sid = succUrl.replace('http://localhost/?', '');
+          store.setUserSID(sid);
+          window.location = 'home.html';
+        } else if (event.url == 'http://localhost/') {
+          // login fail 
+          noty({
+            text: '登入失败，请稍后重试。',
+            timeout: 2000,
+            type: 'warning',
+            layout: 'center'
+          });
+          ref.close();
+          $.mobile.loading('hide');
+          $('#lkdLoginBtn').removeClass('ui-state-disabled');
+        }
+      });
     });
     /**
      * Register locally
      * ======================================
      */
-    $('#locRegisBtn').on('click', function(){
-        $.mobile.changePage('#signup', {
-            transition: 'slideup'
-        });
+    $('#locRegisBtn').on('click', function() {
+      $.mobile.changePage('#signup', {
+        transition: 'slideup'
+      });
     });
 
     /**
      * Sign In locally
      * ======================================
      */
-    $('#locLoginBtn').on('click', function(){
-        var username = $('#loginEmail').val();
-        var password = $('#loginPassword').val();
-        
-        if(username && password){
-            // wait the keyboard hidden
-            navigator.splashscreen.show();
-            $('#loginEmail').val('');
-            $('#loginPassword').val('');
-            // Get cookie at first
-            // this is a trick approach, in order to get the 
-            // Set-Cookie value, first attempt to access an 
-            // unsupport GET path, express will inject the 
-            // Set-Cookie value into the headers. The browser
-            // then accepts it. In the following post request,
-            // Server side can get the req.cookies.
+    $('#locLoginBtn').on('click', function() {
+      var username = $('#loginEmail').val();
+      var password = $('#loginPassword').val();
+
+      if (username && password) {
+        // wait the keyboard hidden
+        navigator.splashscreen.show();
+        $('#loginEmail').val('');
+        $('#loginPassword').val('');
+        // Get cookie at first
+        // this is a trick approach, in order to get the 
+        // Set-Cookie value, first attempt to access an 
+        // unsupport GET path, express will inject the 
+        // Set-Cookie value into the headers. The browser
+        // then accepts it. In the following post request,
+        // Server side can get the req.cookies.
+        $.ajax({
+          url: 'http://{0}/auth/local'.f(config.host),
+          type: 'GET',
+          complete: function(xhr, status) {
             $.ajax({
-                url: 'http://{0}/auth/local'.f(config.host),
-                type: 'GET',
-                complete:function (xhr, status){
-                    $.ajax({
-                        url: 'http://{0}/auth/local'.f(config.host),
-                        type: 'POST',
-                        data: JSON.stringify({email:username, password: password}),
-                        dataType: 'json',
-                        headers:{
-                            'Content-Type' : 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        success: function(response){
-                            if(response.rc == 1){
-                                store.setUserSID(response.sid);
-                                window.location = 'home.html';
-                            }else if(response.rc == 2){
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text:'用户名不存在，请确认后再输入.',
-                                    type:'warning',
-                                    layout:'center',
-                                    timeout: 2000
-                                });
-                            }else if(response.rc == 3){
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text:'密码错误，请确认后再输入.',
-                                    type:'warning',
-                                    layout:'center',
-                                    timeout: 2000
-                                });
-                            }else {
-                                navigator.splashscreen.hide();
-                                noty({
-                                    text:'服务器返回信息无法理解，确认应用是最新版本.',
-                                    type:'warning',
-                                    layout:'center',
-                                    timeout: 2000
-                                });
-                            }
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown){
-                            console.debug('Login throw an error');
-                            console.debug(textStatus);
-                            console.debug(errorThrown);
-                            navigator.splashscreen.hide();
-                            noty({
-                                text:'服务器通信错误！',
-                                type:'warning',
-                                layout:'center',
-                                timeout: 2000
-                            });
-                        }
-                    });
+              url: 'http://{0}/auth/local'.f(config.host),
+              type: 'POST',
+              data: JSON.stringify({
+                email: username,
+                password: password
+              }),
+              dataType: 'json',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              success: function(response) {
+                if (response.rc == 1) {
+                  store.setUserSID(response.sid);
+                  window.location = 'home.html';
+                } else if (response.rc == 2) {
+                  navigator.splashscreen.hide();
+                  noty({
+                    text: '用户名不存在，请确认后再输入.',
+                    type: 'warning',
+                    layout: 'center',
+                    timeout: 2000
+                  });
+                } else if (response.rc == 3) {
+                  navigator.splashscreen.hide();
+                  noty({
+                    text: '密码错误，请确认后再输入.',
+                    type: 'warning',
+                    layout: 'center',
+                    timeout: 2000
+                  });
+                } else {
+                  navigator.splashscreen.hide();
+                  noty({
+                    text: '服务器返回信息无法理解，确认应用是最新版本.',
+                    type: 'warning',
+                    layout: 'center',
+                    timeout: 2000
+                  });
                 }
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.debug('Login throw an error');
+                console.debug(textStatus);
+                console.debug(errorThrown);
+                navigator.splashscreen.hide();
+                noty({
+                  text: '服务器通信错误！',
+                  type: 'warning',
+                  layout: 'center',
+                  timeout: 2000
+                });
+              }
             });
-        }else{
-            noty({text: '邮箱或密码不能为空.',
-                  layout:'center',
-                  timeout: 2000,
-                  type: 'warning'});
-        }
+          }
+        });
+      } else {
+        noty({
+          text: '邮箱或密码不能为空.',
+          layout: 'center',
+          timeout: 2000,
+          type: 'warning'
+        });
+      }
     });
     /*
      * user service level agreements
      */
     $('#agreementsPopup').popup('option', 'tolerance', '0,0');
 
-    $('#agreementsPopup').on('popupbeforeposition', function( event, ui ) {
+    $('#agreementsPopup').on('popupbeforeposition', function(event, ui) {
       $.get('http://{0}/public/md/user-service-agreements.md'.f(config.host), function(data) {
         var converter = new Showdown.converter();
         var html = converter.makeHtml(data);
@@ -321,98 +326,98 @@ define(function(require, exports, module) {
     navigator.splashscreen.hide();
   }
 
-  function _renderActivationPage(){
+  function _renderActivationPage() {
     $('#activeBtn').button('option', 'disabled', true);
-    $('#activeBtn').on('touchend', function (e) {
-        var params = {
-            code: $('#code').val(),
-            email: userEmail
-        };
+    $('#activeBtn').on('touchend', function(e) {
+      var params = {
+        code: $('#code').val(),
+        email: userEmail
+      };
 
-        $.mobile.loading( "show", {
-            textVisible: false,
-            theme: "a",
-            textonly: false
-        });
+      $.mobile.loading("show", {
+        textVisible: false,
+        theme: "a",
+        textonly: false
+      });
 
-        $.ajax({
-            url: 'http://{0}/auth/local/verify'.f(config.host),
-            type: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                'Accept': 'application/json'
-            },
-            data: JSON.stringify(params),
-            dataType: 'json',
-            timeout: 20000,
-            complete: function (xhr, status) {
-                var rst;
-                $.mobile.loading( "hide");
+      $.ajax({
+        url: 'http://{0}/auth/local/verify'.f(config.host),
+        type: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        data: JSON.stringify(params),
+        dataType: 'json',
+        timeout: 20000,
+        complete: function(xhr, status) {
+          var rst;
+          $.mobile.loading("hide");
 
-                if(xhr.status === 200) {
-                    rst = xhr.responseJSON;
+          if (xhr.status === 200) {
+            rst = xhr.responseJSON;
 
-                    if(rst.rc == '1') {
-                        store.setUserSID(rst.sid);
-                        navigator.splashscreen.show();
-                        window.location = 'home.html';
-                    } else if(rst.rc == '2') {
-                        $('#activation').find('.errorTip').text('验证码错误！');
-                    } else if(rst.rc == '3') {
-                        $('#activation').find('.errorTip').text('尝试次数过多，注册失败！！');
-                        var timeout = setTimeout(function () {
-                            window.location = 'login.html';
-                        }, 2000);
-                    } else if(rst.rc == '4') {
-                        $('#activation').find('.errorTip').text('非法请求！');
-                    } else if(rst.rc == '5') {
-                        $('#activation').find('.errorTip').text('服务器通信错误！');
-                    } else {
-                        $('#activation').find('.errorTip').text('网络错误，请稍后重试！');
-                    }
-                } else if (xhr.status === 404) {
-                    $('#activation').find('.errorTip').text('网络错误，请稍后重试！');
-                } else {
-                    $('#activation').find('.errorTip').text('服务器通信错误！');
-                }
+            if (rst.rc == '1') {
+              store.setUserSID(rst.sid);
+              navigator.splashscreen.show();
+              window.location = 'home.html';
+            } else if (rst.rc == '2') {
+              $('#activation').find('.errorTip').text('验证码错误！');
+            } else if (rst.rc == '3') {
+              $('#activation').find('.errorTip').text('尝试次数过多，注册失败！！');
+              var timeout = setTimeout(function() {
+                window.location = 'login.html';
+              }, 2000);
+            } else if (rst.rc == '4') {
+              $('#activation').find('.errorTip').text('非法请求！');
+            } else if (rst.rc == '5') {
+              $('#activation').find('.errorTip').text('服务器通信错误！');
+            } else {
+              $('#activation').find('.errorTip').text('网络错误，请稍后重试！');
             }
-        });
+          } else if (xhr.status === 404) {
+            $('#activation').find('.errorTip').text('网络错误，请稍后重试！');
+          } else {
+            $('#activation').find('.errorTip').text('服务器通信错误！');
+          }
+        }
+      });
 
-        return false;
+      return false;
 
     });
 
-    $('#code').on('input', function (e) {
-        var $t = $(this);
+    $('#code').on('input', function(e) {
+      var $t = $(this);
 
-        if(!/^\w+$/.test($t.val())) {
-            $('#activeBtn').button('disable');
-            return false;
-        }
+      if (!/^\w+$/.test($t.val())) {
+        $('#activeBtn').button('disable');
+        return false;
+      }
 
-        $('#activeBtn').button('option', 'disabled', false);
+      $('#activeBtn').button('option', 'disabled', false);
 
     });
 
     window.navigator.splashscreen.hide();
   }
 
-  function _renderForgetPwdPage(){
+  function _renderForgetPwdPage() {
     $('#forget-pwd .errorTip').text('');
 
-    $('#forgetPwdCancelBtn').on('click', function(){
+    $('#forgetPwdCancelBtn').on('click', function() {
       $.mobile.changePage('#login-index', {
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
     });
 
-    $('#forgetPwdSubmitBtn').on('click', function(){
+    $('#forgetPwdSubmitBtn').on('click', function() {
       var email = $('#forgetPwdEmail').val();
       var pwd = $('#forgetPwdpassword').val();
-      if(email && pwd){
+      if (email && pwd) {
         userEmail = email;
         $('#forgetPwdEmail').val('');
         $('#forgetPwdpassword').val('');
@@ -425,22 +430,22 @@ define(function(require, exports, module) {
             email: email,
             password: pwd
           }),
-          headers:{
+          headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          success: function(resp){
+          success: function(resp) {
             console.debug(JSON.stringify(resp));
-            if(resp && resp.rc){
-              switch(resp.rc){
+            if (resp && resp.rc) {
+              switch (resp.rc) {
                 case 1:
                   // the verify code is send out
-                    $.mobile.changePage('#activation',{
-                        transition: "none",
-                        reloadPage: false,
-                        reverse: false,
-                        changeHash: false
-                    });
+                  $.mobile.changePage('#activation', {
+                    transition: "none",
+                    reloadPage: false,
+                    reverse: false,
+                    changeHash: false
+                  });
                   break;
                 case 3:
                   // the target user does not exist
@@ -455,86 +460,105 @@ define(function(require, exports, module) {
                   $('#forget-pwd').find('.errorTip').text('服务器发生错误，请联系客服');
                   break;
               }
-            }else{
+            } else {
               // can not understand the response
               console.error('CAN NOT UNDERSTAND THE RESPONSE.')
             }
           },
-          error: function(xhr, textStatus, errorThrown){
+          error: function(xhr, textStatus, errorThrown) {
             console.error(textStatus);
             console.error(errorThrown);
           }
         });
-      }else{
+      } else {
         $('#forget-pwd').find('.errorTip').text('邮箱或密码不能为空');
       }
     });
   }
 
-  function _bindBackToSettingsPage(){
-    $('#backToSettingsBtn').unbind();
-    $('#backToSettingsBtn').on('click', function(){
+  function _bindBackToSettingsPage() {
+    // $('#backToSettingsBtn').unbind();
+    $('#backToSettingsBtn').on('click', function() {
+      console.debug('get _bindBackToSettingsPage ...');
       $.mobile.changePage('settings.html', {
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
     });
-  }
+  } 
 
-  function _renderAboutAppPage(){
-    _bindBackToSettingsPage();
-    var guideSwiper = new Swiper('#about-app .swiper-container',{
+  function _renderAboutAppPage() {
+    // go back to setting page
+    $('#about-app .header .title').on('click', function() {
+      $.mobile.changePage('settings.html', {
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
+      });
+    });
+    // disable the scroll event in about app page
+    $(document).delegate("#about-app .ui-content", "touchmove", false);
+    var guideSwiper = new Swiper('#about-app .swiper-container', {
       createPagination: true,
       pagination: '#about-app .pagination',
-      loop:false,
-      grabCursor: true,
-      onSwiperCreated: function(swiper){
+      loop: false,
+      grabCursor: false,
+      onSwiperCreated: function(swiper) {
         $('#about-app .pagination span:eq(0)').addClass('swiper-visible-switch swiper-active-switch')
       }
     });
     // $('#about-app .pagination span')[0].addClass('swiper-visible-switch swiper-active-switch');
   }
-  
-  function _getUserProfile(callback){
-      //var reqHeaders = {accept:"application/json"}
-      // connection available
-      util.getNetwork().then(function(networkType){
-          $.ajax({
-              type: "GET",
-              url: "http://{0}/user/me".f(config.host),
-              dataType: 'json',
-              // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
-              timeout: 20000,
-              success: function(data){
-                  //console.debug('[debug] user profile got from remote server : ' + JSON.stringify(data));
-                  callback(data);
-              },
-              error:function(XMLHttpRequest, textStatus, errorThrown){
-                  console.debug(errorThrown);
-                  window.location = 'login.html';
-              }
-          });
-      },function(err){
-          // no network
-          callback(store.getUserProfile());
+
+  function _getUserProfile(callback) {
+    //var reqHeaders = {accept:"application/json"}
+    // connection available
+    util.getNetwork().then(function(networkType) {
+      $.ajax({
+        type: "GET",
+        url: "http://{0}/user/me".f(config.host),
+        dataType: 'json',
+        // timeout in 20 seconds, bluemix sucks for visits from china due to GFW
+        timeout: 20000,
+        success: function(data) {
+          //console.debug('[debug] user profile got from remote server : ' + JSON.stringify(data));
+          callback(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.debug(errorThrown);
+          window.location = 'login.html';
+        }
       });
+    }, function(err) {
+      // no network
+      callback(store.getUserProfile());
+    });
   }
 
 
-  function _backToNotificationsList(){
-      $.mobile.changePage('notifications.html',{
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
-      });
+  function _backToNotificationsList() {
+    $.mobile.changePage('notifications.html', {
+      transition: "none",
+      reloadPage: false,
+      reverse: false,
+      changeHash: false
+    });
   }
 
-  function _renderAgreementsPage(){
-    _bindBackToSettingsPage();
-    try{
+  function _renderAgreementsPage() {
+    // go back to setting page
+    $('#agreements .header .title').on('click', function() {
+      $.mobile.changePage('settings.html', {
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
+      });
+    });
+    try {
       console.debug('render agreements in markdown format.');
       var converter = new Showdown.converter();
       $.get('http://{0}/public/md/user-service-agreements.md'.f(config.host), function(data) {
@@ -542,80 +566,82 @@ define(function(require, exports, module) {
         $('#agreements .agreements-text').html(html);
       });
 
-    }catch(e){
+    } catch (e) {
       console.error(e)
     }
   }
 
-  function _renderSettingsPage(){
+  function _renderSettingsPage() {
+    // disable the scroll event in settings page
+    // TODO this will impact iPhone4s-2 need to test on them 
+    $(document).delegate("#settings-index .ui-content", "touchmove", false);
 
     // bind post feedback btn
-
     $('#postFeedback').unbind();
-    $('#postFeedback').on('click', function(){
-        cordova.plugins.email.isAvailable(
-            function (isAvailable) {
-                // alert('Service is not available') unless isAvailable;
-                if(isAvailable){
-                  // get appVersion
-                  cordova.getAppVersion().then(function (version) {
-                    cordova.plugins.email.open({
-                        to:          ['arrking_fn@163.com'], // email addresses for TO field
-                        //cc:          ['iwhl.ste@gmail.com'], // email addresses for CC field
-                        bcc:         ['hain_wang@foxmail.com'], // email addresses for BCC field
-                         // attachments: Array, // file paths or base64 data streams
-                        subject:    '[宝莲灯用户反馈] 版本 v{0}'.f(version), // subject of the email
-                        body:       '你好，宝莲灯团队 <br/>', // email body (for HTML, set isHtml to true)
-                        isHtml:    true, // indicats if the body is HTML or plain text
-                    }, function(){
-                      console.debug('email view dismissed');
-                    });
-                  });
-                }else{
-                  noty({
-                    text:'邮箱服务不可用',
-                    layout: 'center',
-                    timeout: 2000,
-                    type: 'information' 
-                  });
-                }
-            }
-        );
+    $('#postFeedback').on('click', function() {
+      cordova.plugins.email.isAvailable(
+        function(isAvailable) {
+          // alert('Service is not available') unless isAvailable;
+          if (isAvailable) {
+            // get appVersion
+            cordova.getAppVersion().then(function(version) {
+              cordova.plugins.email.open({
+                to: ['arrking_fn@163.com'], // email addresses for TO field
+                //cc:          ['iwhl.ste@gmail.com'], // email addresses for CC field
+                bcc: ['hain_wang@foxmail.com'], // email addresses for BCC field
+                // attachments: Array, // file paths or base64 data streams
+                subject: '[宝莲灯用户反馈] 版本 v{0}'.f(version), // subject of the email
+                body: '你好，宝莲灯团队 <br/>', // email body (for HTML, set isHtml to true)
+                isHtml: true, // indicats if the body is HTML or plain text
+              }, function() {
+                console.debug('email view dismissed');
+              });
+            });
+          } else {
+            noty({
+              text: '邮箱服务不可用',
+              layout: 'center',
+              timeout: 2000,
+              type: 'information'
+            });
+          }
+        }
+      );
     });
 
 
     // add appVersion
-    cordova.getAppVersion().then(function (version) {
-      $('#settings-index .appVersion').text('v'+version);
+    cordova.getAppVersion().then(function(version) {
+      $('#settings-index .appVersion').text('v' + version);
     });
 
     // open about page
-    $('#aboutAppBtn').on('click', function(){
-      $.mobile.changePage('about.html',{
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+    $('#aboutAppBtn').on('click', function() {
+      $.mobile.changePage('about.html', {
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
     });
 
     // user service level agreements
-    $('#agreementsBtn').on('click', function(){
-      $.mobile.changePage('agreements.html',{
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+    $('#agreementsBtn').on('click', function() {
+      $.mobile.changePage('agreements.html', {
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
     });
 
     // add btns for handling subscriptions
     var currSubTags = store.getSubTags();
-    currSubTags.forEach(function(tagName){
-      switch(tagName){
+    currSubTags.forEach(function(tagName) {
+      switch (tagName) {
         case "activity":
           // http://stackoverflow.com/questions/496052/jquery-setting-the-selected-value-of-a-select-control-via-its-text-description
-          $("#subActivity").val('on'); 
+          $("#subActivity").val('on');
           $("#subActivity").slider("refresh");
           break;
         case "itnews":
@@ -632,104 +658,109 @@ define(function(require, exports, module) {
       }
     });
 
-    [
-      {el:"#subActivity", tagName:"activity"},
-      {el:"#subItnews", tagName:"itnews"},
-      {el:"#subPromotion", tagName:"promotion"}
-    ].forEach(function(candidate){
+    [{
+      el: "#subActivity",
+      tagName: "activity"
+    }, {
+      el: "#subItnews",
+      tagName: "itnews"
+    }, {
+      el: "#subPromotion",
+      tagName: "promotion"
+    }].forEach(function(candidate) {
       // bind events for activity tag
       $(candidate.el).unbind();
-      $(candidate.el).change(function(){
-        try{
-          if($(candidate.el).val() == 'off'){
+      $(candidate.el).change(function() {
+        try {
+          if ($(candidate.el).val() == 'off') {
             // not subscribe tag
-              console.debug('unsubscribeTag {0}'.f(candidate.tagName));
-              mbaas.push.unsubTag(candidate.tagName).then(function(response){
-                currSubTags = store.removeSubTag(candidate.tagName);
-              },function(err){
-                console.debug('unsubscribeTag {0} failed.'.f(candidate.tagName));
-                console.debug(err);
-                // notify user and reset the slider
-                $(candidate.el).val('on'); 
-                $(candidate.el).slider("refresh");
-              });
-          }else{
+            console.debug('unsubscribeTag {0}'.f(candidate.tagName));
+            mbaas.push.unsubTag(candidate.tagName).then(function(response) {
+              currSubTags = store.removeSubTag(candidate.tagName);
+            }, function(err) {
+              console.debug('unsubscribeTag {0} failed.'.f(candidate.tagName));
+              console.debug(err);
+              // notify user and reset the slider
+              $(candidate.el).val('on');
+              $(candidate.el).slider("refresh");
+            });
+          } else {
             // subscribe tag
             console.debug('subscribeTag {0}'.f(candidate.tagName));
-            mbaas.push.subTag(candidate.tagName).then(function(response){
+            mbaas.push.subTag(candidate.tagName).then(function(response) {
               currSubTags.push(candidate.tagName);
               store.setSubTags(currSubTags);
-            },function(err){
+            }, function(err) {
               console.debug(err);
-              $(candidate.el).val('off'); 
+              $(candidate.el).val('off');
               $(candidate.el).slider("refresh");
             });
           }
-        }catch(err){
+        } catch (err) {
           console.debug(err);
         }
-      });   
+      });
     });
 
     // change page to reset password
-    $('#settings-index .resetPwdBtn').on('click',function(){
+    $('#settings-index .resetPwdBtn').on('click', function() {
       $.mobile.changePage('reset-pwd.html', {
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
       return false;
     });
   }
 
-  function _renderResetPwdPage(){
+  function _renderResetPwdPage() {
     $('#backToSettingsBtn').unbind();
-    $('#backToSettingsBtn').on('click', function(){
+    $('#backToSettingsBtn').on('click', function() {
       $.mobile.changePage('settings.html', {
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
     });
 
     // request to send a verifiy code to user mail
-    $('#submitNewPassword').on('click', function(){
+    $('#submitNewPassword').on('click', function() {
       var newPwd = $('#reset-pwd .newPassword').val();
-      if(newPwd){
+      if (newPwd) {
         var params = {
-                    username: store.getUserProfile().displayName,
-                    password: newPwd,
-                    email: store.getUserId()
-              };
+          username: store.getUserProfile().displayName,
+          password: newPwd,
+          email: store.getUserId()
+        };
         $.ajax({
-            url: 'http://{0}/auth/local/signup'.f(config.host),
-            type: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                'Accept': 'application/json'
-            },
-            data: JSON.stringify(params),
-            dataType: 'json',
-            timeout: 20000,
-            success: function(response){
-              if(response.rc == 1){
-                $.mobile.changePage('reset-pwd-verify.html',{
-                    transition: "none",
-                    reloadPage: false,
-                    reverse: false,
-                    changeHash: false
-                });
-              }else{
-                alert(JSON.stringify(response));
-              }
-            },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-              alert(errorThrown);
+          url: 'http://{0}/auth/local/signup'.f(config.host),
+          type: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          data: JSON.stringify(params),
+          dataType: 'json',
+          timeout: 20000,
+          success: function(response) {
+            if (response.rc == 1) {
+              $.mobile.changePage('reset-pwd-verify.html', {
+                transition: "none",
+                reloadPage: false,
+                reverse: false,
+                changeHash: false
+              });
+            } else {
+              alert(JSON.stringify(response));
             }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(errorThrown);
+          }
         });
-      }else{
+      } else {
         noty({
           text: '新密码不能为空.',
           timeout: 2000,
@@ -740,102 +771,102 @@ define(function(require, exports, module) {
     });
   }
 
-  function _renderResetPwdVerifyPage(){
+  function _renderResetPwdVerifyPage() {
     $('#backToSettingsBtn').unbind();
-    $('#backToSettingsBtn').on('click', function(){
+    $('#backToSettingsBtn').on('click', function() {
       $.mobile.changePage('settings.html', {
-          transition: "none",
-          reloadPage: false,
-          reverse: false,
-          changeHash: false
+        transition: "none",
+        reloadPage: false,
+        reverse: false,
+        changeHash: false
       });
     });
 
     // listen on btn click event to check the verify code
-    $('#submitVerifyCode').on('click', function(){
+    $('#submitVerifyCode').on('click', function() {
       // TODO send verify code
       var code = $('#reset-pwd-verify .code').val();
-      if(code){
-          $('#reset-pwd-verify .code').val('');
-          var params = {
-              code: code,
-              email: store.getUserId()
-          };
-          $.ajax({
-            url: 'http://{0}/auth/local/verify'.f(config.host),
-            type: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-                'Accept': 'application/json'
-            },
-            data: JSON.stringify(params),
-            dataType: 'json',
-            timeout: 20000,
-            complete: function(xhr, status) {
-                var rst;
-                if(xhr.status === 200) {
-                    rst = xhr.responseJSON;
-                    if(rst.rc == '6') {
-                        // reset password successfully
-                        // logout the current user
-                        // reset user to login page
-                        navigator.splashscreen.show();
-                        logoutHandler();
-                    } else if(rst.rc == '2') {
-                        noty({
-                          text: '验证码错误.',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                    } else if(rst.rc == '3') {
-                        noty({
-                          text: '尝试测试过多.',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                        // TODO go back to settings page
-                    } else if(rst.rc == '4') {
-                        noty({
-                          text: '非法请求.',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                    } else if(rst.rc == '5') {
-                        noty({
-                          text: '服务器通信错误！',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                    } else {
-                        noty({
-                          text: '网络错误，请稍后重试！',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                    }
-                } else if (xhr.status === 404) {
-                     noty({
-                          text: '网络错误，请稍后重试！',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                } else {
-                     noty({
-                          text: '服务器通信错误！',
-                          timeout: 2000,
-                          layout: 'center',
-                          type: 'information'
-                        });
-                }
+      if (code) {
+        $('#reset-pwd-verify .code').val('');
+        var params = {
+          code: code,
+          email: store.getUserId()
+        };
+        $.ajax({
+          url: 'http://{0}/auth/local/verify'.f(config.host),
+          type: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          data: JSON.stringify(params),
+          dataType: 'json',
+          timeout: 20000,
+          complete: function(xhr, status) {
+            var rst;
+            if (xhr.status === 200) {
+              rst = xhr.responseJSON;
+              if (rst.rc == '6') {
+                // reset password successfully
+                // logout the current user
+                // reset user to login page
+                navigator.splashscreen.show();
+                logoutHandler();
+              } else if (rst.rc == '2') {
+                noty({
+                  text: '验证码错误.',
+                  timeout: 2000,
+                  layout: 'center',
+                  type: 'information'
+                });
+              } else if (rst.rc == '3') {
+                noty({
+                  text: '尝试测试过多.',
+                  timeout: 2000,
+                  layout: 'center',
+                  type: 'information'
+                });
+                // TODO go back to settings page
+              } else if (rst.rc == '4') {
+                noty({
+                  text: '非法请求.',
+                  timeout: 2000,
+                  layout: 'center',
+                  type: 'information'
+                });
+              } else if (rst.rc == '5') {
+                noty({
+                  text: '服务器通信错误！',
+                  timeout: 2000,
+                  layout: 'center',
+                  type: 'information'
+                });
+              } else {
+                noty({
+                  text: '网络错误，请稍后重试！',
+                  timeout: 2000,
+                  layout: 'center',
+                  type: 'information'
+                });
+              }
+            } else if (xhr.status === 404) {
+              noty({
+                text: '网络错误，请稍后重试！',
+                timeout: 2000,
+                layout: 'center',
+                type: 'information'
+              });
+            } else {
+              noty({
+                text: '服务器通信错误！',
+                timeout: 2000,
+                layout: 'center',
+                type: 'information'
+              });
             }
+          }
         });
-      }else{
+      } else {
         noty({
           text: '验证码不能为空.',
           timeout: 2000,
@@ -848,199 +879,185 @@ define(function(require, exports, module) {
     });
   }
 
-  function _openMsg(id, title, link){
-      console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
+  function _openMsg(id, title, link) {
+    console.debug('cms: open id {0} title {1} link {2}'.f(id, title, link));
 
-
-      // $.mobile.loading('show');
-      $.ajax({
-        url: link,
-        type:'GET',
-        dataType:'json',
-        headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        success:function(response){
-          if(response.post && response.post.body){
-            $('#notificationPopup .header a').html('<i class="fa fa-arrow-circle-left">{0}<i>'.f(title));
-            try{
-              $('#notificationPopup .content.ui-content').html(function(){
-                var converter = new Showdown.converter();
-                $.mobile.loading('hide');
-                var html = converter.makeHtml(response.post.body);
-                return html;
-              });
-              // set message as read
-              store.setNotificationAsRead(id);
-              // add scroll bar for content
-              // http://stackoverflow.com/questions/18859084/how-do-i-properly-add-a-scrollbar-to-a-jquery-mobile-popup-using-iscrollview
-              $('#notificationPopup .content.ui-content').css('overflow-y', 'scroll'); 
-              $('#notificationPopup').popup( "open");
-            }catch(e){
-              console.error(e);
-              $.mobile.loading('hide');
-            }
-          }else{
-            $.mobile.loading('hide');
-            // no post content
-            noty({
-              type:'information',
-              timeout: 2000,
-              text:'该文章无内容'
+    $.ajax({
+      url: link,
+      type: 'GET',
+      dataType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      success: function(response) {
+        if (response.post && response.post.body) {
+          $('#notificationPopup .header a').html('<i class="fa fa-arrow-circle-left">{0}<i>'.f(title));
+          try {
+            $('#notificationPopup .content.ui-content').html(function() {
+              var converter = new Showdown.converter();
+              var html = converter.makeHtml(response.post.body);
+              return html;
             });
+            // set message as read
+            store.setNotificationAsRead(id);
+            $('.slideId{0}'.f(id)).removeClass('unread');
+            // add scroll bar for content
+            // http://stackoverflow.com/questions/18859084/how-do-i-properly-add-a-scrollbar-to-a-jquery-mobile-popup-using-iscrollview
+            $('#notificationPopup .content.ui-content').css('overflow-y', 'scroll');
+            $('#notificationPopup').popup("open");
+          } catch (e) {
+            console.error(e);
           }
-        },
-        error: function(xhr, textStatus, errorThrown){
-          $.mobile.loading('hide');
-          console.error(textStatus);
-          console.error(errorThrown);
+        } else {
+          // no post content
+          noty({
+            type: 'information',
+            timeout: 2000,
+            text: '该文章无内容'
+          });
         }
-      });
-    }
-
-  function getNotificationSilde(id, title, link, date, category, description){
-      if( link && (link !== "#")){
-        return  '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link)
-              +     '<img src="{0}">'.f(notificationsPng[category])
-              +     '<div><h2>{0}</h2>'.f(util.trimByPixel(title, 140))
-              +     '<p>{0}</p></div>'.f(description)
-              +     '<p class="ui-li-aside"><strong>{0}</strong></p>'.f(util.getDate(date))
-              + '</a>';
-      } else{
-        return '{0}'.f(title);
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        console.error(textStatus);
+        console.error(errorThrown);
       }
+    });
   }
 
-  function _initNotificationSlides(){
-      var holdPosition = 0;
-      var slideNumber = 0;
+  function getNotificationSilde(id, title, link, date, category, description) {
+    if (link && (link !== "#")) {
+      return '<a href="#" onclick="SnowOpenMsg(\'{0}\',\'{1}\',\'{2}\')">'.f(id, title, link) + '<img src="{0}">'.f(notificationsPng[category]) + '<div><h2>{0}</h2>'.f(util.trimByPixel(title, 140)) + '<p>{0}</p></div>'.f(description) + '<p class="ui-li-aside"><strong>{0}</strong></p>'.f(util.getDate(date)) + '</a>';
+    } else {
+      return '{0}'.f(title);
+    }
+  }
 
-      inViewSlideKeys = [];
+  function _initNotificationSlides() {
 
-      notiSwiper = new Swiper('#notifications .swiper-container',{
-        mode:'vertical',
-        watchActiveIndex: true,
-        slidesPerView: 'auto',
-        freeMode: false,
-        slideElement: 'li',
-        grabCursor: true,
-        onTouchStart: function() {
-          holdPosition = 0;
-        },
-        onResistanceBefore: function(s, pos){
-          holdPosition = pos;
-          if( holdPosition > 100){
-              $('#notifications .messages .pull-to-refresh').hide();
-              $('#notifications .messages .release-to-refresh').show();
-          }else if(holdPosition > 30){
-              $('#notifications .messages .release-to-refresh').hide();
-              $('#notifications .messages .pull-to-refresh').show();
-          }else{
-              $('#notifications .messages .release-to-refresh').hide();
-              $('#notifications .messages .pull-to-refresh').hide();
-          }
-        },
-        onTouchEnd: function(){
-          if (holdPosition > 100) {
-              // Hold Swiper in required position
-              notiSwiper.setWrapperTranslate(0,100,0)
+    var holdPosition = 0;
+    inViewSlideKeys = [];
 
-              //Dissalow futher interactions
-              notiSwiper.params.onlyExternal=true
+    notiSwiper = new Swiper('#notifications .swiper-container', {
+      mode: 'vertical',
+      watchActiveIndex: true,
+      slidesPerView: 'auto',
+      freeMode: false,
+      slideElement: 'li',
+      grabCursor: true,
+      onTouchStart: function() {
+        holdPosition = 0;
+      },
+      onResistanceBefore: function(s, pos) {
+        holdPosition = pos;
+        if (holdPosition > 100) {
+          $('#notifications .messages .pull-to-refresh').hide();
+          $('#notifications .messages .release-to-refresh').show();
+        } else if (holdPosition > 30) {
+          $('#notifications .messages .release-to-refresh').hide();
+          $('#notifications .messages .pull-to-refresh').show();
+        } else {
+          $('#notifications .messages .release-to-refresh').hide();
+          $('#notifications .messages .pull-to-refresh').hide();
+        }
+      },
+      onTouchEnd: function() {
+        if (holdPosition > 100) {
+          // Hold Swiper in required position
+          notiSwiper.setWrapperTranslate(0, 100, 0)
 
-              //Show loader
-              $('#notifications .messages .release-to-refresh').hide();
-              $('#notifications .messages .pull-to-refresh').hide();
-              $('#notifications .messages .refreshing').show();
+          //Dissalow futher interactions
+          notiSwiper.params.onlyExternal = true
 
-              //Load slides
-              loadNewNotificationSlides();
-            }else{
-              $('#notifications .messages .release-to-refresh').hide();
-              $('#notifications .messages .pull-to-refresh').hide();
-            }
-          }
-      });
-      var slides = store.getNotifications();
-      var slideKeys = _.keys(slides);  
-      slideKeys.sort().forEach(function(key){
-        var sld = slides[key];
-        notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key), 
-          sld.date, sld.category, sld.description), 
-              'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
-        inViewSlideKeys.push(key);
-      });
-      console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
-      
-      function loadNewNotificationSlides() {
-          /* 
+          //Show loader
+          $('#notifications .messages .release-to-refresh').hide();
+          $('#notifications .messages .pull-to-refresh').hide();
+          $('#notifications .messages .refreshing').show();
+
+          //Load slides
+          loadNewNotificationSlides();
+        } else {
+          $('#notifications .messages .release-to-refresh').hide();
+          $('#notifications .messages .pull-to-refresh').hide();
+        }
+      }
+    });
+    var slides = store.getNotifications();
+    var slideKeys = _.keys(slides);
+    slideKeys.sort().forEach(function(key) {
+      var sld = slides[key];
+      notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "http://{0}/cms/post/{1}".f(config.host, key),
+          sld.date, sld.category, sld.description),
+        'swiper-slide ui-li-static ui-body-inherit {0} slideId{1}'.f(sld.isRead ? '' : 'unread', key));
+      inViewSlideKeys.push(key);
+    });
+    console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+
+    function loadNewNotificationSlides() {
+      /* 
           Probably you should do some Ajax Request here
           But we will just use setTimeout
           */
-          // #TODO read data from server
-          setTimeout(function(){
-            //Prepend new slide
-            var slides = store.getNotifications();
-            var slideKeys = _.keys(slides);  
-            slideKeys.sort().forEach(function(key){
-              var sld = slides[key];
-              if( _.indexOf(inViewSlideKeys, key) == -1){
-                notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key), 
-                  sld.date, sld.category, sld.description), 
-                      'swiper-slide ui-li-static ui-body-inherit {0}'.f(sld.isRead ? '':'unread'));
-                inViewSlideKeys.push(key);
-                console.debug(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
-              }
-            });
+      // #TODO read data from server
+      setTimeout(function() {
+        //Prepend new slide
+        var slides = store.getNotifications();
+        var slideKeys = _.keys(slides);
+        slideKeys.sort().forEach(function(key) {
+          var sld = slides[key];
+          if (_.indexOf(inViewSlideKeys, key) == -1) {
+            notiSwiper.prependSlide(getNotificationSilde(key, sld.title, "{0}/{1}".f(sld.server, key),
+                sld.date, sld.category, sld.description),
+              'swiper-slide ui-li-static ui-body-inherit {0} slideId{1}'.f(sld.isRead ? '' : 'unread', key));
+            inViewSlideKeys.push(key);
+            console.debug(' reset inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+          }
+        });
 
-            //Release interactions and set wrapper
-            notiSwiper.setWrapperTranslate(0,0,0)
-            notiSwiper.params.onlyExternal=false;
+        //Release interactions and set wrapper
+        notiSwiper.setWrapperTranslate(0, 0, 0)
+        notiSwiper.params.onlyExternal = false;
 
-            //Update active slide
-            notiSwiper.updateActiveSlide(0)
+        //Update active slide
+        notiSwiper.updateActiveSlide(0)
 
-            //Hide loader
-            $('#notifications .messages .refreshing').hide();
-          },1000)
-          slideNumber++;
-      }
+        //Hide loader
+        $('#notifications .messages .refreshing').hide();
+      }, 1000);
+    }
   }
 
-	function _parseNotification(msg){
-		var msgJson = {}; 
-		msg.split( "\n" ).forEach(function(a){
-		    var b = a.trim();
-		    if(b.startsWith('URL')){
-		        msgJson.url = b.slice(7,-2);
-		    }else if(b.startsWith('alert')){
-		    	msgJson.alert = b.slice(9,-2);
-		    }else if(b.startsWith('type')){
-		    	msgJson.type = b.slice(7,-1);
-		    }
-		});
-		return msgJson;
-	}
+  function _parseNotification(msg) {
+    var msgJson = {};
+    msg.split("\n").forEach(function(a) {
+      var b = a.trim();
+      if (b.startsWith('URL')) {
+        msgJson.url = b.slice(7, -2);
+      } else if (b.startsWith('alert')) {
+        msgJson.alert = b.slice(9, -2);
+      } else if (b.startsWith('type')) {
+        msgJson.type = b.slice(7, -1);
+      }
+    });
+    return msgJson;
+  }
 
-  function _openLinkInSystemBrowser(link){
+  function _openLinkInSystemBrowser(link) {
     console.debug('open link in external browser ' + link);
-    cordova.exec(null, null, "InAppBrowser", "open",
-      [link, "_system"]);
-   }
+    cordova.exec(null, null, "InAppBrowser", "open", [link, "_system"]);
+  }
 
-  function _openPopupUserInMap(userId){
+  function _openPopupUserInMap(userId) {
     console.debug('_openPopupUserInMap ... ' + userId);
     var person = SnowMapMarkers[userId];
-    if(person){
+    if (person) {
       $('#popupUserInMap div').empty();
       // append user name, pic, status, interest, edu, company
-      $('#popupUserInMap div').append(function(){
-        var rs = '<div style="vertical-align: middle;">'
-            + '<h2 style="text-align: center;">{0}</h2>'.f(person.displayName);
-        if(person.passport == 'linkedin'){
+      $('#popupUserInMap div').append(function() {
+        var rs = '<div style="vertical-align: middle;">' + '<h2 style="text-align: center;">{0}</h2>'.f(person.displayName);
+        if (person.passport == 'linkedin') {
           rs += '<img align="middle" src="{0}" width="180px" height="180px" onclick="javascript:SnowOpenLinkInSystemBrowser(\'{1}\')"></img><br/>'.f(person.picture, person.profile.publicProfileUrl);
-        }else{
+        } else {
           rs += '<img align="middle" src="{0}" width="180px" height="180px"></img><br/>'.f(person.picture);
         }
 
@@ -1048,35 +1065,37 @@ define(function(require, exports, module) {
         rs += '<li>{0}</li>'.f(person.status);
 
         // append edu
-        if(person.profile.educations._total > 0){
+        if (person.profile.educations._total > 0) {
           rs += '<li>{0}</li>'.f(person.profile.educations.values[0].schoolName);
         }
 
         // append company
-        if(person.profile.positions._total > 0){
+        if (person.profile.positions._total > 0) {
           rs += '<li>{0}</li>'.f(person.profile.positions.values[0].company.name)
         }
 
-        return rs += '</ul></div>';    
+        return rs += '</ul></div>';
       });
       $('#popupUserInMap').popup('open');
-    }else{
+    } else {
       // user disappears at the meantime
     }
   }
 
   // render user profile editor page
-  function _renderProfileEditor(){
+  function _renderProfileEditor() {
     var profile = store.getUserProfile();
     var propertyName = store.getProfileEditorProperty();
-    switch(propertyName){
+    switch (propertyName) {
       case 'edu':
+        // update title 
+        $('#profile-editor .header .title').html('<i class="fa fa-hand-o-left">&nbsp; 取消 &nbsp; &nbsp; &nbsp;{0}</i>'.f('毕业或就读学校'));
         // insert values into profile fields
-        if(profile._json.educations._total > 0){
+        if (profile._json.educations._total > 0) {
           $('#profile-editor .property-value').val(profile._json.educations.values[0].schoolName);
-        }else{
+        } else {
           // add placeholder
-          $('#profile-editor .property-value').attr('placeholder', '曾经就读于 ...');
+          $('#profile-editor .property-value').attr('placeholder', '大学 ...');
         }
 
         $('#profile-editor .property-icon').removeClass('fa-briefcase');
@@ -1084,9 +1103,10 @@ define(function(require, exports, module) {
         $('#profile-editor .property-icon').addClass('fa-graduation-cap');
         break;
       case 'company':
-        if(profile._json.positions._total > 0){
+        $('#profile-editor .header .title').html('<i class="fa fa-hand-o-left">&nbsp; 取消 &nbsp; &nbsp; &nbsp;{0}</i>'.f('工作公司或单位'));
+        if (profile._json.positions._total > 0) {
           $('#profile-editor .property-value').val(profile._json.positions.values[0].company.name);
-        }else{
+        } else {
           // add placeholder
           $('#profile-editor .property-value').attr('placeholder', '曾经就职于 ...');
         }
@@ -1096,9 +1116,10 @@ define(function(require, exports, module) {
         $('#profile-editor .property-icon').addClass('fa-briefcase');
         break;
       case 'interest':
-        if(profile._json.interests){
+        $('#profile-editor .header .title').html('<i class="fa fa-hand-o-left">&nbsp; 取消 &nbsp; &nbsp; &nbsp;{0}</i>'.f('有哪些兴趣爱好'));
+        if (profile._json.interests) {
           $('#profile-editor .property-value').val(profile._json.interests);
-        }else{
+        } else {
           // add placeholder
           $('#profile-editor .property-value').attr('placeholder', '兴趣 ...');
         }
@@ -1111,154 +1132,191 @@ define(function(require, exports, module) {
         break;
     }
 
-    $('#profile-editor .property-value').focus();
+    /************************************************************************************************* 
+     * FIX: to avoid the buggy header and footer to jump and stick not
+     * to the top/bottom of the page after an input or textfield lost focus and the keyboard dissapear                          *
+     *************************************************************************************************/ 
+     $('#profile-editor .property-value')
+     .on('focus', function (e) {
+        $('header, footer').css('position', 'absolute');
+     })
+     .on('blur', function (e) {
+        $('header, footer').css('position', 'fixed');
+        //force page redraw to fix incorrectly positioned fixed elements
+        setTimeout( function() {
+            window.scrollTo( $.mobile.window.scrollLeft(), $.mobile.window.scrollTop() );
+        }, 20 );
+     });
+     setTimeout(function(){
+      $('#profile-editor .property-value').focus();
+     }, 1000)
+
+    /**
+     * save profile property
+     */
+    function saveProfileProperty(){
+      var propertyValue = $('#profile-editor .property-value').val();
+      switch (propertyName) {
+        case 'edu':
+          if (propertyValue) {
+            profile._json.educations._total = 1;
+            profile._json.educations.values[0] = {
+              schoolName: propertyValue
+            };
+          } else {
+            profile._json.educations._total = 0;
+            profile._json.educations.values = [];
+          }
+          break;
+        case 'company':
+          if (propertyValue) {
+            profile._json.positions._total = 1;
+            profile._json.positions.values[0] = {
+              isCurrent: true,
+              company: {
+                name: propertyValue
+              }
+            }
+          } else {
+            profile._json.positions._total = 0;
+            profile._json.positions.values = {};
+          }
+          break;
+        case 'interest':
+          if (propertyValue) {
+            profile._json.interests = propertyValue;
+          }
+          break;
+        default:
+          break;
+      }
+
+      // because the user would upload the avatar again, the 
+      // ajax request is slow.
+      $.mobile.loading('show');
+      console.debug('update profile with {0} = {1}'.f(propertyName, propertyValue));
+      util.getNetwork().then(function() {
+        _updateUserProfile(profile).then(function(response) {
+          // refresh user profile page
+          _getUserProfile(function(data) {
+            store.setUserProfile(data);
+            /*
+             * add the card value and set input box values
+             */
+            $.mobile.loading('hide');
+            $.mobile.changePage("user.html", {
+              transition: "none",
+              reloadPage: false,
+              reverse: true,
+              changeHash: false
+            });
+          });
+        }, function(err) {
+          $.mobile.loading('hide');
+          noty({
+            type: 'warning',
+            text: '发生错误，请更新应用或者重新登录。',
+            layout: 'center',
+            timeout: 2000
+          });
+        });
+      }, function(err) {
+        $.mobile.loading('hide');
+        noty({
+          type: 'warning',
+          text: '无网络服务.',
+          layout: 'center',
+          timeout: 2000
+        });
+      });
+    }
 
     /**
      * modify local user profile
      */
-    $('#saveProfileBtn').on('click', function(){
-        var propertyValue = $('#profile-editor .property-value').val();
-        switch(propertyName){
-          case 'edu':
-            if(propertyValue){
-              profile._json.educations._total = 1;
-              profile._json.educations.values[0] = { schoolName : propertyValue};
-            }else{
-              profile._json.educations._total = 0;
-              profile._json.educations.values = [];
-            }
-            break;
-          case 'company':
-            if(propertyValue){
-              profile._json.positions._total = 1;
-              profile._json.positions.values[0] = { isCurrent : true,
-                 company: {
-                  name : propertyValue 
-                }
-              }
-            }else{
-              profile._json.positions._total = 0;
-              profile._json.positions.values = {};
-            }
-            break;
-          case 'interest':
-            if(propertyValue){
-              profile._json.interests = propertyValue;
-            }
-            break;
-          default:
-            break;
-        }
+    $('#saveProfileBtn').on('click', function() {
+      saveProfileProperty();
+    });
 
-        // because the user would upload the avatar again, the 
-        // ajax request is slow.
-        $.mobile.loading('show');
-        console.debug('update profile with {0} = {1}'.f(propertyName, propertyValue) );
-        util.getNetwork().then(function(){
-          _updateUserProfile(profile).then(function(response){
-            // refresh user profile page
-            _getUserProfile(function(data){
-              store.setUserProfile(data);
-              /*
-               * add the card value and set input box values
-               */
-              $.mobile.loading('hide');
-              $.mobile.changePage( "user.html", {
-                  transition: "none",
-                  reloadPage: false,
-                  reverse: true,
-                  changeHash: false
-              });
-            });
-          }, function(err){
-            $.mobile.loading('hide');
-            noty({
-              type: 'warning',
-              text: '发生错误，请更新应用或者重新登录。',
-              layout: 'center',
-              timeout: 2000
-            });
-        });
-      }, function(err){
-        $.mobile.loading('hide');
-        noty({
-              type: 'warning',
-              text: '无网络服务.',
-              layout: 'center',
-              timeout: 2000
-        });
-      });
+    $('#profileEditorForm').submit(function( event ) {
+      saveProfileProperty();
+      return false;
     });
 
     // cancel editing user profile
-    $('#cancelEditProfileBtn').on('click', function(){
-      $.mobile.changePage( "user.html", {
-          transition: "none",
-          reloadPage: false,
-          reverse: true,
-          changeHash: false
+    $('#cancelEditProfileBtn').on('click', function() {
+      $.mobile.changePage("user.html", {
+        transition: "none",
+        reloadPage: false,
+        reverse: true,
+        changeHash: false
       });
     });
   }
 
-  function _updateUserProfile(newProfile){
+  function _updateUserProfile(newProfile) {
     var deferred = $.Deferred();
     $.ajax({
       url: 'http://{0}/user/me'.f(config.host),
       type: 'PUT',
-      data: JSON.stringify({profile: newProfile}),
+      data: JSON.stringify({
+        profile: newProfile
+      }),
       dataType: 'json',
-      headers:{
-        'Content-Type' : 'application/json',
-        'Accept' : 'application/json'
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-      success: function(response){
+      success: function(response) {
         deferred.resolve(response);
       },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.debug("[error] PUT http://{0}/user/me throw an error.".f(config.host));
-        console.debug("[error] Status: " + textStatus); 
-        console.debug("[error] Error: " + errorThrown); 
-        deferred.reject({textStatus: textStatus, error: errorThrown });
+        console.debug("[error] Status: " + textStatus);
+        console.debug("[error] Error: " + errorThrown);
+        deferred.reject({
+          textStatus: textStatus,
+          error: errorThrown
+        });
       }
-    });        
-    return deferred.promise();  
+    });
+    return deferred.promise();
   }
 
-  function logoutHandler(){
-      $.ajax({
-        type: "GET",
-        url: "http://{0}/logout".f(config.host),
-        success: function(data){
-            console.debug("LOGOUT user's session is cleaned in server.")
-            store.deleteUserSID();
-            cordova.plugins.musa.removeCookieByDomain(
-              'http://{0}/,http://{1}/'.f(config.host, config.ssehost),
-              function(){
-                window.location = 'login.html';
-              },
-              function(err){
-                window.location = 'login.html';
-              }
-            );
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            console.debug("[error] Post http://{0}/logout throw an error.".f(config.host));
-            console.debug("[error] Status: " + textStatus); 
-            console.debug("[error] Error: " + errorThrown); 
-            store.deleteUserSID();
+  function logoutHandler() {
+    $.ajax({
+      type: "GET",
+      url: "http://{0}/logout".f(config.host),
+      success: function(data) {
+        console.debug("LOGOUT user's session is cleaned in server.")
+        store.deleteUserSID();
+        cordova.plugins.musa.removeCookieByDomain(
+          'http://{0}/,http://{1}/'.f(config.host, config.ssehost),
+          function() {
             window.location = 'login.html';
-        }
-      });
+          },
+          function(err) {
+            window.location = 'login.html';
+          }
+        );
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.debug("[error] Post http://{0}/logout throw an error.".f(config.host));
+        console.debug("[error] Status: " + textStatus);
+        console.debug("[error] Error: " + errorThrown);
+        store.deleteUserSID();
+        window.location = 'login.html';
+      }
+    });
   }
 
-  function bindProfileEditorBtns(){
-    $('#user-index .content ul .fa.fa-edit').each(function(){
-      var $el = $( this );
+  function bindProfileEditorBtns() {
+    $('#user-index .content ul .fa.fa-edit').each(function() {
+      var $el = $(this);
       $el.unbind();
-      $el.on('click',function(){
+      $el.on('click', function() {
         store.setProfileEditorProperty($el.data("property"));
-        $.mobile.changePage( "profile-editor.html", {
+        $.mobile.changePage("profile-editor.html", {
           transition: "none",
           reloadPage: false,
           reverse: true,
@@ -1268,474 +1326,480 @@ define(function(require, exports, module) {
     });
   }
 
-  function _renderUserProfilePage(){
-      var user = store.getUserProfile();
-      var defaultAvatar = 'img/user-default-avatar.png';
-      // if local passport, show the eidt btn
-      switch(user.provider){
-        case 'local':
-          $('#user-index .content .avatar i.btn').addClass('fa-camera-retro');
-          $('#user-index .content .avatar i.btn').removeClass('fa-external-link');
-          // take picure as avatar
-          $('.avatar').on('touchend', function () {
-            $('.popSelect').slideDown(300);
-          });
-          bindProfileEditorBtns();
-          break;
-        case 'linkedin':
-          // hide the camera icon
-          $('#user-index .content .avatar i.btn').removeClass('fa-camera-retro');
-          $('#user-index .content .avatar i.btn').addClass('fa-external-link');
-          $('#user-index .content ul .fa.fa-edit').hide();
-          $('.avatar').on('touchend', function (){
-            cordova.exec(null, null, "InAppBrowser", "open",
-               [store.getUserProfile()._json.publicProfileUrl, "_system"]);
-          });
-          defaultAvatar = 'img/linkedin-default-avatar.png'
-          break;
-        default:
-          console.debug('You can find me.')
+  function _renderUserProfilePage() {
+    var user = store.getUserProfile();
+    var defaultAvatar = 'img/user-default-avatar.png';
+    // if local passport, show the eidt btn
+    switch (user.provider) {
+      case 'local':
+        $('#user-index .content .avatar i.btn').addClass('fa-camera-retro');
+        $('#user-index .content .avatar i.btn').removeClass('fa-external-link');
+        // take picure as avatar
+        $('.avatar').on('touchend', function() {
+          $('.popSelect').slideDown(300);
+        });
+        bindProfileEditorBtns();
         break;
-      }
+      case 'linkedin':
+        // hide the camera icon
+        $('#user-index .content .avatar i.btn').removeClass('fa-camera-retro');
+        $('#user-index .content .avatar i.btn').addClass('fa-external-link');
+        $('#user-index .content ul .fa.fa-edit').hide();
+        $('.avatar').on('touchend', function() {
+          cordova.exec(null, null, "InAppBrowser", "open", [store.getUserProfile()._json.publicProfileUrl, "_system"]);
+        });
+        defaultAvatar = 'img/linkedin-default-avatar.png'
+        break;
+      default:
+        console.debug('You can find me.')
+        break;
+    }
 
-      // displayName
-      $('#user-index .header .title').html('{0}'.f(user.displayName));
-      // user avatar
-      if(user._json.pictureUrl ){
-        $('#user-index .avatar img').attr('src', user._json.pictureUrl);
-      } else {
-        // no user pic, add a image for user choosing a photo
-        $('#user-index .avatar img').attr('src', defaultAvatar);
-      }
-      // collegue
-      if(user._json.educations._total > 0){
-          // how to render it Master?Bachelor, now just show up a school
-          $.each(user._json.educations.values, function(index, education){
-              if( index < 1){
-                  $('#user-index i .edu').append(
-                    util.trimByPixel('{0} {1} <br> '.f(education.schoolName, education.degree||''), 200));
-              }
-          })
-      }else{
-          // no school
-          $('#user-index i .edu').append('{0} <br> '.f("您什么也没有写。"));
-      }
-      // positions
-      if(user._json.positions._total > 0){
-          $.each(user._json.positions.values,function(index, position){
-              if(position.isCurrent){
-                  $('#user-index i .company').text(
-                    util.trimByPixel(position.company.name, 200));
-              }
-          })
-      }else{
-          $('#user-index i .company').append('{0} '.f("您什么也没有写。"));
-          // no positions available
-      }
+    // displayName
+    $('#user-index .header .title').html('{0}'.f(user.displayName));
+    // user avatar
+    if (user._json.pictureUrl) {
+      $('#user-index .avatar img').attr('src', user._json.pictureUrl);
+    } else {
+      // no user pic, add a image for user choosing a photo
+      $('#user-index .avatar img').attr('src', defaultAvatar);
+    }
+    // collegue
+    if (user._json.educations._total > 0) {
+      // how to render it Master?Bachelor, now just show up a school
+      $.each(user._json.educations.values, function(index, education) {
+        if (index < 1) {
+          $('#user-index i .edu').text(
+            util.trimByPixel('{0} {1}'.f(education.schoolName, education.degree || ''), 200));
+        }
+      })
+    } else {
+      // no school
+      $('#user-index i .edu').text('{0}'.f("您什么也没有写。"));
+    }
+    // positions
+    if (user._json.positions._total > 0) {
+      $.each(user._json.positions.values, function(index, position) {
+        if (position.isCurrent) {
+          $('#user-index i .company').text(
+            util.trimByPixel(position.company.name, 200));
+        }
+      })
+    } else {
+      $('#user-index i .company').text('{0} '.f("您什么也没有写。"));
+      // no positions available
+    }
 
-      // interests
-      if(user._json.interests){
-          $('#user-index i .interest').append(
-            util.trimByPixel('{0} <br> '.f(user._json.interests), 200));
-      }else{
-          // no interest
-          $('#user-index i .interest').append('{0} <br> '.f("您什么也没有写。"));
-      }
+    // interests
+    if (user._json.interests) {
+      $('#user-index i .interest').text(
+        util.trimByPixel('{0}'.f(user._json.interests), 200));
+    } else {
+      // no interest
+      $('#user-index i .interest').text('{0}'.f("您什么也没有写。"));
+    }
 
-      /**
-       * handle logout event
-       */
-      $("#signOutBtn").on('click', function(){
-        navigator.splashscreen.show();
-        logoutHandler();
-      });
+    /**
+     * handle logout event
+     */
+    $("#signOutBtn").on('click', function() {
+      navigator.splashscreen.show();
+      logoutHandler();
+    });
 
-      /**
-       * change user avatar
-       */
-      var cameraOptions = {
-        quality : 75,
-        destinationType : Camera.DestinationType.DATA_URL,
-        sourceType : Camera.PictureSourceType.SAVEDPHOTOALBUM,
-        allowEdit : true,
-        encodingType: Camera.EncodingType.JPEG,
-        targetWidth: 180,
-        targetHeight: 180,
-        popoverOptions: CameraPopoverOptions,
-        saveToPhotoAlbum: false
-      };
-      /** 
-       * photo selection success callback
-       */
-      var cameraSuccess = function (imageData) {
-        util.getNetwork().then(function (data) {
-          $('.popSelect').slideUp(300);
+    /**
+     * change user avatar
+     */
+    var cameraOptions = {
+      quality: 75,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 180,
+      targetHeight: 180,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false
+    };
+    /** 
+     * photo selection success callback
+     */
+    var cameraSuccess = function(imageData) {
+      util.getNetwork().then(function(data) {
+        $('.popSelect').slideUp(300);
 
-          $.mobile.loading('show');
-          $.ajax({
-            type:'POST',
-            url: 'http://{0}/user/avatar'.f(config.host),
-            dataType: 'json',
-            data: JSON.stringify({
-              // data:image/png;base64
-              base64: imageData
-            }),
-            headers:{
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            complete: function (xhr, status) {
-              $.mobile.loading('hide');
-              var rst;
+        $.mobile.loading('show');
+        $.ajax({
+          type: 'POST',
+          url: 'http://{0}/user/avatar'.f(config.host),
+          dataType: 'json',
+          data: JSON.stringify({
+            // data:image/png;base64
+            base64: imageData
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          complete: function(xhr, status) {
+            $.mobile.loading('hide');
+            var rst;
 
-              if(xhr.status == '200') {
-                rst = xhr.responseJSON;
+            if (xhr.status == '200') {
+              rst = xhr.responseJSON;
 
-                if(rst.rc == '3') {
-                  $('.avatar img').attr('src', rst.url);
-                  store.saveUserAvatar(rst.url);
-                }else{
-                  noty({
-                    text: '上传失败，请稍后重试！',
-                    layout:'center',
-                    timeout: 2000,
-                    type: 'warning'
-                  });
-                }
+              if (rst.rc == '3') {
+                $('.avatar img').attr('src', rst.url);
+                store.saveUserAvatar(rst.url);
               } else {
                 noty({
                   text: '上传失败，请稍后重试！',
-                  layout:'center',
+                  layout: 'center',
                   timeout: 2000,
                   type: 'warning'
                 });
               }
+            } else {
+              noty({
+                text: '上传失败，请稍后重试！',
+                layout: 'center',
+                timeout: 2000,
+                type: 'warning'
+              });
             }
-          });
-        }, function (error) {
-          noty({
-            text: '无网络服务',
-            layout:'center',
-            timeout: 2000,
-            type: 'warning'
-          });
+          }
         });
-      };
-
-      var cameraError = function () {
-
-        $('.popSelect').slideUp(300);
-        // Comment out for Issue #242 
-        // noty({
-        //   text: '无法选择照片！',
-        //   layout:'center',
-        //   timeout: 2000,
-        //   type: 'warning'
-        // });
-      };
-
-      $('#camera').on('touchend', function () {
-        cameraOptions.sourceType = Camera.PictureSourceType.CAMERA;
-        navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+      }, function(error) {
+        noty({
+          text: '无网络服务',
+          layout: 'center',
+          timeout: 2000,
+          type: 'warning'
+        });
       });
+    };
 
-      $('#photoLibrary').on('touchend', function () {
-        cameraOptions.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
-        navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
-      });
+    var cameraError = function() {
 
-      $('#cancel').on('touchend', function () {
-        $('.popSelect').slideUp(300);
-        return false;
-      });
+      $('.popSelect').slideUp(300);
+      // Comment out for Issue #242 
+      // noty({
+      //   text: '无法选择照片！',
+      //   layout:'center',
+      //   timeout: 2000,
+      //   type: 'warning'
+      // });
+    };
 
-      $('.popSelect').on('touchmove', function () {
-        return false;
-      });
+    $('#camera').on('touchend', function() {
+      cameraOptions.sourceType = Camera.PictureSourceType.CAMERA;
+      navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+    });
+
+    $('#photoLibrary').on('touchend', function() {
+      cameraOptions.sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+      navigator.camera.getPicture(cameraSuccess, cameraError, cameraOptions);
+    });
+
+    $('#cancel').on('touchend', function() {
+      $('.popSelect').slideUp(300);
+      return false;
+    });
+
+    $('.popSelect').on('touchmove', function() {
+      return false;
+    });
   }
 
-	function _respPushNotificationArrival(){
-		util.getNotification().then(function(data){
-      if(_.isObject(data.notifications)){
+  function _respPushNotificationArrival() {
+    util.getNotification().then(function(data) {
+      if (_.isObject(data.notifications)) {
         var tags = store.getSubTags();
         var keys = _.keys(data.notifications);
-        keys.forEach(function(key){
-          try{
+        keys.forEach(function(key) {
+          try {
             var notification = JSON.parse(data.notifications[key]);
             // check if the notification is subscribed by this user
-            if(_.indexOf(tags, notification.category) != -1){
+            if (_.indexOf(tags, notification.category) != -1) {
               console.debug('save notification into localStorage - ' + JSON.stringify(notification));
               store.saveNotifications(notification);
             }
-          }catch(e){
+          } catch (e) {
             console.debug(e);
           }
         });
       }
-    },function(err){
+    }, function(err) {
       console.debug(err);
     });
-	}
+  }
 
-  function bindQRbtn(){
+  function bindQRbtn() {
     $('#headerBtn1').unbind();
     // Scan QR 
-    $('#headerBtn1').on('click', function(){
-      try{
+    $('#headerBtn1').on('click', function() {
+      try {
         cordova.plugins.barcodeScanner.scan(
-          function (result) {
-              var code = result.text;
-              if(code){
-                var data = JSON.parse(code);
-                if(data.lng && data.lat){
-                  gps.getCurrentPosition().then(function(pos){
-                      var maps = store.getMaps();
-                      var currMapId = store.getCurrentMapId();
-                      console.debug('get position ...' + JSON.stringify(pos));
-                      if(gps.isPointInsideCircle(maps, currMapId, pos.coords)){
-                        
-                        // change a page to get user status 
-                        $('#popupStatus').popup( "open", {
-                          transition: "fade",
-                          positionTo: "window"
-                        });
+          function(result) {
+            var code = result.text;
+            if (code) {
+              var data = JSON.parse(code);
+              if (data.lng && data.lat) {
+                gps.getCurrentPosition().then(function(pos) {
+                  var maps = store.getMaps();
+                  var currMapId = store.getCurrentMapId();
+                  console.debug('get position ...' + JSON.stringify(pos));
+                  if (gps.isPointInsideCircle(maps, currMapId, pos.coords)) {
 
-                        // the first attempt will not center the pop as the window
-                        // is not full set
-                        // setTimeout(function(){
-                        //   $('#popupStatus').popup("reposition",{
-                        //     positionTo: "window"
-                        //   });
-                        // }, 500);
+                    // change a page to get user status 
+                    $('#popupStatus').popup("open", {
+                      transition: "fade",
+                      positionTo: "window"
+                    });
 
-                        $('#submitStatusBtn').unbind();
-                        $('#submitStatusBtn').on('click', function(){
-                          $.ajax({
-                            type: "POST",
-                            url: "http://{0}/rtls/locin".f(config.host),
-                            dataType: 'json',
-                            data: JSON.stringify({
-                              mapId: currMapId,
-                              lat: data.lat, 
-                              lng: data.lng,
-                              status: $('#myStatus').val(),
-                              duration : $('#sharingDuration').val() * 60000,
-                              timestamp: new Date().getTime()
-                            }),
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            success: function(data){
-                                console.debug(JSON.stringify(data));
-                            },
-                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                console.debug("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-                                console.debug("[error] Status: " + textStatus); 
-                                console.debug("[error] Error: " + errorThrown); 
-                            }
-                          });
-                        });
-                      }else{
-                        noty({text: '您当前不在{0}.'.f(maps[currMapId].name),
-                          layout: 'center',
-                          type: 'warning',
-                          timeout: 2000});
-                      }
-                  }, function(err){
-                    noty({text: '无法获得GPS位置服务信息.',
-                          layout: 'center',
-                          type: 'warning',
-                          timeout: 2000})
-                  });
-                }else{
-                  console.debug('do not have position data !');
-                }
+                    // the first attempt will not center the pop as the window
+                    // is not full set
+                    // setTimeout(function(){
+                    //   $('#popupStatus').popup("reposition",{
+                    //     positionTo: "window"
+                    //   });
+                    // }, 500);
+
+                    $('#submitStatusBtn').unbind();
+                    $('#submitStatusBtn').on('click', function() {
+                      $.ajax({
+                        type: "POST",
+                        url: "http://{0}/rtls/locin".f(config.host),
+                        dataType: 'json',
+                        data: JSON.stringify({
+                          mapId: currMapId,
+                          lat: data.lat,
+                          lng: data.lng,
+                          status: $('#myStatus').val(),
+                          duration: $('#sharingDuration').val() * 60000,
+                          timestamp: new Date().getTime()
+                        }),
+                        headers: {
+                          "Accept": "application/json",
+                          "Content-Type": "application/json"
+                        },
+                        success: function(data) {
+                          console.debug(JSON.stringify(data));
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          console.debug("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+                          console.debug("[error] Status: " + textStatus);
+                          console.debug("[error] Error: " + errorThrown);
+                        }
+                      });
+                    });
+                  } else {
+                    noty({
+                      text: '您当前不在{0}.'.f(maps[currMapId].name),
+                      layout: 'center',
+                      type: 'warning',
+                      timeout: 2000
+                    });
+                  }
+                }, function(err) {
+                  noty({
+                    text: '无法获得GPS位置服务信息.',
+                    layout: 'center',
+                    type: 'warning',
+                    timeout: 2000
+                  })
+                });
+              } else {
+                console.debug('do not have position data !');
               }
+            }
           },
-          function (error) {
+          function(error) {
             console.debug(error);
           }
         );
-      }catch(e){
+      } catch (e) {
         console.debug(e);
       }
       return false;
     });
   }
 
-  function renderHomeMap(){
+  function renderHomeMap() {
     $("#people").hide();
     $("#map").show();
-    $('#headerBtn1').buttonMarkup({icon:'qrcode'}, false);
+    $('#headerBtn1').buttonMarkup({
+      icon: 'qrcode'
+    }, false);
     $('#headerBtn1').show();
     bindQRbtn();
     // SnowMapMarkers is defined in map.js for global accessing 
     // markers
-    if(SnowMapMarkers[store.getUserId()]){
+    if (SnowMapMarkers[store.getUserId()]) {
       $('#headerBtn2').show();
     }
   }
 
-  function _centerPersonByUserIdInMapPage(userId){
+  function _centerPersonByUserIdInMapPage(userId) {
     console.debug('map: center {0} in map page'.f(userId));
-    if(util.getHomeSwiperPage() != 1 ){
+    if (util.getHomeSwiperPage() != 1) {
       // My Swiper API - http://www.idangero.us/sliders/swiper/api.php
       homeSwiper.swipeTo(0, 300);
     }
-    setTimeout(function(){
-      mapController.panTo(SnowMapMarkers[userId].marker.getLatLng(), function(){
+    setTimeout(function() {
+      mapController.panTo(SnowMapMarkers[userId].marker.getLatLng(), function() {
         SnowMapMarkers[userId].marker.closePopup().openPopup();
       });
     }, 1000);
   }
 
-  function renderPeoplePage(){
-    $('#people').css('background','');
+  function renderPeoplePage() {
+    $('#people').css('background', '');
     $('#people .list').empty();
     $('#headerBtn2').hide();
     $('#headerBtn1').hide();
     $("#map").hide();
     $("#people").show();
     $('#headerBtn1').unbind();
-    $('#headerBtn1').on('click', function(){
+    $('#headerBtn1').on('click', function() {
       renderPeoplePage();
     });
 
-    if(window.SnowMapMarkers && 
+    if (window.SnowMapMarkers &&
       (_.keys(window.SnowMapMarkers).length > 0)) {
       var people = window.SnowMapMarkers;
       $('#people ul').empty();
-      _.each(people, function(person, userId){
+      _.each(people, function(person, userId) {
         console.debug('people: add {0} into page.'.f(userId));
-        $('#people ul').append(function(){
-          return    '<li>'
-                  +    '<a href="#" onclick="javascript:SnowCenterPersonByUserIdInMapPage(\'{0}\');return false;">'.f(userId)
-                  +    '<img src="{0}">'.f(person.picture)
-                  +    '<h2>{0}</h2>'.f(person.displayName)
-                  +    '<p>{0}</p></a>'.f(person.status)
-                  + '</li>';
+        $('#people ul').append(function() {
+          return '<li>' + '<a href="#" onclick="javascript:SnowCenterPersonByUserIdInMapPage(\'{0}\');return false;">'.f(userId) + '<img src="{0}">'.f(person.picture) + '<h2>{0}</h2>'.f(person.displayName) + '<p>{0}</p></a>'.f(person.status) + '</li>';
         });
       });
-      $('#people ul').listview( "refresh" );
-    }else{
+      $('#people ul').listview("refresh");
+    } else {
       console.debug('no body in {0}'.f(store.getCurrentMapId()));
       $('#people ul').empty();
-      $('#people ul').listview( "refresh" );
+      $('#people ul').listview("refresh");
     }
   }
 
-  function _setHomeSwiperHeaderTitleByMapId(mapId,callback){
+  function _setHomeSwiperHeaderTitleByMapId(mapId, callback) {
     var maps = store.getMaps();
     $('#home-index .map.swiper-slide p').text(util.trimByPixel('地图@{0}'.f(maps[mapId].name), 150));
     $('#home-index .people.swiper-slide p').text(util.trimByPixel('圈子@{0}'.f(maps[mapId].name), 150));
-    if(callback){
+    if (callback) {
       callback();
     }
   }
 
-  function _createHomeSwiperHeader(){
-      homeSwiper = new Swiper('#home-swiper-header .swiper-container',{
-          pagination: '#home-swiper-header .pagination',
-          loop:true,
-          grabCursor: false,
-          paginationClickable: true,
-          onSlideChangeEnd : function(swiper, direction){
-              switch(swiper.activeIndex % 2){
-                  case 0:
-                    renderPeoplePage();
-                    break;
-                  case 1:
-                    renderHomeMap();
-                    break;
-                  default :
-                    console.debug('fine me if you can.');
-                    break;
-              }
-          }
-      });
-
-      $("#home-index .swiper-slide.map").on('click', function(){
-        // TODO add an panel window to select map locations
-        // $("#selectMapPanel").panel().enhanceWithin();
-        $("#selectMapPanel").panel("open", { 
-          position: "left" 
-        });
-        return false;
-      });
-
-      $("#home-index .swiper-slide.people").on('click', function(){
-        // people header is clicked !
-        // TODO show a panel in the people page
-        // this is panel can be used for searching people, filter people
-        return false;
-      });
-
-      $( "#selectMapPanel" ).panel({
-        beforeopen: function( event, ui ) {
-          var currMapId = store.getCurrentMapId();
-          $('#selectMapPanel ul').empty();
-          $('#selectMapPanel ul').append('<li data-role="list-divider">服务号</li>')
-          _.each(store.getMaps(), function(value, key, list){
-            $('#selectMapPanel ul').append(function(){
-              if(key != currMapId){
-                return '<li data-icon="arrow-circle-right"><a onclick="javascript:SnowResetMapAndPeopleByMapID(\'{0}\');return false;" href="#">{1}</a></li>'.f(key, value.name);
-              }else{
-                // do need to change map, cause the current map is it.
-                return '<li data-icon="arrow-circle-right"><a class="ui-state-disabled" href="#">{0}</a></li>'.f(value.name);
-              }
-            });
-          });
-          $( "#selectMapPanel ul" ).listview( "refresh" );
+  function _createHomeSwiperHeader() {
+    homeSwiper = new Swiper('#home-swiper-header .swiper-container', {
+      pagination: '#home-swiper-header .pagination',
+      loop: true,
+      grabCursor: false,
+      paginationClickable: true,
+      onSlideChangeEnd: function(swiper, direction) {
+        switch (swiper.activeIndex % 2) {
+          case 0:
+            renderPeoplePage();
+            break;
+          case 1:
+            // If tap in searching box in people page, 
+            // go to map page following, one can get the keyboard sticky in screen.
+            if (Keyboard.isVisible) {
+              $("input").blur();
+            }
+            renderHomeMap();
+            break;
+          default:
+            console.debug('fine me if you can.');
+            break;
         }
+      }
+    });
+
+    $("#home-index .swiper-slide.map").on('click', function() {
+      // TODO add an panel window to select map locations
+      // $("#selectMapPanel").panel().enhanceWithin();
+      $("#selectMapPanel").panel("open", {
+        position: "left"
       });
+      return false;
+    });
+
+    $("#home-index .swiper-slide.people").on('click', function() {
+      // people header is clicked !
+      // TODO show a panel in the people page
+      // this is panel can be used for searching people, filter people
+      return false;
+    });
+
+    $("#selectMapPanel").panel({
+      beforeopen: function(event, ui) {
+        var currMapId = store.getCurrentMapId();
+        $('#selectMapPanel ul').empty();
+        $('#selectMapPanel ul').append('<li data-role="list-divider">服务号</li>')
+        _.each(store.getMaps(), function(value, key, list) {
+          $('#selectMapPanel ul').append(function() {
+            if (key != currMapId) {
+              return '<li data-icon="arrow-circle-right"><a onclick="javascript:SnowResetMapAndPeopleByMapID(\'{0}\');return false;" href="#">{1}</a></li>'.f(key, value.name);
+            } else {
+              // do need to change map, cause the current map is it.
+              return '<li data-icon="arrow-circle-right"><a class="ui-state-disabled" href="#">{0}</a></li>'.f(value.name);
+            }
+          });
+        });
+        $("#selectMapPanel ul").listview("refresh");
+      }
+    });
   }
 
   // Global API for Panel
-  function _resetMapAndPeopleByMapID(mapId){
-    $( "#selectMapPanel" ).panel("close");
+  function _resetMapAndPeopleByMapID(mapId) {
+    $("#selectMapPanel").panel("close");
     store.setCurrentMapId(mapId);
     // hide eye btn
     $('#headerBtn2').hide();
-    _setHomeSwiperHeaderTitleByMapId(mapId,function(){
+    _setHomeSwiperHeaderTitleByMapId(mapId, function() {
       mapController.createMap();
     });
   }
 
 
   /**
-  * Bind some events from UI
-  */ 
-  (function(){
+   * Bind some events from UI
+   */
+  (function() {
     /**
      * stop sharing location
      */
-    $("#headerBtn2").on('click', function(){
+    $("#headerBtn2").on('click', function() {
       var profile = store.getUserProfile();
       var email = profile.emails[0].value;
       $.ajax({
-          type: "POST",
-          url: "http://{0}/rtls/locout".f(config.host),
-          dataType: 'json',
-          data: JSON.stringify({ mapId: store.getCurrentMapId(),
-            username : email}),
-          headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/json"
-          },
-          success: function(data){
-              console.debug(JSON.stringify(data));
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) { 
-              console.debug("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
-              console.debug("[error] Status: " + textStatus); 
-              console.debug("[error] Error: " + errorThrown); 
-          }
+        type: "POST",
+        url: "http://{0}/rtls/locout".f(config.host),
+        dataType: 'json',
+        data: JSON.stringify({
+          mapId: store.getCurrentMapId(),
+          username: email
+        }),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        success: function(data) {
+          console.debug(JSON.stringify(data));
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.debug("[error] Post http://{0}/sse/in/loc throw an error.".f(config.host));
+          console.debug("[error] Status: " + textStatus);
+          console.debug("[error] Error: " + errorThrown);
+        }
       });
-    }); 
+    });
 
   })();
-
 
   exports.renderLoginPage = _renderLoginPage;
   exports.renderActivationPage = _renderActivationPage;
@@ -1756,13 +1820,13 @@ define(function(require, exports, module) {
   exports.renderAgreementsPage = _renderAgreementsPage;
 
 
-	/**
-	* export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.
-	* So, use window to reduce coding
-	* http://stackoverflow.com/questions/10302724/calling-methods-in-requirejs-modules-from-html-elements-such-as-onclick-handlers
-	*/
-	window.SnowOpenMsg = _openMsg;
-	window.SnowBackToNotificationsList = _backToNotificationsList;
+  /**
+   * export to window is not the perfect way, the pattern is use $(doc).ready, but it needs more code.
+   * So, use window to reduce coding
+   * http://stackoverflow.com/questions/10302724/calling-methods-in-requirejs-modules-from-html-elements-such-as-onclick-handlers
+   */
+  window.SnowOpenMsg = _openMsg;
+  window.SnowBackToNotificationsList = _backToNotificationsList;
   window.SnowOpenUserInMap = _openPopupUserInMap;
   window.SnowResetMapAndPeopleByMapID = _resetMapAndPeopleByMapID;
   window.SnowOpenLinkInSystemBrowser = _openLinkInSystemBrowser;

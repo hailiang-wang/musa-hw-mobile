@@ -519,7 +519,7 @@
   font-size:16px;
 }
 
-#saveProfileBtn {
+/*#saveProfileBtn {
   border: none !important; 
   padding-top:40px; 
   width:50px; 
@@ -533,7 +533,7 @@
   width:50px; 
   height:25px; 
   left:270px
-}
+}*/
 
 /* http://stackoverflow.com/questions/12200444/remove-hover-click-states-of-buttons */
 .musa-nostate-btn {
@@ -563,6 +563,7 @@
   height:25px; 
   left:270px
 }
+<<<<<<< HEAD
 
 /* avatar upload*/
 .popSelect
@@ -587,4 +588,10 @@
   left: 0;
 
   width: 100%;
+=======
+/*removes tap delay on all clicks/taps*/
+.in, .out {
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-animation-duration: 350ms !important;
+>>>>>>> 01e2b67c9ba8428bb9e2c558cece0adf86f26158
 }
