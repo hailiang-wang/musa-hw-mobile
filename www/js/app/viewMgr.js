@@ -877,7 +877,7 @@ define(function(require, exports, module) {
       },
       success: function(response) {
         if (response.post && response.post.body) {
-          $('#notificationPopup .header a').html('<i class="fa fa-arrow-circle-left">{0}<i>'.f(title));
+          $('#notificationPopup .header a').html('<i class="fa fa-times"/>关闭 &nbsp; &nbsp; <b>{0}</b>'.f(util.trimByPixel(title, 200)));
           try {
             $('#notificationPopup .content.ui-content').html(function() {
               var converter = new Showdown.converter();
