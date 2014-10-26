@@ -476,19 +476,6 @@ define(function(require, exports, module) {
     });
   }
 
-  function _bindBackToSettingsPage() {
-    // $('#backToSettingsBtn').unbind();
-    $('#backToSettingsBtn').on('click', function() {
-      console.debug('get _bindBackToSettingsPage ...');
-      $.mobile.changePage('settings.html', {
-        transition: "none",
-        reloadPage: false,
-        reverse: false,
-        changeHash: false
-      });
-    });
-  } 
-
   function _renderAboutAppPage() {
     // go back to setting page
     $('#about-app .header .title').on('click', function() {
@@ -715,8 +702,7 @@ define(function(require, exports, module) {
   }
 
   function _renderResetPwdPage() {
-    $('#backToSettingsBtn').unbind();
-    $('#backToSettingsBtn').on('click', function() {
+    $('#reset-pwd .header').on('click', function() {
       $.mobile.changePage('settings.html', {
         transition: "none",
         reloadPage: false,
@@ -772,8 +758,7 @@ define(function(require, exports, module) {
   }
 
   function _renderResetPwdVerifyPage() {
-    $('#backToSettingsBtn').unbind();
-    $('#backToSettingsBtn').on('click', function() {
+    $('#reset-pwd-verify .header').on('click', function() {
       $.mobile.changePage('settings.html', {
         transition: "none",
         reloadPage: false,
