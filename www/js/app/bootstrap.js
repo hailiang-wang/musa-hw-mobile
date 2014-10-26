@@ -51,11 +51,14 @@ define(['jqm', 'swiper', 'mapbox',
         loginNgv();
         // beforehide event does not happen at first time
         viewMgr.renderLoginPage();
+        // show the accessory bar to support go back
+        Keyboard.hideFormAccessoryBar(false);
+        // prevent the default behavior of the touchmove event to disable the 
+        // scroll event 
+        $(document).delegate('.ui-content', 'touchmove', false);
     }
 
     function loginNgv() {
-        // show the accessory bar to support go back
-        Keyboard.hideFormAccessoryBar(false);
         $(document.body).pagecontainer({
             beforehide: function(event, ui) {
                 var page = ui.nextPage;
@@ -65,6 +68,7 @@ define(['jqm', 'swiper', 'mapbox',
                         break;
                     case 'activation':
                         viewMgr.renderActivationPage();
+                        $()
                         break;
                     case 'forget-pwd':
                         viewMgr.renderForgetPwdPage();
