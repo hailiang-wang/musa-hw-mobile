@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.musa.snowball" version="0.0.20141026_0956" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.musa.snowball" version="0.0.20141026_1425" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Snowball</name>
     <description>
       Project to show real time matrix in Hello World Cafe.
@@ -36,7 +36,7 @@
     <!-- enable/disable weinre debugging <"log"|"debug"|"info"|"warn"|"error"> <"on"|"off">-->
     <snowball name="weinreDebug" value="true" />
     <!-- weinre server url -->
-    <snowball name="weinreServer" value="http://192.168.2.104:9088/target/target-script-min.js#musa" />
+    <snowball name="weinreServer" value="http://192.168.1.103:9088/target/target-script-min.js#musa" />
     <!-- ******************************************************* -->
     <!--                  snowball config end                   -->
     <!-- ******************************************************* -->

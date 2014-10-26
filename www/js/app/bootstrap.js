@@ -54,6 +54,8 @@ define(['jqm', 'swiper', 'mapbox',
     }
 
     function loginNgv() {
+        // show the accessory bar to support go back
+        Keyboard.hideFormAccessoryBar(false);
         $(document.body).pagecontainer({
             beforehide: function(event, ui) {
                 var page = ui.nextPage;
@@ -75,6 +77,8 @@ define(['jqm', 'swiper', 'mapbox',
     }
 
     function homeNgv() {
+        // hide the accessory bar to make it more native
+        Keyboard.hideFormAccessoryBar(true);
         $("#homeBtn").on('click', function() {
             $.mobile.changePage("home.html", {
                 transition: "none",
