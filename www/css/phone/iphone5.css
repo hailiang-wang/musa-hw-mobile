@@ -589,7 +589,6 @@
 
   width: 100%;
 }
-
 /*removes tap delay on all clicks/taps*/
 .in, .out {
     -webkit-animation-timing-function: ease-in-out;

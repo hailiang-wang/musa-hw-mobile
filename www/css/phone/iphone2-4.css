@@ -11,7 +11,7 @@
 #home-swiper-header .header-swiper-title {
   text-align: left;
   padding-left: 30px;
-  font-size: 25px;
+  font-size: 15px;
   margin-bottom: 10px;
 }
 #home-swiper-header .pagination {
@@ -151,4 +151,8 @@
 
 #user-index .content.ui-content ul li {
   line-height: 36px;
+}
+
+#about-app .guide {
+  zoom: 0.8;
 }
