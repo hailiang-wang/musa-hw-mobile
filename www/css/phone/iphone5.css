@@ -564,7 +564,6 @@
   height:25px; 
   left:270px
 }
-<<<<<<< HEAD
 
 /* avatar upload*/
 .popSelect
@@ -589,10 +588,10 @@
   left: 0;
 
   width: 100%;
-=======
+}
+
 /*removes tap delay on all clicks/taps*/
 .in, .out {
     -webkit-animation-timing-function: ease-in-out;
     -webkit-animation-duration: 350ms !important;
->>>>>>> 01e2b67c9ba8428bb9e2c558cece0adf86f26158
 }
