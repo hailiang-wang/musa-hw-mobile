@@ -327,6 +327,10 @@ define(function(require, exports, module) {
   }
 
   function _renderActivationPage() {
+    // prevent scroll event
+    $('#activation').on('mousemove', function (e) {
+      e.preventDefault();
+    });
     $('#activeBtn').button('option', 'disabled', true);
     $('#activeBtn').on('touchend', function(e) {
       var params = {
