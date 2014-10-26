@@ -1314,6 +1314,7 @@ define(function(require, exports, module) {
   function _renderUserProfilePage() {
     var user = store.getUserProfile();
     var defaultAvatar = 'img/user-default-avatar.png';
+    var isLocal = false;
     // if local passport, show the eidt btn
     switch (user.provider) {
       case 'local':
@@ -1323,6 +1324,7 @@ define(function(require, exports, module) {
         $('.avatar').on('touchend', function() {
           $('.popSelect').slideDown(300);
         });
+        isLocal = true;
         bindProfileEditorBtns();
         break;
       case 'linkedin':
@@ -1360,7 +1362,7 @@ define(function(require, exports, module) {
       })
     } else {
       // no school
-      $('#user-index i .edu').text('{0}'.f("您什么也没有写。"));
+      $('#user-index i .edu').text('{0}'.f(isLocal?"编辑您的学校信息":"您什么也没有写。"));
     }
     // positions
     if (user._json.positions._total > 0) {
@@ -1371,7 +1373,7 @@ define(function(require, exports, module) {
         }
       })
     } else {
-      $('#user-index i .company').text('{0} '.f("您什么也没有写。"));
+      $('#user-index i .company').text('{0} '.f(isLocal?"编辑您的公司信息":"您什么也没有写"));
       // no positions available
     }
 
@@ -1381,7 +1383,7 @@ define(function(require, exports, module) {
         util.trimByPixel('{0}'.f(user._json.interests), 200));
     } else {
       // no interest
-      $('#user-index i .interest').text('{0}'.f("您什么也没有写。"));
+      $('#user-index i .interest').text('{0}'.f(isLocal?"编辑您的兴趣信息":"您什么也没有写"));
     }
 
     /**
