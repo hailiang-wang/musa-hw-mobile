@@ -1,3 +1,9 @@
+body{
+/*  Default font for Android is Roboto
+    Fallback font for iOS is Helvetica Neue, otherwise sans*/
+  font-family: "Helvetica Neue", "Roboto", sans-serif !important;
+}
+
 .popSelect
 {
     position: fixed;

@@ -1,6 +1,11 @@
+.ui-loader{
+    z-index: 1501;
+}
+
 #map { 
   position:absolute; 
-  top:70px; bottom:0; 
+  top: 70px;
+  bottom:0px; 
   width:100%;
 }
 #home-swiper-header .swiper-container {
@@ -35,6 +40,16 @@
   background: #fff;
 }
 /* notifications */
+#notifications .unread {
+  width: 100%;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #FFAB7A ), to( #FFAB7A )); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient( #FFAB7A, #FFAB7A ); /* Chrome 10+, Saf5.1+ */
+  background-image:    -moz-linear-gradient( #FFAB7A, #FFAB7A ); /* FF3.6 */
+  background-image:     -ms-linear-gradient( #FFAB7A, #FFAB7A ); /* IE10 */
+  background-image:      -o-linear-gradient( #FFAB7A, #FFAB7A ); /* Opera 11.10+ */
+  background-image:         linear-gradient( #FFAB7A, #FFAB7A );    
+}
 
 #notifications .header{
   height: 70px;

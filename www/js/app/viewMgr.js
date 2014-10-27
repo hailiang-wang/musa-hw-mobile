@@ -49,16 +49,6 @@ define(function(require, exports, module) {
       });
   }
 
-  function showModal(containerDiv) {
-    $(containerDiv).append('<div class="modalWindow"/>');
-    $.mobile.loading('show');
-  }
-
-  function hideModal() {
-    $(".modalWindow").remove();
-    $.mobile.loading('hide');
-  }
-
   function _renderLoginPage() {
     var $loginInputs = $('#loginEmail,#loginPassword'),
       $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
@@ -581,8 +571,8 @@ define(function(require, exports, module) {
                 //cc:          ['iwhl.ste@gmail.com'], // email addresses for CC field
                 // bcc: ['hain_wang@foxmail.com'], // email addresses for BCC field
                 // attachments: Array, // file paths or base64 data streams
-                subject: '[Mobay用户反馈] 版本 v{0}'.f(version), // subject of the email
-                body: '你好，Mobay团队 <br/>', // email body (for HTML, set isHtml to true)
+                subject: '[moBay用户反馈] 版本 v{0}'.f(version), // subject of the email
+                body: '你好，moBay 团队 <br/>', // email body (for HTML, set isHtml to true)
                 isHtml: true, // indicats if the body is HTML or plain text
               }, function() {
                 console.debug('email view dismissed');
