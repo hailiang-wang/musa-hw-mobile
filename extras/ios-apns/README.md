@@ -9,3 +9,13 @@ Key io.musa.snowball.p12 Password Tucfegs9
 ## Add into Push Service Web Console
 export from **keychain access certificates**
 musa-snowball-push-dev.p12 elvyishaj0
+
+
+## com.arrking.mobay
+### CertificateSigningRequest
+com.arrking.mobay.CertificateSigningRequest.certSigningRequest
+### private key
+com.arrking.mobay.p12 / moabHork2
+
+### Certficate
+com.arrking.mobay.Certificates.p12 / krykIfMof3

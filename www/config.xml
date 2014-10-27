@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.musa.snowball" version="0.0.20141027_1016" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.arrking.mobay" version="0.0.20141027_1224" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>moBay</name>
     <description>
-      Project to show real time matrix in Hello World Cafe.
+      Project to show real time matrix for Cafe, Bar, Salon, etc.
     </description>
     <author email="mobay-info@qq.com" href="http://hwcafe.mybluemix.net">
       Hai Liang Wang, Jian Fei Zhao, Kang Xin Yang
@@ -25,16 +25,16 @@
     <!-- ******************************************************* -->
     <!--                  moBay config start                 -->
     <!-- ******************************************************* -->
-    <mobay name="host" value="hwcafe.mybluemix.net" />
-    <mobay name="ssehost" value="hwcafesse.mybluemix.net" />
+    <mobay name="host" value="mobay.mybluemix.net" />
+    <mobay name="ssehost" value="mobaysse.mybluemix.net" />
     <mobay name="path" value="/mobile/auth/linkedin" />
-    <mobay name="pushAppId" value="a87432fd-2d2e-43d4-91c9-0832af4d4aec" />
-    <mobay name="pushAppRoute" value="hwcafe.mybluemix.net" />
-    <mobay name="pushAppSecret" value="049180170bdc55b6428f65f96f80518b37296000" />
+    <mobay name="pushAppId" value="cd16f387-608a-47fa-839e-1d0fd9a859d9" />
+    <mobay name="pushAppRoute" value="mobay.mybluemix.net" />
+    <mobay name="pushAppSecret" value="0870db1e3946355b335a042c2976679770772299" />
     <!-- console log level -->
     <!-- https://code.google.com/p/console-js/ -->
     <!-- "log"|"debug"|"info"|"warn"|"error"|on"|"off" -->
-    <mobay name="console" value="debug" />
+    <mobay name="console" value="warn" />
     <!-- enable/disable weinre debugging -->
     <mobay name="weinreDebug" value="false" />
     <!-- weinre server url -->
