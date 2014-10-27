@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.musa.snowball" version="0.0.20141027_0818" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Snowball</name>
+<widget id="io.musa.snowball" version="0.0.20141027_0841" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>moBay</name>
     <description>
       Project to show real time matrix in Hello World Cafe.
     </description>
@@ -23,24 +23,24 @@
         <param name="ios-package" value="CDVKeyboard" onload="true" />
     </feature>
     <!-- ******************************************************* -->
-    <!--                  snowball config start                 -->
+    <!--                  moBay config start                 -->
     <!-- ******************************************************* -->
-    <snowball name="host" value="hwcafe.mybluemix.net" />
-    <snowball name="ssehost" value="hwcafesse.mybluemix.net" />
-    <snowball name="path" value="/mobile/auth/linkedin" />
-    <snowball name="pushAppId" value="a87432fd-2d2e-43d4-91c9-0832af4d4aec" />
-    <snowball name="pushAppRoute" value="hwcafe.mybluemix.net" />
-    <snowball name="pushAppSecret" value="049180170bdc55b6428f65f96f80518b37296000" />
+    <mobay name="host" value="hwcafe.mybluemix.net" />
+    <mobay name="ssehost" value="hwcafesse.mybluemix.net" />
+    <mobay name="path" value="/mobile/auth/linkedin" />
+    <mobay name="pushAppId" value="a87432fd-2d2e-43d4-91c9-0832af4d4aec" />
+    <mobay name="pushAppRoute" value="hwcafe.mybluemix.net" />
+    <mobay name="pushAppSecret" value="049180170bdc55b6428f65f96f80518b37296000" />
     <!-- console log level -->
     <!-- https://code.google.com/p/console-js/ -->
     <!-- "log"|"debug"|"info"|"warn"|"error"|on"|"off" -->
-    <snowball name="console" value="debug" />
+    <mobay name="console" value="debug" />
     <!-- enable/disable weinre debugging -->
-    <snowball name="weinreDebug" value="false" />
+    <mobay name="weinreDebug" value="false" />
     <!-- weinre server url -->
-    <snowball name="weinreServer" value="http://192.168.2.101:9088/target/target-script-min.js#musa" />
+    <mobay name="weinreServer" value="http://192.168.2.101:9088/target/target-script-min.js#musa" />
     <!-- ******************************************************* -->
-    <!--                  snowball config end                   -->
+    <!--                  moBay config end                   -->
     <!-- ******************************************************* -->
 
 </widget>

@@ -16,7 +16,7 @@ define(['jquery'], function($) {
             success: function(data) {
                 var xmlDoc = $.parseXML(data);
                 var $xml = $(xmlDoc);
-                $xml.find('snowball').each(function(index) {
+                $xml.find('mobay').each(function(index) {
                     var v = {};
                     $.each(this.attributes, function(i, attrib) {
                         switch (attrib.name) {
