@@ -27,7 +27,7 @@ if (rootdir) {
         if (buildstamp)
         	build = buildstamp.replace(/-/, '_');
         else
-        	build = d.getFullYear() + "" + format(m) + format(d.getDate()) + "_" + format(d.getHours()) + format(d.getMinutes());
+        	build = d.getFullYear() + "" + format(m) + format(d.getDate()) + format(d.getHours()) + format(d.getMinutes());
 
         var data = fs.readFileSync(fullfilename, 'utf8');
         var result = data.replace(/(ios-CFBundleVersion=['"]\d+\.\d+\.)[\d_]+(['"])/g, "$1" + build + "$2");
