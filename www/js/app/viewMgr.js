@@ -54,7 +54,7 @@ define(function(require, exports, module) {
       $signupInputs = $('#signupEmail,#signupUsername,#signupPassword'),
       rules = {
         username: /^\w+$/i,
-        email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/i,
+        email: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/i,
         password: /^.+$/i
       },
       inSubmit = false;
