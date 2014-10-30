@@ -340,6 +340,7 @@
     padding-left: 36px;
 }
 
+/*settings page*/
 #settings-index .header{
   height: 70px;
   width: 100%;
@@ -356,6 +357,10 @@
 #settings-index .header .title i{
   font-size: 15px; 
   padding-left:30px;
+}
+
+#settings-index .ui-content{
+  zoom: 0.8;
 }
 
 #settings-index .content.ui-content{
@@ -381,6 +386,10 @@
 
 #settings-index .appVersion{
   padding-left: 160px;
+}
+
+#settings-index .signOutBtn {
+  background: -webkit-linear-gradient(#FFF, #FFF) repeat scroll 0 0 #FFFFFF !important;
 }
 
 #settings-index .resetPwdBtn {

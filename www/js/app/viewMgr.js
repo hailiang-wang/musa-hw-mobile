@@ -554,8 +554,9 @@ define(function(require, exports, module) {
 
   function _renderSettingsPage() {
     // disable the scroll event in settings page
-    // TODO this will impact iPhone4s-2 need to test on them 
-    $(document).delegate("#settings-index .ui-content", "touchmove", false);
+    // $(document).delegate("#settings-index .ui-content", "touchmove", false);
+    // iPhone Models http://theiphonewiki.com/wiki/Models
+    // Fixed in iPhone 5, scrolled in iPhone 4s-2
 
     // bind post feedback btn
     $('#postFeedback').unbind();
@@ -692,6 +693,14 @@ define(function(require, exports, module) {
         changeHash: false
       });
       return false;
+    });
+
+    /**
+     * handle logout event
+     */
+    $("#settings-index .signOutBtn").on('click', function() {
+      navigator.splashscreen.show();
+      logoutHandler();
     });
   }
 
@@ -1347,7 +1356,7 @@ define(function(require, exports, module) {
     }
 
     // displayName
-    $('#user-index .header .title span').html('{0}'.f(user.displayName));
+    $('#user-index .header .title').html('{0}'.f(user.displayName));
     // user avatar
     if (user._json.pictureUrl) {
       $('#user-index .avatar img').attr('src', user._json.pictureUrl);
@@ -1389,14 +1398,6 @@ define(function(require, exports, module) {
       // no interest
       $('#user-index i .interest').text('{0}'.f(isLocal?"编辑您的兴趣信息":"您什么也没有写"));
     }
-
-    /**
-     * handle logout event
-     */
-    $("#signOutBtn").on('click', function() {
-      navigator.splashscreen.show();
-      logoutHandler();
-    });
 
     /**
      * change user avatar
