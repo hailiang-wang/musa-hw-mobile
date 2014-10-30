@@ -971,6 +971,16 @@ define(function(require, exports, module) {
       inViewSlideKeys.push(key);
     });
     console.debug(' init inViewSlideKeys ' + JSON.stringify(inViewSlideKeys));
+    // show a default message when there is no notifications
+    if(inViewSlideKeys.length == 0){
+      noty({
+        text: '您还没有收到任何消息.',
+        timeout: 1000,
+        layout: 'center',
+        type: 'information'
+      })
+    }
+
 
     function loadNewNotificationSlides() {
       /* 
