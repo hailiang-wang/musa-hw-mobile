@@ -1334,11 +1334,11 @@ define(function(require, exports, module) {
       case 'linkedin':
         // hide the camera icon
         $('#user-index .content .avatar i.btn').removeClass('fa-camera-retro');
-        $('#user-index .content .avatar i.btn').addClass('fa-external-link');
+        // $('#user-index .content .avatar i.btn').addClass('fa-external-link');
+        // $('.avatar').on('touchend', function() {
+        //   cordova.exec(null, null, "InAppBrowser", "open", [store.getUserProfile()._json.publicProfileUrl, "_system"]);
+        // });
         $('#user-index .content ul .fa.fa-edit').hide();
-        $('.avatar').on('touchend', function() {
-          cordova.exec(null, null, "InAppBrowser", "open", [store.getUserProfile()._json.publicProfileUrl, "_system"]);
-        });
         defaultAvatar = 'img/linkedin-default-avatar.png'
         break;
       default:
