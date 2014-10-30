@@ -976,7 +976,7 @@ define(function(require, exports, module) {
       noty({
         text: '您还没有收到任何消息.',
         timeout: 1000,
-        layout: 'center',
+        layout: 'top',
         type: 'information'
       })
     }
