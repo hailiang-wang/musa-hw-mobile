@@ -67,10 +67,20 @@
 {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     // Register to receive remote notification
-    [application registerForRemoteNotificationTypes:
-    UIRemoteNotificationTypeBadge |
-    UIRemoteNotificationTypeAlert |
-    UIRemoteNotificationTypeSound];
+    //-- Set Notification
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) 
+    {
+           // iOS 8 Notifications
+           [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+
+           [application registerForRemoteNotifications];
+    }
+    else
+    {
+          // iOS < 8 Notifications
+          [application registerForRemoteNotificationTypes:
+                     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
 
 #if __has_feature(objc_arc)
         self.window = [[UIWindow alloc] initWithFrame:screenBounds];
