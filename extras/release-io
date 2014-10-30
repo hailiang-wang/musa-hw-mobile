@@ -1,0 +1,31 @@
+#! /bin/bash 
+###########################################
+# release ios app
+###########################################
+
+# constants
+baseDir=$(cd `dirname "$0"`;pwd)
+prjDir=`dirname $baseDir`
+
+# functions
+
+# main 
+[ -z "${BASH_SOURCE[0]}" -o "${BASH_SOURCE[0]}" = "$0" ] || return
+echo ">> START BUILD AT " `date`
+echo "Project Root Dir " $prjDir
+cd $prjDir
+echo ">> DEL TMPS"
+#rm -rf www-bak
+rm -rf www-build
+echo ">> BLD WWW"
+python extras/execute.py build-www
+echo ">> BACKUP WWW"
+mv www www-bak
+mv www-build www
+echo ">> RELEASE APP"
+cordova prepare ios && cordova build ios --release
+#echo ">> RESTORE WWW"
+#rm -rf www
+#mv www-bak www
+echo "<< DONE " `date`
+open platforms/ios/moBay.xcodeproj
