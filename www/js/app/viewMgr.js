@@ -1337,7 +1337,7 @@ define(function(require, exports, module) {
     }
 
     // displayName
-    $('#user-index .header .title').html('{0}'.f(user.displayName));
+    $('#user-index .header .title span').html('{0}'.f(user.displayName));
     // user avatar
     if (user._json.pictureUrl) {
       $('#user-index .avatar img').attr('src', user._json.pictureUrl);

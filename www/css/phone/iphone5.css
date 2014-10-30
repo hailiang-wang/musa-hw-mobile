@@ -240,6 +240,11 @@
   font-size: 20px;
 }
 
+#user-index .header .title i{
+  padding-left: 100px;
+  font-size: 12px;
+}
+
 #user-index .content.ui-content {
   height: 456px;
   padding: 0px!important;
@@ -542,14 +547,6 @@
   width:50px; 
   height:25px; 
   left:220px;
-}
-
-#signOutBtn {
-  border: none !important; 
-  padding-top:40px; 
-  width:50px; 
-  height:25px; 
-  left:270px
 }
 
 /* avatar upload*/
