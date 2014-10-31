@@ -30,7 +30,7 @@ if (rootdir) {
         	build = d.getFullYear() + "" + format(m) + format(d.getDate()) + format(d.getHours()) + format(d.getMinutes());
 
         var data = fs.readFileSync(fullfilename, 'utf8');
-        var result = data.replace(/(ios-CFBundleVersion=['"]\d+\.\d+\.)[\d_]+(['"])/g, "$1" + build + "$2");
+        var result = data.replace(/(ios-CFBundleVersion=['"])[\d_]+(['"])/g, "$1" + build + "$2");
 
         fs.writeFileSync(fullfilename, result, 'utf8');
         console.log("Updated build id: " + build);
