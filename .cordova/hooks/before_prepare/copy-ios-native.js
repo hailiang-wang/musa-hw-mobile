@@ -11,14 +11,10 @@ if (!_NMR) {
   return;
 }
 
-var cordova_util = require(path.join(_NMR, 'cordova/src/util'));
-var platforms = require(path.join(_NMR, 'cordova/platforms'));
+var cordova_util = require('cordova-lib/src/cordova/util');
 var projRoot = cordova_util.isCordova(process.cwd());
 var projXml = cordova_util.projectConfig(projRoot);
-var ConfigParser = cordova_util.config_parser
-if(undefined === ConfigParser) {
-    ConfigParser = require(path.join(_NMR, 'cordova/src/ConfigParser'));
-}
+var ConfigParser = require('cordova-lib/src/ConfigParser/ConfigParser');
 var projConfig = new ConfigParser(projXml);
 var projName = projConfig.name();
 
