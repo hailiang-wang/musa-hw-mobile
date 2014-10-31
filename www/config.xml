@@ -34,9 +34,9 @@
     <!-- console log level -->
     <!-- https://code.google.com/p/console-js/ -->
     <!-- "log"|"debug"|"info"|"warn"|"error"|on"|"off" -->
-    <mobay name="console" value="debug" />
+    <mobay name="console" value="warn" />
     <!-- enable/disable weinre debugging -->
-    <mobay name="weinreDebug" value="true" />
+    <mobay name="weinreDebug" value="false" />
     <!-- weinre server url -->
     <mobay name="weinreServer" value="http://192.168.9.232:9088/target/target-script-min.js#musa" />
     <!-- ******************************************************* -->

@@ -568,7 +568,7 @@ define(function(require, exports, module) {
             // get appVersion
             cordova.getAppVersion().then(function(version) {
               cordova.plugins.email.open({
-                to: ['mobay-info@qq.com'], // email addresses for TO field
+                to: ['mobay@arrking.com'], // email addresses for TO field
                 //cc:          ['iwhl.ste@gmail.com'], // email addresses for CC field
                 // bcc: ['hain_wang@foxmail.com'], // email addresses for BCC field
                 // attachments: Array, // file paths or base64 data streams
