@@ -169,12 +169,16 @@ define(function(require, exports, module) {
 				maps[store.getCurrentMapId()].mapbox.id, {
 					minZoom: mapMetadata.mapbox.minZoom,
 					maxZoom: mapMetadata.mapbox.maxZoom,
-					maxBounds: bounds
+					maxBounds: bounds,
+					// Set it to false if you don't want the map to zoom 
+					// beyond min/max zoom and then bounce back when pinch-zooming.
+					// TODO it does not work.
+					// https://github.com/arrking/musa-hw-mobile/issues/101
+					bounceAtZoomLimits: false
 				}).setView([mapMetadata.mapbox.centerLat,
-					mapMetadata.mapbox.centerLng
-				],
-				mapMetadata.mapbox.defaultZoom
-			);
+						mapMetadata.mapbox.centerLng
+					], mapMetadata.mapbox.defaultZoom
+				);
 
 			// Represents a rectangular geographical area on a map.
 			// map.fitBounds(bounds);
