@@ -64,11 +64,7 @@
   font-size: 20px;
 }
 
-#notifications {
-  padding: 0px!important;
-}
-
-#notifications.ui-content{
+#notifications .ui-content{
   /* .ui-content makes a padding 1em in the view, fix it by marking !important */
   padding: 0px!important;
   top:70px;
