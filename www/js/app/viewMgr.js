@@ -723,6 +723,7 @@ define(function(require, exports, module) {
           password: newPwd,
           email: store.getUserId()
         };
+        $.mobile.loading('show');
         $.ajax({
           url: 'http://{0}/auth/local/signup'.f(config.host),
           type: 'POST',
@@ -734,6 +735,7 @@ define(function(require, exports, module) {
           dataType: 'json',
           timeout: 20000,
           success: function(response) {
+            $.mobile.loading('hide');
             if (response.rc == 1) {
               $.mobile.changePage('reset-pwd-verify.html', {
                 transition: "none",
@@ -747,6 +749,7 @@ define(function(require, exports, module) {
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert(errorThrown);
+            $.mobile.loading('hide');
           }
         });
       } else {
@@ -780,6 +783,7 @@ define(function(require, exports, module) {
           code: code,
           email: store.getUserId()
         };
+        $.mobile.loading('show');
         $.ajax({
           url: 'http://{0}/auth/local/verify'.f(config.host),
           type: 'POST',
@@ -791,6 +795,7 @@ define(function(require, exports, module) {
           dataType: 'json',
           timeout: 20000,
           complete: function(xhr, status) {
+            $.mobile.loading('hide');
             var rst;
             if (xhr.status === 200) {
               rst = xhr.responseJSON;
