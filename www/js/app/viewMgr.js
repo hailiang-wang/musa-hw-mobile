@@ -413,9 +413,12 @@ define(function(require, exports, module) {
       var pwd = $('#forgetPwdpassword').val();
       if (email && pwd) {
         userEmail = email;
+        // clean up the previous error tip
+        $('#forget-pwd').find('.errorTip').text('');
         $('#forgetPwdEmail').val('');
         $('#forgetPwdpassword').val('');
         // put request to generate new verify code
+        $.mobile.loading('show');
         $.ajax({
           url: 'http://{0}/auth/local/signup'.f(config.host),
           type: 'PUT',
@@ -430,6 +433,7 @@ define(function(require, exports, module) {
           },
           success: function(resp) {
             console.debug(JSON.stringify(resp));
+            $.mobile.loading('hide');
             if (resp && resp.rc) {
               switch (resp.rc) {
                 case 1:
@@ -460,6 +464,7 @@ define(function(require, exports, module) {
             }
           },
           error: function(xhr, textStatus, errorThrown) {
+            $.mobile.loading('hide')
             console.error(textStatus);
             console.error(errorThrown);
           }
